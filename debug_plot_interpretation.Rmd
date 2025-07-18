@@ -1,0 +1,23 @@
+---
+title: 'Plot Interpretation'
+date: '
+2025-07-18
+'
+output:
+  pdf_document:
+    latex_engine: pdflatex
+    keep_tex: true
+geometry: margin=1in
+---
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{parskip}
+\setlength{\parskip}{0.5em}
+
+# Interpretasi Visualisasi
+
+Histogram menunjukkan distribusi frekuensi dari variabel DISTRICTCODE . Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.

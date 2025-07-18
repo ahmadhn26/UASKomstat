@@ -1,0 +1,112 @@
+---
+title: 'Complete Regression Analysis Report'
+date: '
+2025-07-18
+'
+output: pdf_document
+geometry: margin=1in
+---
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{pdflscape}
+
+# Ringkasan Model Regresi
+
+Variabel dependen: 
+DISTRICTCODE
+
+
+Variabel independen: 
+DISTRICTCODE, CHILDREN, LOWEDU, NOTRAINING
+
+
+
+```{r echo=FALSE, comment=''}
+library(pander)
+panderOptions('table.style', 'rmarkdown')
+
+Call:
+lm(formula = formula_obj, data = complete_data)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3797.6 -2766.3  -775.3  2512.4  5348.1 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)
+(Intercept) -4407.42    5482.91  -0.804    0.422
+CHILDREN       82.81      72.81   1.137    0.256
+LOWEDU         16.37      13.86   1.181    0.238
+NOTRAINING     77.71      57.30   1.356    0.176
+
+Residual standard error: 2672 on 507 degrees of freedom
+Multiple R-squared:  0.01202,	Adjusted R-squared:  0.006171 
+F-statistic: 2.056 on 3 and 507 DF,  p-value: 0.1052
+
+```
+
+## Interpretasi Model
+
+1. R-squared: 
+0.012
+ menunjukkan bahwa 
+1.2
+% variabilitas dalam 
+DISTRICTCODE
+ dapat dijelaskan oleh variabel independen.
+
+2. Adjusted R-squared: 
+0.0062
+ menyesuaikan R-squared untuk jumlah prediktor.
+
+3. P-value model keseluruhan: 
+0.1052
+ (tidak signifikan)
+ pada tingkat signifikansi 5%.
+
+4. Koefisien signifikan (p < 0.05): 
+
+
+
+
+\newpage
+
+## Uji Multikolinearitas
+
+```{r echo=FALSE, comment=''}
+Variance Inflation Factor (VIF) Test:
+
+                 GVIF Df GVIF^(1/(2*Df))
+DISTRICTCODE 1.177043  0             Inf
+CHILDREN     1.023827  1        1.011843
+LOWEDU       1.166982  1        1.080270
+NOTRAINING   1.151772  1        1.073206
+```
+
+## Interpretasi Multikolinearitas
+
+VIF menunjukkan adanya multikolinearitas signifikan (VIF > 10) untuk variabel:   .
+
+
+\newpage
+
+## Normalitas Residual
+
+![Q-Q Plot](residual_qq.jpg)
+
+## Interpretasi Normalitas
+
+Uji Shapiro-Wilk untuk normalitas residual (p-value = 0 ): Residual tidak berdistribusi normal.
+
+
+\newpage
+
+## Homoskedastisitas
+
+![Residuals vs Fitted Plot](residual_fitted.jpg)
+
+## Interpretasi Homoskedastisitas
+
+Uji Breusch-Pagan untuk homoskedastisitas (p-value = 0 ): Varians residual tidak homogen.
+
