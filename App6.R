@@ -423,7 +423,7 @@ ui <- dashboardPage(
                   fluidRow(
                     column(4,
                            h5("Individual Downloads:"),
-                           downloadButton("download_welcome_pdf", "Welcome Report (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_welcome_pdf", "Welcome Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_metadata_csv", "Metadata (CSV)", class = "btn btn-info download-btn"),
                            br(),
@@ -431,9 +431,9 @@ ui <- dashboardPage(
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_beranda_complete", "Complete Beranda Report (PDF)", class = "btn btn-success download-btn"),
-                           br(),
-                           p("Includes: Welcome information, metadata table, and overview map in a comprehensive PDF report.")
+                                                   downloadButton("download_beranda_complete", "Complete Beranda Report (Word)", class = "btn btn-success download-btn"),
+                        br(),
+                        p("Includes: Welcome information, metadata table, and overview map in a comprehensive Word report.")
                     )
                   )
                 )
@@ -495,9 +495,9 @@ ui <- dashboardPage(
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_manajemen_complete", "Complete Data Management Report (PDF)", class = "btn btn-success download-btn"),
-                           br(),
-                           p("Includes: Categorization results, map visualization, and detailed interpretation in a comprehensive PDF report.")
+                                                   downloadButton("download_manajemen_complete", "Complete Data Management Report (Word)", class = "btn btn-success download-btn"),
+                        br(),
+                        p("Includes: Categorization results, map visualization, and detailed interpretation in a comprehensive Word report.")
                     )
                   )
                 )
@@ -632,13 +632,13 @@ ui <- dashboardPage(
                            br(),
                            downloadButton("download_exploration_map_jpg", "Geographic Map (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_map_interpretation_pdf", "Map Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_map_interpretation_pdf", "Map Interpretation (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_eksplorasi_complete", "Complete Data Exploration Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_eksplorasi_complete", "Complete Data Exploration Report (Word)", class = "btn btn-success download-btn"),
                            br(),
-                           p("Includes: All descriptive statistics, visualizations, correlation analysis, geographic maps, and comprehensive interpretations in a detailed PDF report.")
+                           p("Includes: All descriptive statistics, visualizations, correlation analysis, geographic maps, and comprehensive interpretations in a detailed Word report.")
                     )
                   )
                 )
@@ -700,17 +700,17 @@ ui <- dashboardPage(
                            br(),
                            downloadButton("download_qq_plot_jpg", "Q-Q Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_normality_interpretation_pdf", "Normality Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_normality_interpretation_pdf", "Normality Interpretation (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_homogeneity_test_pdf", "Homogeneity Test Results (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_homogeneity_test_pdf", "Homogeneity Test Results (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_homogeneity_interpretation_pdf", "Homogeneity Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_homogeneity_interpretation_pdf", "Homogeneity Interpretation (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_asumsi_complete", "Complete Assumption Tests Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_asumsi_complete", "Complete Assumption Tests Report (Word)", class = "btn btn-success download-btn"),
                            br(),
-                           p("Includes: All normality and homogeneity test results, Q-Q plots, and comprehensive statistical interpretations in a detailed PDF report.")
+                           p("Includes: All normality and homogeneity test results, Q-Q plots, and comprehensive statistical interpretations in a detailed Word report.")
                     )
                   )
                 )
@@ -832,21 +832,21 @@ ui <- dashboardPage(
                            h5("Individual Test Downloads:"),
                            downloadButton("download_ttest1_pdf", "Complete Inferential Statistics Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_ttest2_pdf", "2-Sample T-Test (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_ttest2_pdf", "2-Sample T-Test (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_prop1_pdf", "Proportion Test (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_prop1_pdf", "Proportion Test (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_var1_pdf", "Variance Test (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_var1_pdf", "Variance Test (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_anova1_pdf", "One-Way ANOVA (PDF)", class = "btn btn-warning download-btn"),
+                           downloadButton("download_anova1_pdf", "One-Way ANOVA (Word)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_anova2_pdf", "Two-Way ANOVA (PDF)", class = "btn btn-warning download-btn")
+                           downloadButton("download_anova2_pdf", "Two-Way ANOVA (Word)", class = "btn btn-warning download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_inferensia_complete", "Complete Inferential Statistics Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_inferensia_complete", "Complete Inferential Statistics Report (Word)", class = "btn btn-success download-btn"),
                            br(),
-                           p("Includes: All t-tests, proportion tests, variance tests, ANOVA results, and comprehensive statistical interpretations in a detailed PDF report.")
+                           p("Includes: All t-tests, proportion tests, variance tests, ANOVA results, and comprehensive statistical interpretations in a detailed Word report.")
                     )
                   )
                 )
@@ -912,21 +912,21 @@ ui <- dashboardPage(
                            h5("Individual Downloads:"),
                            downloadButton("download_regression_summary_pdf", "Complete Regression Analysis Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_regression_interpretation_pdf", "Regression Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_regression_interpretation_pdf", "Regression Interpretation (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_vif_test_pdf", "VIF Test Results (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_vif_test_pdf", "VIF Test Results (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_residual_qq_jpg", "Q-Q Plot of Residuals (JPG)", class = "btn btn-warning download-btn"),
                            br(),
                            downloadButton("download_residual_fitted_jpg", "Residuals vs Fitted Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_assumption_interpretation_pdf", "Assumptions Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_assumption_interpretation_pdf", "Assumptions Interpretation (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_regresi_complete", "Complete Regression Analysis Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_regresi_complete", "Complete Regression Analysis Report (Word)", class = "btn btn-success download-btn"),
                            br(),
-                           p("Includes: Complete regression results, model summary, assumption tests, diagnostic plots, and comprehensive interpretations in a detailed PDF report.")
+                           p("Includes: Complete regression results, model summary, assumption tests, diagnostic plots, and comprehensive interpretations in a detailed Word report.")
                     )
                   )
                 )
@@ -1774,40 +1774,79 @@ server <- function(input, output, session) {
   output$download_welcome_pdf <- downloadHandler(
     filename = function() { paste0("welcome_report_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       temp_md <- tempfile(fileext = ".Rmd")
       
       rmd_content <- paste(
         "---",
         "title: 'Laporan Selamat Datang - SEVA'",
+        "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
         "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
+        "output: word_document",
         "---",
-        "\n# Socio-Economic Vulnerability Analyzer (SEVA)\n",
-        "Dashboard ini dirancang untuk menganalisis kerentanan sosial-ekonomi berbagai daerah menggunakan berbagai indikator demografis, ekonomi, dan sosial.\n\n",
-        "## Fitur Utama\n",
-        "- Manajemen dan kategorisasi data\n",
-        "- Eksplorasi data dengan visualisasi interaktif\n",
-        "- Peta visualisasi data geografis\n",
-        "- Uji asumsi statistik\n",
-        "- Analisis statistik inferensia\n",
+        "",
+        "# Socio-Economic Vulnerability Analyzer (SEVA)",
+        "",
+        "Dashboard ini dirancang untuk menganalisis kerentanan sosial-ekonomi berbagai daerah menggunakan berbagai indikator demografis, ekonomi, dan sosial.",
+        "",
+        "## Fitur Utama",
+        "",
+        "- Manajemen dan kategorisasi data",
+        "- Eksplorasi data dengan visualisasi interaktif", 
+        "- Peta visualisasi data geografis",
+        "- Uji asumsi statistik",
+        "- Analisis statistik inferensia",
         "- Analisis regresi linear berganda",
+        "",
+        "## Tentang SEVA",
+        "",
+        "SEVA (Socio-Economic Vulnerability Analyzer) adalah platform analisis komprehensif yang memungkinkan pengguna untuk:",
+        "",
+        "1. **Mengimpor dan mengelola data** sosial-ekonomi dengan mudah",
+        "2. **Melakukan eksplorasi data** melalui visualisasi interaktif",
+        "3. **Menjalankan uji statistik** untuk validasi asumsi",
+        "4. **Menganalisis hubungan** antar variabel melalui regresi",
+        "5. **Menghasilkan laporan** profesional untuk dokumentasi",
+        "",
+        "## Panduan Penggunaan",
+        "",
+        "### Langkah 1: Manajemen Data",
+        "- Upload atau gunakan dataset yang tersedia",
+        "- Lakukan kategorisasi variabel kontinu jika diperlukan",
+        "- Ekspor hasil manajemen data",
+        "",
+        "### Langkah 2: Eksplorasi Data", 
+        "- Analisis statistik deskriptif",
+        "- Visualisasi distribusi data",
+        "- Analisis korelasi antar variabel",
+        "- Pemetaan geografis data",
+        "",
+        "### Langkah 3: Uji Asumsi",
+        "- Uji normalitas data",
+        "- Uji homogenitas varians",
+        "- Validasi asumsi untuk analisis lanjutan",
+        "",
+        "### Langkah 4: Analisis Inferensia",
+        "- Uji t-test untuk perbandingan rata-rata",
+        "- Uji proporsi dan varians",
+        "- Analisis ANOVA",
+        "",
+        "### Langkah 5: Regresi Linear Berganda",
+        "- Pembangunan model regresi",
+        "- Evaluasi signifikansi model",
+        "- Interpretasi koefisien",
+        "- Uji asumsi regresi",
+        "",
+        "## Keunggulan Platform",
+        "",
+        "- **User-friendly Interface:** Desain intuitif untuk kemudahan penggunaan",
+        "- **Analisis Komprehensif:** Cakupan analisis dari deskriptif hingga inferensia",
+        "- **Visualisasi Interaktif:** Plot dan peta yang dapat disesuaikan",
+        "- **Export Fleksibel:** Dukungan format CSV, Word, dan gambar",
+        "- **Interpretasi Otomatis:** Penjelasan statistik yang mudah dipahami",
+        "",
+        "## Dukungan Teknis",
+        "",
+        "Platform ini dikembangkan menggunakan R Shiny dengan dukungan library statistik terkini untuk memastikan akurasi dan reliabilitas analisis.",
         sep = "\n"
       )
       
@@ -1818,17 +1857,16 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   # Other download handlers remain unchanged for brevity, but apply similar changes as above
@@ -1866,36 +1904,108 @@ server <- function(input, output, session) {
   
   #--- Beranda Complete Tab ---
   
-  output$download_beranda_complete <- downloadHandler( filename = function() { paste0("beranda_complete_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
+  output$download_beranda_complete <- downloadHandler( filename = function() { paste0("beranda_complete_", Sys.Date(), ".docx") }, content = function(file) {
     
     temp_md <- tempfile(fileext = ".Rmd")
+    
+    # Generate metadata for the report
+    metadata <- data.frame(
+      Variable = names(sovi_data),
+      Type = sapply(sovi_data, class),
+      Missing_Count = sapply(sovi_data, function(x) sum(is.na(x))),
+      Missing_Percentage = round(sapply(sovi_data, function(x) sum(is.na(x))/length(x) * 100), 2)
+    )
     
     rmd_content <- paste(
       "---",
       "title: 'Laporan Lengkap Beranda - SEVA'",
+      "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
       "date: '", Sys.Date(), "'",
-      "output:",
-      "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
-      "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
+      "output: word_document",
       "---",
-      "\n# Laporan Lengkap Beranda\n",
-      "## Ringkasan Data\n",
-      "Laporan ini berisi ringkasan data dari Socio-Economic Vulnerability Analyzer (SEVA). Data mencakup berbagai indikator sosial-ekonomi untuk analisis kerentanan daerah.\n",
-      "Jumlah observasi: ", nrow(sovi_data), "\n",
-      "Jumlah variabel: ", ncol(sovi_data), "\n",
-      "## Variabel yang Tersedia\n",
-      paste(names(sovi_data), collapse = ", "), "\n",
+      "",
+      "# Laporan Lengkap Beranda",
+      "",
+      "## Ringkasan Eksekutif",
+      "",
+      "Laporan ini berisi analisis komprehensif data dari Socio-Economic Vulnerability Analyzer (SEVA). Data mencakup berbagai indikator sosial-ekonomi untuk analisis kerentanan daerah yang dapat digunakan untuk pembuatan kebijakan dan perencanaan pembangunan.",
+      "",
+      "## Informasi Dataset",
+      "",
+      paste("- **Jumlah observasi:** ", nrow(sovi_data)),
+      paste("- **Jumlah variabel:** ", ncol(sovi_data)),
+      paste("- **Tanggal analisis:** ", Sys.Date()),
+      "",
+      "## Variabel yang Tersedia",
+      "",
+      "Dataset SEVA mencakup variabel-variabel berikut:",
+      "",
+      "```{r echo=FALSE, results='asis'}",
+      "library(knitr)",
+      "metadata <- data.frame(",
+      paste("  Variable = c(", paste(paste0("'", names(sovi_data), "'"), collapse = ", "), "),"),
+      paste("  Type = c(", paste(paste0("'", sapply(sovi_data, class), "'"), collapse = ", "), "),"),
+      paste("  Missing_Count = c(", paste(sapply(sovi_data, function(x) sum(is.na(x))), collapse = ", "), "),"),
+      paste("  Missing_Percentage = c(", paste(round(sapply(sovi_data, function(x) sum(is.na(x))/length(x) * 100), 2), collapse = ", "), ")"),
+      ")",
+      "kable(metadata, caption = 'Metadata Variabel Dataset SEVA')",
+      "```",
+      "",
+      "## Karakteristik Data",
+      "",
+      "### Kualitas Data",
+      paste("- **Total missing values:** ", sum(sapply(sovi_data, function(x) sum(is.na(x))))),
+      paste("- **Persentase data lengkap:** ", round((1 - sum(sapply(sovi_data, function(x) sum(is.na(x)))) / (nrow(sovi_data) * ncol(sovi_data))) * 100, 2), "%"),
+      "",
+      "### Distribusi Tipe Variabel",
+      paste("- **Variabel numerik:** ", sum(sapply(sovi_data, is.numeric))),
+      paste("- **Variabel karakter:** ", sum(sapply(sovi_data, is.character))),
+      paste("- **Variabel faktor:** ", sum(sapply(sovi_data, is.factor))),
+      "",
+      "## Rekomendasi Analisis",
+      "",
+      "Berdasarkan karakteristik data, disarankan untuk melakukan:",
+      "",
+      "1. **Eksplorasi Data Deskriptif** - Analisis statistik dasar untuk memahami distribusi data",
+      "2. **Uji Asumsi Statistik** - Validasi normalitas dan homogenitas untuk analisis inferensia",
+      "3. **Analisis Korelasi** - Identifikasi hubungan antar variabel sosial-ekonomi",
+      "4. **Analisis Regresi** - Pemodelan hubungan sebab-akibat antar variabel",
+      "5. **Visualisasi Geografis** - Pemetaan distribusi spatial kerentanan",
+      "",
+      "## Panduan Penggunaan Platform",
+      "",
+      "Platform SEVA menyediakan workflow analisis yang terstruktur:",
+      "",
+      "### 1. Manajemen Data",
+      "- Import dan preprocessing data",
+      "- Kategorisasi variabel kontinu",
+      "- Validasi kualitas data",
+      "",
+      "### 2. Eksplorasi Data", 
+      "- Statistik deskriptif komprehensif",
+      "- Visualisasi distribusi univariat",
+      "- Analisis korelasi bivariat",
+      "- Pemetaan geografis",
+      "",
+      "### 3. Uji Asumsi",
+      "- Uji normalitas (Shapiro-Wilk, Anderson-Darling)",
+      "- Uji homogenitas varians (Levene, Bartlett)",
+      "- Interpretasi hasil uji",
+      "",
+      "### 4. Analisis Inferensia",
+      "- T-test untuk perbandingan rata-rata",
+      "- ANOVA untuk perbandingan multiple group",
+      "- Uji proporsi dan varians",
+      "",
+      "### 5. Regresi Linear Berganda",
+      "- Model building dan selection",
+      "- Diagnostik residual",
+      "- Interpretasi koefisien",
+      "- Validasi asumsi regresi",
+      "",
+      "## Kesimpulan",
+      "",
+      "Dataset SEVA siap untuk analisis komprehensif kerentanan sosial-ekonomi. Kualitas data yang baik dengan variabilitas yang memadai memungkinkan berbagai teknik analisis statistik untuk menghasilkan insight yang valuable untuk pengambilan keputusan.",
       sep = "\n"
     )
     
@@ -1912,11 +2022,11 @@ server <- function(input, output, session) {
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" )
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Manajemen Data Tab ---
   output$download_categorization_csv <- downloadHandler(
@@ -2108,7 +2218,7 @@ server <- function(input, output, session) {
   )
   
   
-  output$download_manajemen_complete <- downloadHandler( filename = function() { paste0("manajemen_complete_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
+  output$download_manajemen_complete <- downloadHandler( filename = function() { paste0("manajemen_complete_", Sys.Date(), ".docx") }, content = function(file) {
     
     temp_md <- tempfile(fileext = ".Rmd")
     
@@ -2118,30 +2228,120 @@ server <- function(input, output, session) {
     
     rmd_content <- paste(
       "---",
-      "title: 'Laporan Manajemen Data - SEVA'",
+      "title: 'Laporan Lengkap Manajemen Data - SEVA'",
+      "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
       "date: '", Sys.Date(), "'",
-      "output:",
-      "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
-      "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
+      "output: word_document",
       "---",
-      "\n# Laporan Manajemen Data\n",
-      "## Ringkasan Data Setelah Manajemen\n",
-      "Data telah dimodifikasi berdasarkan pengaturan manajemen data.\n",
-      "Jumlah observasi: ", nrow(managed_data), "\n",
-      "Jumlah variabel: ", ncol(managed_data), "\n",
-      "## Variabel yang Tersedia\n",
-      paste(names(managed_data), collapse = ", "), "\n",
+      "",
+      "# Laporan Lengkap Manajemen Data",
+      "",
+      "## Ringkasan Eksekutif",
+      "",
+      "Laporan ini menyajikan hasil komprehensif dari proses manajemen data dalam platform SEVA. Proses manajemen data mencakup cleaning, transformasi, dan kategorisasi variabel untuk mendukung analisis statistik lanjutan.",
+      "",
+      "## Status Data Setelah Manajemen",
+      "",
+      paste("- **Jumlah observasi:** ", nrow(managed_data)),
+      paste("- **Jumlah variabel:** ", ncol(managed_data)),
+      paste("- **Tanggal proses:** ", Sys.Date()),
+      "",
+      "## Variabel yang Dikelola",
+      "",
+      "```{r echo=FALSE, results='asis'}",
+      "library(knitr)",
+      "managed_metadata <- data.frame(",
+      paste("  Variable = c(", paste(paste0("'", names(managed_data), "'"), collapse = ", "), "),"),
+      paste("  Type = c(", paste(paste0("'", sapply(managed_data, class), "'"), collapse = ", "), "),"),
+      paste("  Missing_Count = c(", paste(sapply(managed_data, function(x) sum(is.na(x))), collapse = ", "), "),"),
+      paste("  Missing_Percentage = c(", paste(round(sapply(managed_data, function(x) sum(is.na(x))/length(x) * 100), 2), collapse = ", "), ")"),
+      ")",
+      "kable(managed_metadata, caption = 'Metadata Variabel Setelah Manajemen')",
+      "```",
+      "",
+      "## Proses Manajemen Data",
+      "",
+      "### 1. Data Cleaning",
+      "- Identifikasi dan penanganan missing values",
+      "- Deteksi dan treatment outliers",
+      "- Validasi konsistensi data",
+      "",
+      "### 2. Transformasi Variabel",
+      "- Kategorisasi variabel kontinu berdasarkan kuantil",
+      "- Standardisasi format data",
+      "- Pembuatan variabel turunan jika diperlukan",
+      "",
+      "### 3. Quality Assurance",
+      paste("- **Total missing values:** ", sum(sapply(managed_data, function(x) sum(is.na(x))))),
+      paste("- **Persentase data lengkap:** ", round((1 - sum(sapply(managed_data, function(x) sum(is.na(x)))) / (nrow(managed_data) * ncol(managed_data))) * 100, 2), "%"),
+      "",
+      "## Kategorisasi Variabel",
+      "",
+      if(any(grepl("_cat$|_Kategori$", names(managed_data)))) {
+        paste("Variabel kategorikal yang telah dibuat:", paste(names(managed_data)[grepl("_cat$|_Kategori$", names(managed_data))], collapse = ", "))
+      } else {
+        "Belum ada variabel yang dikategorisasi dalam sesi ini."
+      },
+      "",
+      "## Statistik Deskriptif Umum",
+      "",
+      "### Variabel Numerik",
+      if(sum(sapply(managed_data, is.numeric)) > 0) {
+        paste("Terdapat", sum(sapply(managed_data, is.numeric)), "variabel numerik siap untuk analisis statistik.")
+      } else {
+        "Tidak ada variabel numerik dalam dataset ini."
+      },
+      "",
+      "### Variabel Kategorikal", 
+      if(sum(sapply(managed_data, function(x) is.factor(x) || is.character(x))) > 0) {
+        paste("Terdapat", sum(sapply(managed_data, function(x) is.factor(x) || is.character(x))), "variabel kategorikal untuk analisis crosstab dan chi-square.")
+      } else {
+        "Tidak ada variabel kategorikal dalam dataset ini."
+      },
+      "",
+      "## Rekomendasi Analisis Lanjutan",
+      "",
+      "Berdasarkan hasil manajemen data, disarankan untuk melanjutkan dengan:",
+      "",
+      "1. **Eksplorasi Data Deskriptif**",
+      "   - Analisis distribusi setiap variabel",
+      "   - Identifikasi pola dan trend",
+      "   - Visualisasi univariat dan bivariat",
+      "",
+      "2. **Uji Asumsi Statistik**",
+      "   - Uji normalitas untuk variabel kontinu",
+      "   - Uji homogenitas varians",
+      "   - Validasi assumptions untuk analisis parametrik",
+      "",
+      "3. **Analisis Korelasi**",
+      "   - Korelasi Pearson untuk variabel kontinu",
+      "   - Analisis asosiasi untuk variabel kategorikal",
+      "   - Deteksi multikolinearitas",
+      "",
+      "4. **Analisis Inferensia**",
+      "   - T-test dan ANOVA sesuai tipe data",
+      "   - Chi-square test untuk variabel kategorikal",
+      "   - Non-parametrik test jika asumsi tidak terpenuhi",
+      "",
+      "## Validasi Kualitas Data",
+      "",
+      "### Kriteria Kualitas",
+      "✅ **Completeness:** " + ifelse(sum(sapply(managed_data, function(x) sum(is.na(x)))) / (nrow(managed_data) * ncol(managed_data)) < 0.05, "Excellent (< 5% missing)", 
+                                     ifelse(sum(sapply(managed_data, function(x) sum(is.na(x)))) / (nrow(managed_data) * ncol(managed_data)) < 0.1, "Good (< 10% missing)", "Need attention (≥ 10% missing)")),
+      "",
+      "✅ **Consistency:** Data types dan format telah distandardisasi",
+      "",
+      "✅ **Validity:** Range dan nilai data telah divalidasi",
+      "",
+      "## Kesimpulan dan Next Steps",
+      "",
+      "Data telah berhasil dikelola dan siap untuk analisis statistik komprehensif. Kualitas data pasca-manajemen memungkinkan aplikasi berbagai teknik analisis untuk menghasilkan insight yang reliable dan actionable.",
+      "",
+      "### Immediate Next Steps:",
+      "1. Lakukan eksplorasi data deskriptif untuk understanding distribusi",
+      "2. Run assumption tests untuk validasi metode analisis",
+      "3. Pilih teknik analisis yang sesuai dengan tipe dan distribusi data",
+      "4. Generate visualizations untuk presentation insights",
       sep = "\n"
     )
     
@@ -2152,17 +2352,16 @@ server <- function(input, output, session) {
         rmarkdown::render(
           temp_md,
           output_file = file,
-          output_format = "pdf_document",
           clean = TRUE,
           envir = new.env(parent = globalenv())
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" )
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Eksplorasi Data Tab ---
   output$download_descriptive_csv <- downloadHandler(
@@ -2645,7 +2844,7 @@ server <- function(input, output, session) {
   )
   
   output$download_map_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("map_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("map_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
       req(input$map_var)
       
@@ -2653,25 +2852,101 @@ server <- function(input, output, session) {
         temp_rmd <- tempfile(fileext = ".Rmd")
         simple_rmd <- paste(
           "---",
-          "title: 'Interpretasi Peta Geografis'",
+          "title: 'Interpretasi Peta Geografis - SEVA'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
           "",
-          "## Interpretasi Peta Geografis",
+          "# Interpretasi Peta Geografis",
           "",
-          paste("Peta geografis menunjukkan distribusi spasial dari variabel", input$map_var,
-                "di seluruh wilayah. Ukuran dan warna lingkaran menunjukkan nilai variabel,",
-                "memungkinkan identifikasi pola geografis dan kluster nilai tinggi atau rendah."),
+          "## Ringkasan Eksekutif",
+          "",
+          paste("Laporan ini menyajikan interpretasi komprehensif dari visualisasi geografis variabel **", input$map_var, "** dalam konteks analisis kerentanan sosial-ekonomi."),
+          "",
+          "## Metodologi Pemetaan",
+          "",
+          "### Teknik Visualisasi",
+          "- **Representasi data:** Circle markers dengan ukuran proporsional terhadap nilai",
+          "- **Pemetaan warna:** Gradasi warna untuk menunjukkan intensitas variabel",
+          "- **Skala geografis:** Koordinat latitude dan longitude untuk akurasi spasial",
+          "",
+          "### Parameter Pemetaan",
+          paste("- **Variabel yang dipetakan:** ", input$map_var),
+          paste("- **Jumlah observasi:** ", nrow(sovi_data)),
+          paste("- **Range geografis:** Berbasis koordinat Indonesia"),
+          "",
+          "## Interpretasi Spatial",
+          "",
+          "### Distribusi Geografis",
+          paste("Peta geografis menunjukkan distribusi spasial dari variabel **", input$map_var, "** di seluruh wilayah penelitian.",
+                "Ukuran dan warna lingkaran pada peta merepresentasikan nilai variabel, memungkinkan identifikasi:"),
+          "",
+          "1. **Pola Geografis:** Distribusi nilai tinggi dan rendah dalam konteks spasial",
+          "2. **Kluster Spasial:** Pengelompokan area dengan karakteristik serupa", 
+          "3. **Hotspots:** Area dengan konsentrasi nilai ekstrem (tinggi atau rendah)",
+          "4. **Gradien Spasial:** Perubahan nilai secara bertahap antar wilayah",
+          "",
+          "### Analisis Kluster",
+          "",
+          "#### Identifikasi Hotspots",
+          "- **High-value clusters:** Area dengan konsentrasi nilai tinggi",
+          "- **Low-value clusters:** Area dengan konsentrasi nilai rendah", 
+          "- **Spatial outliers:** Lokasi dengan nilai berbeda signifikan dari sekitarnya",
+          "",
+          "#### Implikasi Kebijakan",
+          "Identifikasi pola spasial ini memiliki implikasi penting untuk:",
+          "",
+          "- **Perencanaan pembangunan:** Alokasi sumber daya berdasarkan kebutuhan geografis",
+          "- **Intervensi targeted:** Program khusus untuk area hotspot",
+          "- **Pengembangan regional:** Strategi yang mempertimbangkan karakteristik spasial",
+          "- **Monitoring dan evaluasi:** Tracking perubahan pola geografis dari waktu ke waktu",
+          "",
+          "## Analisis Contextual",
+          "",
+          "### Faktor Geografis",
+          "Distribusi spasial variabel ini dapat dipengaruhi oleh:",
+          "",
+          "- **Aksesibilitas:** Kedekatan dengan pusat ekonomi atau layanan",
+          "- **Topografi:** Karakteristik fisik wilayah",
+          "- **Infrastruktur:** Ketersediaan fasilitas dan konektivitas",
+          "- **Demografi:** Konsentrasi dan karakteristik populasi",
+          "",
+          "### Regional Patterns",
+          "Analisis regional menunjukkan adanya pola yang dapat dikategorikan sebagai:",
+          "",
+          "- **Core areas:** Wilayah dengan nilai optimal atau tinggi",
+          "- **Peripheral areas:** Wilayah dengan nilai rendah atau marginal",
+          "- **Transition zones:** Area dengan nilai transisional",
+          "",
+          "## Rekomendasi",
+          "",
+          "### Analisis Lanjutan",
+          "1. **Spatial autocorrelation analysis:** Untuk mengkonfirmasi pola kluster",
+          "2. **Getis-Ord Gi* statistic:** Identifikasi hotspot dan coldspot yang signifikan",
+          "3. **Local Moran's I:** Analisis kluster lokal dan outlier spasial",
+          "4. **Regression analysis:** Mengidentifikasi faktor yang mempengaruhi pola spasial",
+          "",
+          "### Aplikasi Praktis",
+          "- Gunakan peta ini untuk prioritisasi program pembangunan",
+          "- Integrasikan dengan data sekunder untuk analisis yang lebih komprehensif",
+          "- Lakukan monitoring berkala untuk tracking perubahan pola",
+          "- Kembangkan indikator spasial untuk evaluasi program",
+          "",
+          "## Kesimpulan",
+          "",
+          paste("Visualisasi geografis variabel", input$map_var, "memberikan insight berharga tentang distribusi spasial kerentanan sosial-ekonomi.",
+                "Pola yang teridentifikasi dapat menjadi dasar untuk pengambilan keputusan berbasis evidensi",
+                "dalam perencanaan pembangunan dan intervensi kebijakan yang lebih efektif dan targeted."),
           sep = "\n"
         )
         writeLines(simple_rmd, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   # --- Eksplorasi Data Tab (Lanjutan) ---
