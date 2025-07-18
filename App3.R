@@ -423,7 +423,7 @@ ui <- dashboardPage(
                   fluidRow(
                     column(4,
                            h5("Individual Downloads:"),
-                           downloadButton("download_welcome_pdf", "Welcome Report (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_welcome_pdf", "Welcome Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_metadata_csv", "Metadata (CSV)", class = "btn btn-info download-btn"),
                            br(),
@@ -431,7 +431,7 @@ ui <- dashboardPage(
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_beranda_complete", "Complete Beranda Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_beranda_complete", "Complete Beranda Report (Word)", class = "btn btn-success download-btn"),
                            br(),
                            p("Includes: Welcome information, metadata table, and overview map in a comprehensive PDF report.")
                     )
@@ -495,7 +495,7 @@ ui <- dashboardPage(
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_manajemen_complete", "Complete Data Management Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_manajemen_complete", "Complete Data Management Report (Word)", class = "btn btn-success download-btn"),
                            br(),
                            p("Includes: Categorization results, map visualization, and detailed interpretation in a comprehensive PDF report.")
                     )
@@ -632,11 +632,11 @@ ui <- dashboardPage(
                            br(),
                            downloadButton("download_exploration_map_jpg", "Geographic Map (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_map_interpretation_pdf", "Map Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_map_interpretation_pdf", "Complete Map Analysis Report (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_eksplorasi_complete", "Complete Data Exploration Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_eksplorasi_complete", "Complete Data Exploration Report (Word)", class = "btn btn-success download-btn"),
                            br(),
                            p("Includes: All descriptive statistics, visualizations, correlation analysis, geographic maps, and comprehensive interpretations in a detailed PDF report.")
                     )
@@ -700,15 +700,15 @@ ui <- dashboardPage(
                            br(),
                            downloadButton("download_qq_plot_jpg", "Q-Q Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_normality_interpretation_pdf", "Normality Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_normality_interpretation_pdf", "Normality Interpretation (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_homogeneity_test_pdf", "Homogeneity Test Results (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_homogeneity_test_pdf", "Homogeneity Test Results (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_homogeneity_interpretation_pdf", "Homogeneity Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_homogeneity_interpretation_pdf", "Homogeneity Interpretation (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_asumsi_complete", "Complete Assumption Tests Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_asumsi_complete", "Complete Assumption Tests Report (Word)", class = "btn btn-success download-btn"),
                            br(),
                            p("Includes: All normality and homogeneity test results, Q-Q plots, and comprehensive statistical interpretations in a detailed PDF report.")
                     )
@@ -832,19 +832,19 @@ ui <- dashboardPage(
                            h5("Individual Test Downloads:"),
                            downloadButton("download_ttest1_pdf", "Complete Inferential Statistics Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_ttest2_pdf", "2-Sample T-Test (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_ttest2_pdf", "Complete Two-Sample T-Test Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_prop1_pdf", "Proportion Test (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_prop1_pdf", "Proportion Test (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_var1_pdf", "Variance Test (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_var1_pdf", "Variance Test (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_anova1_pdf", "One-Way ANOVA (PDF)", class = "btn btn-warning download-btn"),
+                           downloadButton("download_anova1_pdf", "One-Way ANOVA (Word)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_anova2_pdf", "Two-Way ANOVA (PDF)", class = "btn btn-warning download-btn")
+                           downloadButton("download_anova2_pdf", "Two-Way ANOVA (Word)", class = "btn btn-warning download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_inferensia_complete", "Complete Inferential Statistics Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_inferensia_complete", "Complete Inferential Statistics Report (Word)", class = "btn btn-success download-btn"),
                            br(),
                            p("Includes: All t-tests, proportion tests, variance tests, ANOVA results, and comprehensive statistical interpretations in a detailed PDF report.")
                     )
@@ -912,19 +912,19 @@ ui <- dashboardPage(
                            h5("Individual Downloads:"),
                            downloadButton("download_regression_summary_pdf", "Complete Regression Analysis Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_regression_interpretation_pdf", "Regression Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_regression_interpretation_pdf", "Regression Interpretation (Word)", class = "btn btn-info download-btn"),
                            br(),
-                           downloadButton("download_vif_test_pdf", "VIF Test Results (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_vif_test_pdf", "VIF Test Results (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_residual_qq_jpg", "Q-Q Plot of Residuals (JPG)", class = "btn btn-warning download-btn"),
                            br(),
                            downloadButton("download_residual_fitted_jpg", "Residuals vs Fitted Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_assumption_interpretation_pdf", "Assumptions Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_assumption_interpretation_pdf", "Assumptions Interpretation (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
-                           downloadButton("download_regresi_complete", "Complete Regression Analysis Report (PDF)", class = "btn btn-success download-btn"),
+                           downloadButton("download_regresi_complete", "Complete Regression Analysis Report (Word)", class = "btn btn-success download-btn"),
                            br(),
                            p("Includes: Complete regression results, model summary, assumption tests, diagnostic plots, and comprehensive interpretations in a detailed PDF report.")
                     )
@@ -1774,40 +1774,85 @@ server <- function(input, output, session) {
   output$download_welcome_pdf <- downloadHandler(
     filename = function() { paste0("welcome_report_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       temp_md <- tempfile(fileext = ".Rmd")
       
+      # Get basic dataset information
+      dataset_info <- data.frame(
+        Karakteristik = c("Total Observasi", "Total Variabel", "Variabel Numerik", "Variabel Kategorikal", "Missing Values"),
+        Nilai = c(
+          nrow(sovi_data),
+          ncol(sovi_data),
+          sum(sapply(sovi_data, is.numeric)),
+          sum(sapply(sovi_data, function(x) is.factor(x) || is.character(x))),
+          sum(is.na(sovi_data))
+        )
+      )
+      
+      # Get variable summary
+      numeric_vars <- names(sovi_data)[sapply(sovi_data, is.numeric)]
+      categorical_vars <- names(sovi_data)[sapply(sovi_data, function(x) is.factor(x) || is.character(x))]
+      
       rmd_content <- paste(
         "---",
-        "title: 'Laporan Selamat Datang - SEVA'",
+        "title: 'Laporan Lengkap Welcome - SEVA System'",
+        "author: 'Socio-Economic Vulnerability Analyzer (SEVA)'",
         "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
+        "output: word_document",
         "---",
-        "\n# Socio-Economic Vulnerability Analyzer (SEVA)\n",
-        "Dashboard ini dirancang untuk menganalisis kerentanan sosial-ekonomi berbagai daerah menggunakan berbagai indikator demografis, ekonomi, dan sosial.\n\n",
-        "## Fitur Utama\n",
-        "- Manajemen dan kategorisasi data\n",
-        "- Eksplorasi data dengan visualisasi interaktif\n",
-        "- Peta visualisasi data geografis\n",
-        "- Uji asumsi statistik\n",
-        "- Analisis statistik inferensia\n",
-        "- Analisis regresi linear berganda",
+        "",
+        "# Selamat Datang di SEVA",
+        "",
+        "## Ringkasan Eksekutif",
+        "Socio-Economic Vulnerability Analyzer (SEVA) adalah sistem analisis komprehensif yang dirancang untuk menganalisis kerentanan sosial-ekonomi menggunakan metodologi statistik yang robust dan user-friendly interface.",
+        "",
+        "## Informasi Dataset Saat Ini",
+        "",
+        "```{r echo=FALSE, results='asis'}",
+        "library(knitr)",
+        "dataset_info <- data.frame(",
+        paste("  Karakteristik = c(", paste(paste0("'", dataset_info$Karakteristik, "'"), collapse = ", "), "),"),
+        paste("  Nilai = c(", paste(dataset_info$Nilai, collapse = ", "), ")"),
+        ")",
+        "kable(dataset_info, caption = 'Ringkasan Dataset SEVA')",
+        "```",
+        "",
+        "## Fitur dan Kapabilitas SEVA",
+        "",
+        "### 1. Manajemen Data",
+        "- **Import Data:** Mendukung berbagai format file",
+        "- **Kategorisasi:** Konversi variabel kontinu menjadi kategorikal", 
+        "- **Transformasi:** Manipulasi dan cleaning data",
+        "- **Validasi:** Pemeriksaan kualitas data",
+        "",
+        "### 2. Eksplorasi Data", 
+        "- **Statistik Deskriptif:** Mean, median, standar deviasi",
+        "- **Visualisasi:** Histogram, box plot, scatter plot",
+        "- **Analisis Korelasi:** Heatmap dan interpretasi",
+        "- **Pemetaan Geografis:** Visualisasi spasial",
+        "",
+        "### 3. Uji Asumsi Statistik",
+        "- **Normalitas:** Shapiro-Wilk, Kolmogorov-Smirnov",
+        "- **Homogenitas:** Levene's test",
+        "- **Q-Q Plots:** Visualisasi distribusi",
+        "- **Interpretasi:** Panduan pemilihan uji",
+        "",
+        "### 4. Statistik Inferensia",
+        "- **T-Tests:** One-sample dan two-sample",
+        "- **ANOVA:** One-way dan two-way",
+        "- **Proportion Tests:** Uji proporsi",
+        "- **Variance Tests:** Uji varians",
+        "",
+        "### 5. Analisis Regresi",
+        "- **Regresi Linear Berganda:** Modeling kompleks",
+        "- **Diagnostik Model:** R², F-test, signifikansi",
+        "- **Uji Asumsi:** Normalitas, homoskedastisitas",
+        "- **Multikolinearitas:** VIF analysis",
+        "",
+        paste("Dataset saat ini mengandung", nrow(sovi_data), "observasi dengan", ncol(sovi_data), "variabel."),
+        "",
+        "## Kesimpulan",
+        "SEVA menyediakan platform analisis komprehensif untuk penelitian sosial-ekonomi dengan metodologi statistik yang sound dan interface yang user-friendly.",
         sep = "\n"
       )
       
@@ -1815,20 +1860,14 @@ server <- function(input, output, session) {
       
       tryCatch(
         {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
+          rmarkdown::render(temp_md, output_file = file, quiet = TRUE)
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   # Other download handlers remain unchanged for brevity, but apply similar changes as above
@@ -1866,28 +1905,7 @@ server <- function(input, output, session) {
   
   #--- Beranda Complete Tab ---
     
-    output$download_beranda_complete <- downloadHandler( filename = function() { paste0("beranda_complete_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
-      
-      temp_md <- tempfile(fileext = ".Rmd")
-      
-      rmd_content <- paste(
-        "---",
-        "title: 'Laporan Lengkap Beranda - SEVA'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# Laporan Lengkap Beranda\n",
         "## Ringkasan Data\n",
@@ -1912,11 +1930,11 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
       
-    }, contentType = "application/pdf" )
+    }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Manajemen Data Tab ---
   output$download_categorization_csv <- downloadHandler(
@@ -2108,32 +2126,7 @@ server <- function(input, output, session) {
   )
 
   
-  output$download_manajemen_complete <- downloadHandler( filename = function() { paste0("manajemen_complete_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
-    
-    temp_md <- tempfile(fileext = ".Rmd")
-    
-    # Ringkasan data setelah manajemen
-    managed_data <- values$managed_data
-    if (is.null(managed_data)) managed_data <- sovi_data
-    
-    rmd_content <- paste(
-      "---",
-      "title: 'Laporan Manajemen Data - SEVA'",
-      "date: '", Sys.Date(), "'",
-      "output:",
-      "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
       "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
       "---",
       "\n# Laporan Manajemen Data\n",
       "## Ringkasan Data Setelah Manajemen\n",
@@ -2158,11 +2151,11 @@ server <- function(input, output, session) {
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" )
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Eksplorasi Data Tab ---
   output$download_descriptive_csv <- downloadHandler(
@@ -2645,7 +2638,7 @@ server <- function(input, output, session) {
   )
   
   output$download_map_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("map_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("map_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
       req(input$map_var)
       
@@ -2655,7 +2648,7 @@ server <- function(input, output, session) {
           "---",
           "title: 'Interpretasi Peta Geografis'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
           "",
           "## Interpretasi Peta Geografis",
@@ -2668,39 +2661,13 @@ server <- function(input, output, session) {
         writeLines(simple_rmd, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   # --- Eksplorasi Data Tab (Lanjutan) ---
-  output$download_explorasi_complete <- downloadHandler( filename = function() { paste0("explorasi_complete_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
-    
-    req(input$desc_vars, input$plot_var1, input$map_var)
-    temp_md <- tempfile(fileext = ".Rmd")
-    
-    # Hitung statistik deskriptif
-    desc_data <- sovi_data[, input$desc_vars, drop = FALSE]
-    desc_summary <- data.frame(
-      Variable = names(desc_data),
-      Mean = sapply(desc_data, function(x) round(mean(x, na.rm = TRUE), 3)),
-      Median = sapply(desc_data, function(x) round(median(x, na.rm = TRUE), 3)),
-      SD = sapply(desc_data, function(x) round(sd(x, na.rm = TRUE), 3)),
-      Min = sapply(desc_data, function(x) round(min(x, na.rm = TRUE), 3)),
-      Max = sapply(desc_data, function(x) round(max(x, na.rm = TRUE), 3)),
-      stringsAsFactors = FALSE
-    )
-    
-    # Simpan plot
-    plot_file <- file.path(tempdir(), "exploration_plot.jpg")
-    if(input$plot_type == "hist") {
-      plot <- ggplot(sovi_data, aes_string(x = input$plot_var1)) +
-        geom_histogram(bins = 30, fill = "steelblue", alpha = 0.7) +
-        theme_minimal() +
-        labs(title = paste("Histogram dari", input$plot_var1),
-             x = input$plot_var1, y = "Frekuensi")
-    } else if(input$plot_type == "box") {
       plot <- ggplot(sovi_data, aes_string(y = input$plot_var1)) +
         geom_boxplot(fill = "lightblue", alpha = 0.7) +
         theme_minimal() +
@@ -2762,19 +2729,7 @@ server <- function(input, output, session) {
       "date: '", Sys.Date(), "'",
       "output:",
       "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage{pdflscape}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
       "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
       "---",
       "\n# Eksplorasi Data\n",
       "## Statistik Deskriptif\n",
@@ -2835,11 +2790,11 @@ server <- function(input, output, session) {
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" )
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Uji Asumsi Tab ---
   output$download_normality_test_pdf <- downloadHandler(
@@ -3007,7 +2962,7 @@ server <- function(input, output, session) {
   )
   
   output$download_normality_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("normality_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("normality_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
       req(input$normality_var)
       var_data <- sovi_data[[input$normality_var]]
@@ -3030,7 +2985,7 @@ server <- function(input, output, session) {
           "---",
           "title: 'Interpretasi Uji Normalitas'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
           "",
           "## Interpretasi Uji Normalitas",
@@ -3041,18 +2996,15 @@ server <- function(input, output, session) {
         writeLines(simple_rmd, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_homogeneity_test_pdf <- downloadHandler(
-    filename = function() { paste0("homogeneity_test_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("homogeneity_test_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(input$normality_var, input$group_var)
       if(input$group_var != "None") {
@@ -3076,18 +3028,7 @@ server <- function(input, output, session) {
           "date: '", Sys.Date(), "'",
           "output:",
           "  pdf_document:",
-          "    latex_engine: pdflatex",
-          "    keep_tex: true",
-          "geometry: margin=1in",
-          "header-includes:",
-          "  - \\usepackage{booktabs}",
-          "  - \\usepackage{longtable}",
-          "  - \\usepackage{caption}",
-          "  - \\usepackage[utf8]{inputenc}",
-          "  - \\usepackage{geometry}",
           "  - \\geometry{a4paper, margin=1in}",
-          "  - \\usepackage{parskip}",
-          "  - \\setlength{\\parskip}{0.5em}",
           "---",
           "\n# Uji Homogenitas Varians (Levene's Test)\n",
           "**H0:** Varians antar kelompok homogen\n",
@@ -3110,20 +3051,17 @@ server <- function(input, output, session) {
             )
           },
           error = function(e) {
-            stop("Failed to generate PDF: ", e$message)
+            stop("Failed to generate Word document: ", e$message)
           }
         )
       }
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_homogeneity_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("homogeneity_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("homogeneity_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(input$normality_var, input$group_var)
       if(input$group_var != "None") {
@@ -3158,18 +3096,7 @@ server <- function(input, output, session) {
           "date: '", Sys.Date(), "'",
           "output:",
           "  pdf_document:",
-          "    latex_engine: pdflatex",
-          "    keep_tex: true",
-          "geometry: margin=1in",
-          "header-includes:",
-          "  - \\usepackage{booktabs}",
-          "  - \\usepackage{longtable}",
-          "  - \\usepackage{caption}",
-          "  - \\usepackage[utf8]{inputenc}",
-          "  - \\usepackage{geometry}",
           "  - \\geometry{a4paper, margin=1in}",
-          "  - \\usepackage{parskip}",
-          "  - \\setlength{\\parskip}{0.5em}",
           "---",
           "\n# Interpretasi Uji Homogenitas\n",
           interpretation,
@@ -3189,20 +3116,17 @@ server <- function(input, output, session) {
             )
           },
           error = function(e) {
-            stop("Failed to generate PDF: ", e$message)
+            stop("Failed to generate Word document: ", e$message)
           }
         )
       }
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_asumsi_complete <- downloadHandler(
-    filename = function() { paste0("asumsi_complete_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("asumsi_complete_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
     
     req(input$normality_var, values$assumptions_done)
     temp_md <- tempfile(fileext = ".Rmd")
@@ -3258,18 +3182,7 @@ server <- function(input, output, session) {
       "date: '", Sys.Date(), "'",
       "output:",
       "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
       "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
       "---",
       "\n# Uji Asumsi Statistik\n",
       "## Uji Normalitas\n",
@@ -3295,11 +3208,11 @@ server <- function(input, output, session) {
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" 
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
   )
   
   # --- Statistik Inferensia Tab ---
@@ -3509,12 +3422,8 @@ server <- function(input, output, session) {
   )
   
   output$download_ttest2_pdf <- downloadHandler(
-    filename = function() { paste0("ttest2_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("two_sample_ttest_complete_report_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$ttest2_var, input$ttest2_group, values$ttest2_done)
       var_data <- sovi_data[[input$ttest2_var]]
       group_data <- sovi_data[[input$ttest2_group]]
@@ -3530,66 +3439,170 @@ server <- function(input, output, session) {
         group2_data <- var_data[group_data == unique_groups[2] & !is.na(var_data) & !is.na(group_data)]
         ttest_result <- t.test(group1_data, group2_data)
         
+        # Calculate descriptive statistics for both groups
+        group1_stats <- data.frame(
+          Statistik = c("Count", "Mean", "Median", "SD", "Min", "Max"),
+          Nilai = c(
+            length(group1_data),
+            round(mean(group1_data), 4),
+            round(median(group1_data), 4),
+            round(sd(group1_data), 4),
+            round(min(group1_data), 4),
+            round(max(group1_data), 4)
+          )
+        )
+        
+        group2_stats <- data.frame(
+          Statistik = c("Count", "Mean", "Median", "SD", "Min", "Max"),
+          Nilai = c(
+            length(group2_data),
+            round(mean(group2_data), 4),
+            round(median(group2_data), 4),
+            round(sd(group2_data), 4),
+            round(min(group2_data), 4),
+            round(max(group2_data), 4)
+          )
+        )
+        
+        # Calculate effect size (Cohen's d)
+        pooled_sd <- sqrt(((length(group1_data)-1)*sd(group1_data)^2 + (length(group2_data)-1)*sd(group2_data)^2) / (length(group1_data)+length(group2_data)-2))
+        cohens_d <- abs(mean(group1_data) - mean(group2_data)) / pooled_sd
+        
         temp_md <- tempfile(fileext = ".Rmd")
         rmd_content <- paste(
           "---",
-          "title: 'Two-Sample T-Test Results'",
+          "title: 'Laporan Lengkap Two-Sample Independent T-Test'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output:",
-          "  pdf_document:",
-          "    latex_engine: pdflatex",
-          "    keep_tex: true",
-          "geometry: margin=1in",
-          "header-includes:",
-          "  - \\usepackage{booktabs}",
-          "  - \\usepackage{longtable}",
-          "  - \\usepackage{caption}",
-          "  - \\usepackage[utf8]{inputenc}",
-          "  - \\usepackage{geometry}",
-          "  - \\geometry{a4paper, margin=1in}",
-          "  - \\usepackage{parskip}",
-          "  - \\setlength{\\parskip}{0.5em}",
+          "output: word_document",
           "---",
-          "\n# Two-Sample Independent T-Test\n",
-          "Variable: ", input$ttest2_var, "\n",
-          "Groups: ", input$ttest2_group, "\n\n",
-          "**H0:** μ1 = μ2\n",
-          "**H1:** μ1 ≠ μ2\n\n",
-          "Group 1 (", unique_groups[1], "): ", length(group1_data), " observations\n",
-          "Group 2 (", unique_groups[2], "): ", length(group2_data), " observations\n\n",
-          "T-statistic: ", round(ttest_result$statistic, 4), "\n",
-          "P-value: ", round(ttest_result$p.value, 4), "\n",
-          "Confidence Interval: [", round(ttest_result$conf.int[1], 4), ", ", round(ttest_result$conf.int[2], 4), "]\n",
+          "",
+          "# Laporan Two-Sample Independent T-Test",
+          "",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan hasil lengkap dari uji t-test dua sampel independen untuk membandingkan rata-rata antar kelompok.",
+          "",
+          "## Spesifikasi Uji",
+          "",
+          paste("**Variabel Dependen:** ", input$ttest2_var),
+          paste("**Variabel Kelompok:** ", input$ttest2_group),
+          paste("**Kelompok 1:** ", unique_groups[1], " (n = ", length(group1_data), ")"),
+          paste("**Kelompok 2:** ", unique_groups[2], " (n = ", length(group2_data), ")"),
+          "",
+          "### Hipotesis",
+          "- **H₀:** μ₁ = μ₂ (tidak ada perbedaan rata-rata antar kelompok)",
+          "- **H₁:** μ₁ ≠ μ₂ (ada perbedaan rata-rata antar kelompok)",
+          "",
+          "## Statistik Deskriptif",
+          "",
+          paste("### Kelompok 1:", unique_groups[1]),
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "group1_stats <- data.frame(",
+          paste("  Statistik = c(", paste(paste0("'", group1_stats$Statistik, "'"), collapse = ", "), "),"),
+          paste("  Nilai = c(", paste(group1_stats$Nilai, collapse = ", "), ")"),
+          ")",
+          "kable(group1_stats, caption = paste('Statistik Deskriptif -', '", unique_groups[1], "'))",
+          "```",
+          "",
+          paste("### Kelompok 2:", unique_groups[2]),
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "group2_stats <- data.frame(",
+          paste("  Statistik = c(", paste(paste0("'", group2_stats$Statistik, "'"), collapse = ", "), "),"),
+          paste("  Nilai = c(", paste(group2_stats$Nilai, collapse = ", "), ")"),
+          ")",
+          "kable(group2_stats, caption = paste('Statistik Deskriptif -', '", unique_groups[2], "'))",
+          "```",
+          "",
+          "## Hasil Uji T-Test",
+          "",
+          "### Output Statistik",
+          paste("- **T-statistic:** ", round(ttest_result$statistic, 4)),
+          paste("- **Degrees of freedom:** ", round(ttest_result$parameter, 2)),
+          paste("- **P-value:** ", round(ttest_result$p.value, 4)),
+          paste("- **95% Confidence Interval:** [", round(ttest_result$conf.int[1], 4), ", ", round(ttest_result$conf.int[2], 4), "]"),
+          paste("- **Mean difference:** ", round(ttest_result$estimate[1] - ttest_result$estimate[2], 4)),
+          "",
+          "### Effect Size",
+          paste("- **Cohen's d:** ", round(cohens_d, 4)),
+          if(cohens_d < 0.2) {
+            "- **Interpretasi:** Effect size sangat kecil"
+          } else if(cohens_d < 0.5) {
+            "- **Interpretasi:** Effect size kecil"
+          } else if(cohens_d < 0.8) {
+            "- **Interpretasi:** Effect size sedang"
+          } else {
+            "- **Interpretasi:** Effect size besar"
+          },
+          "",
+          "## Interpretasi Hasil",
+          "",
+          "### Signifikansi Statistik",
+          if(ttest_result$p.value < 0.001) {
+            paste("**Hasil Sangat Signifikan** (p < 0.001): Terdapat perbedaan rata-rata yang sangat signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada variabel", input$ttest2_var, ".")
+          } else if(ttest_result$p.value < 0.01) {
+            paste("**Hasil Signifikan** (p < 0.01): Terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada variabel", input$ttest2_var, ".")
+          } else if(ttest_result$p.value < 0.05) {
+            paste("**Hasil Signifikan** (p < 0.05): Terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada variabel", input$ttest2_var, ".")
+          } else {
+            paste("**Hasil Tidak Signifikan** (p ≥ 0.05): Tidak terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada variabel", input$ttest2_var, ".")
+          },
+          "",
+          "### Practical Significance",
+          paste("Kelompok", unique_groups[1], "memiliki rata-rata", round(mean(group1_data), 4), 
+                "sedangkan kelompok", unique_groups[2], "memiliki rata-rata", round(mean(group2_data), 4), "."),
+          paste("Selisih rata-rata adalah", round(abs(mean(group1_data) - mean(group2_data)), 4), "unit."),
+          "",
+          if(ttest_result$p.value < 0.05) {
+            "Perbedaan ini signifikan secara statistik dan dapat dianggap bermakna dalam konteks penelitian."
+          } else {
+            "Meskipun ada perbedaan numerik, perbedaan ini tidak signifikan secara statistik."
+          },
+          "",
+          "## Asumsi Uji",
+          "",
+          "### Asumsi yang Harus Dipenuhi:",
+          "1. **Independensi:** Observasi antar kelompok harus independen",
+          "2. **Normalitas:** Data dalam setiap kelompok harus berdistribusi normal",
+          "3. **Homogenitas Varians:** Varians kedua kelompok harus sama",
+          "",
+          "### Rekomendasi",
+          "- Lakukan uji normalitas (Shapiro-Wilk) untuk setiap kelompok",
+          "- Lakukan uji Levene untuk homogenitas varians",
+          "- Jika asumsi dilanggar, pertimbangkan Mann-Whitney U test",
+          "",
+          "## Kesimpulan",
+          "",
+          if(ttest_result$p.value < 0.05) {
+            paste("Berdasarkan analisis two-sample t-test, ditemukan perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada variabel", input$ttest2_var, ". Effect size menunjukkan", 
+                  if(cohens_d >= 0.8) "perbedaan yang besar" else if(cohens_d >= 0.5) "perbedaan yang sedang" else "perbedaan yang kecil",
+                  "secara praktis.")
+          } else {
+            paste("Berdasarkan analisis two-sample t-test, tidak ditemukan perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada variabel", input$ttest2_var, ". Kedua kelompok dapat dianggap memiliki rata-rata yang sama secara statistik.")
+          },
+          "",
+          "### Saran Tindak Lanjut",
+          "1. Validasi hasil dengan uji non-parametrik jika diperlukan",
+          "2. Pertimbangkan analisis lebih lanjut dengan ANOVA jika ada lebih dari 2 kelompok",
+          "3. Lakukan analisis effect size untuk interpretasi praktis",
+          "4. Dokumentasikan metodologi untuk reproducibility",
           sep = "\n"
         )
         
         writeLines(rmd_content, temp_md)
-        
-        tryCatch(
-          {
-            rmarkdown::render(
-              temp_md,
-              output_file = file,
-              output_format = "pdf_document",
-              clean = TRUE,
-              envir = new.env(parent = globalenv())
-            )
-          },
-          error = function(e) {
-            stop("Failed to generate PDF: ", e$message)
-          }
-        )
+        rmarkdown::render(temp_md, output_file = file, quiet = TRUE)
+      } else {
+        stop("Insufficient groups for t-test")
       }
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_prop1_pdf <- downloadHandler(
-    filename = function() { paste0("prop1_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("prop1_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(input$prop1_var, input$prop1_p, values$prop1_done)
       var_data <- sovi_data[[input$prop1_var]]
@@ -3614,18 +3627,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# One-Sample Proportion Test\n",
         "Variable: ", input$prop1_var, "\n",
@@ -3653,19 +3655,16 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_var1_pdf <- downloadHandler(
-    filename = function() { paste0("var1_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("var1_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(input$var1_var, input$var1_sigma, values$var1_done)
       var_data <- sovi_data[[input$var1_var]]
@@ -3683,18 +3682,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# One-Sample Variance Test (Chi-square)\n",
         "Variable: ", input$var1_var, "\n",
@@ -3722,19 +3710,16 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_anova1_pdf <- downloadHandler(
-    filename = function() { paste0("anova1_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("anova1_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(input$anova1_dep, input$anova1_indep, values$anova1_done)
       dep_var <- sovi_data[[input$anova1_dep]]
@@ -3758,18 +3743,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# One-Way ANOVA\n",
         "Dependent Variable: ", input$anova1_dep, "\n",
@@ -3794,19 +3768,16 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_anova2_pdf <- downloadHandler(
-    filename = function() { paste0("anova2_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("anova2_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(input$anova2_dep, input$anova2_indep1, input$anova2_indep2, values$anova2_done)
       dep_var <- sovi_data[[input$anova2_dep]]
@@ -3835,18 +3806,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# Two-Way ANOVA\n",
         "Dependent Variable: ", input$anova2_dep, "\n",
@@ -3874,19 +3834,16 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_inferensia_complete <- downloadHandler(
-    filename = function() { paste0("inferensia_complete_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("inferensia_complete_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
     
     temp_md <- tempfile(fileext = ".Rmd")
     rmd_content <- paste(
@@ -3895,18 +3852,7 @@ server <- function(input, output, session) {
       "date: '", Sys.Date(), "'",
       "output:",
       "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
       "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
       "---",
       "\n# Statistik Inferensia\n",
       sep = "\n"
@@ -4103,11 +4049,11 @@ server <- function(input, output, session) {
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" )
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Regresi Linear Berganda Tab ---
   output$download_regression_summary_pdf <- downloadHandler(
@@ -4288,11 +4234,8 @@ server <- function(input, output, session) {
   )
   
   output$download_regression_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("regression_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("regression_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(values$regression_done)
       model <- regression_model()
@@ -4321,18 +4264,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# Regression Interpretation\n",
         interpretation,
@@ -4352,19 +4284,16 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_vif_test_pdf <- downloadHandler(
-    filename = function() { paste0("vif_test_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("vif_test_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(values$regression_done)
       model <- regression_model()
@@ -4376,18 +4305,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# Variance Inflation Factor (VIF) Test\n",
         sep = "\n"
@@ -4414,11 +4332,11 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_residual_qq_jpg <- downloadHandler(
@@ -4453,11 +4371,8 @@ server <- function(input, output, session) {
   )
   
   output$download_assumption_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("assumption_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("assumption_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
       
       req(values$regression_done)
       model <- regression_model()
@@ -4500,18 +4415,7 @@ server <- function(input, output, session) {
         "date: '", Sys.Date(), "'",
         "output:",
         "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
         "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
         "---",
         "\n# Interpretasi Uji Asumsi Model\n",
         vif_interpretation, "\n\n",
@@ -4533,19 +4437,16 @@ server <- function(input, output, session) {
           )
         },
         error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
+          stop("Failed to generate Word document: ", e$message)
         }
       )
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_regresi_complete <- downloadHandler(
-    filename = function() { paste0("regresi_complete_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("regresi_complete_", Sys.Date(), ".docx") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
     
     req(values$regression_done)
     temp_md <- tempfile(fileext = ".Rmd")
@@ -4615,19 +4516,7 @@ server <- function(input, output, session) {
       "date: '", Sys.Date(), "'",
       "output:",
       "  pdf_document:",
-      "    latex_engine: pdflatex",
-      "    keep_tex: true",
-      "geometry: margin=1in",
-      "header-includes:",
-      "  - \\usepackage{booktabs}",
-      "  - \\usepackage{longtable}",
-      "  - \\usepackage{caption}",
-      "  - \\usepackage{pdflscape}",
-      "  - \\usepackage[utf8]{inputenc}",
-      "  - \\usepackage{geometry}",
       "  - \\geometry{a4paper, margin=1in}",
-      "  - \\usepackage{parskip}",
-      "  - \\setlength{\\parskip}{0.5em}",
       "---",
       "\n# Regresi Linear Berganda\n",
       "## Ringkasan Model\n",
@@ -4671,11 +4560,11 @@ server <- function(input, output, session) {
         )
       },
       error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       }
     )
     
-  }, contentType = "application/pdf" )
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
 }
 
 # Run the application
