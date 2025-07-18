@@ -1812,9 +1812,6 @@ server <- function(input, output, session) {
       
       writeLines(rmd_content, temp_md)
       
-      file.copy(temp_md, file.path(getwd(), "debug_welcome_report.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_welcome_report.Rmd"))
-      
       tryCatch(
         {
           rmarkdown::render(
@@ -1824,11 +1821,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
     },
@@ -1905,9 +1900,6 @@ server <- function(input, output, session) {
       
       writeLines(rmd_content, temp_md)
       
-      file.copy(temp_md, file.path(getwd(), "debug_beranda_complete.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_beranda_complete.Rmd"))
-      
       tryCatch(
         {
           rmarkdown::render(
@@ -1917,11 +1909,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
       
@@ -2006,14 +1996,8 @@ server <- function(input, output, session) {
         sep = "\n"
       )
       
-      # Tulis konten ke file Rmd
       writeLines(rmd_content, temp_md)
       
-      # Simpan file Rmd untuk debugging
-      file.copy(temp_md, file.path(getwd(), "debug_categorization_interpretation.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_categorization_interpretation.Rmd"))
-      
-      # Render PDF dengan penanganan kesalahan
       tryCatch(
         {
           rmarkdown::render(
@@ -2023,11 +2007,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
     },
@@ -2074,9 +2056,6 @@ server <- function(input, output, session) {
     
     writeLines(rmd_content, temp_md)
     
-    file.copy(temp_md, file.path(getwd(), "debug_manajemen_complete.Rmd"), overwrite = TRUE)
-    message("Rmd file saved at: ", file.path(getwd(), "debug_manajemen_complete.Rmd"))
-    
     tryCatch(
       {
         rmarkdown::render(
@@ -2086,11 +2065,9 @@ server <- function(input, output, session) {
           clean = TRUE,
           envir = new.env(parent = globalenv())
         )
-        message("PDF rendering successful: ", file)
       },
       error = function(e) {
-        message("PDF rendering failed: ", e$message)
-        stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+        stop("Failed to generate PDF: ", e$message)
       }
     )
     
@@ -2134,15 +2111,16 @@ server <- function(input, output, session) {
         "    latex_engine: pdflatex",
         "    keep_tex: true",
         "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
         "---",
-        "\\usepackage{booktabs}",
-        "\\usepackage{longtable}",
-        "\\usepackage{caption}",
-        "\\usepackage[utf8]{inputenc}",
-        "\\usepackage{geometry}",
-        "\\geometry{a4paper, margin=1in}",
-        "\\usepackage{parskip}",
-        "\\setlength{\\parskip}{0.5em}",
         "\n# Interpretasi Statistik Deskriptif\n",
         "Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih: ",
         paste(input$desc_vars, collapse = ", "), ".\n",
@@ -2153,9 +2131,6 @@ server <- function(input, output, session) {
       )
       writeLines(rmd_content, temp_md)
       
-      file.copy(temp_md, file.path(getwd(), "debug_descriptive_interpretation.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_descriptive_interpretation.Rmd"))
-      
       tryCatch(
         {
           rmarkdown::render(
@@ -2165,11 +2140,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Failed to generate PDF. Please ensure a LaTeX distribution (e.g., TinyTeX) is installed and try again. Error: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
     },
@@ -2234,23 +2207,21 @@ server <- function(input, output, session) {
         "    latex_engine: pdflatex",
         "    keep_tex: true",
         "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
         "---",
-        "\\usepackage{booktabs}",
-        "\\usepackage{longtable}",
-        "\\usepackage{caption}",
-        "\\usepackage[utf8]{inputenc}",
-        "\\usepackage{geometry}",
-        "\\geometry{a4paper, margin=1in}",
-        "\\usepackage{parskip}",
-        "\\setlength{\\parskip}{0.5em}",
         "\n# Interpretasi Visualisasi\n",
         interpretation,
         sep = "\n"
       )
       writeLines(rmd_content, temp_md)
-      
-      file.copy(temp_md, file.path(getwd(), "debug_plot_interpretation.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_plot_interpretation.Rmd"))
       
       tryCatch(
         {
@@ -2261,11 +2232,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Failed to generate PDF. Please ensure a LaTeX distribution (e.g., TinyTeX) is installed and try again. Error: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
     },
@@ -2317,15 +2286,16 @@ server <- function(input, output, session) {
         "    latex_engine: pdflatex",
         "    keep_tex: true",
         "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
         "---",
-        "\\usepackage{booktabs}",
-        "\\usepackage{longtable}",
-        "\\usepackage{caption}",
-        "\\usepackage[utf8]{inputenc}",
-        "\\usepackage{geometry}",
-        "\\geometry{a4paper, margin=1in}",
-        "\\usepackage{parskip}",
-        "\\setlength{\\parskip}{0.5em}",
         "\n# Interpretasi Peta Korelasi\n",
         "Peta korelasi menunjukkan hubungan linear antara semua variabel numerik.\n",
         "Korelasi positif terkuat terjadi antara ", rownames(cor_matrix)[max_cor[1]], " dan ",
@@ -2336,9 +2306,6 @@ server <- function(input, output, session) {
       )
       writeLines(rmd_content, temp_md)
       
-      file.copy(temp_md, file.path(getwd(), "debug_correlation_interpretation.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_correlation_interpretation.Rmd"))
-      
       tryCatch(
         {
           rmarkdown::render(
@@ -2348,11 +2315,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Failed to generate PDF. Please ensure a LaTeX distribution (e.g., TinyTeX) is installed and try again. Error: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
     },
@@ -2402,15 +2367,16 @@ server <- function(input, output, session) {
         "    latex_engine: pdflatex",
         "    keep_tex: true",
         "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
         "---",
-        "\\usepackage{booktabs}",
-        "\\usepackage{longtable}",
-        "\\usepackage{caption}",
-        "\\usepackage[utf8]{inputenc}",
-        "\\usepackage{geometry}",
-        "\\geometry{a4paper, margin=1in}",
-        "\\usepackage{parskip}",
-        "\\setlength{\\parskip}{0.5em}",
         "\n# Interpretasi Peta Geografis\n",
         "Peta geografis menunjukkan distribusi spasial dari variabel ", input$map_var,
         " di seluruh wilayah. Ukuran dan warna lingkaran menunjukkan nilai variabel,",
@@ -2418,9 +2384,6 @@ server <- function(input, output, session) {
         sep = "\n"
       )
       writeLines(rmd_content, temp_md)
-      
-      file.copy(temp_md, file.path(getwd(), "debug_map_interpretation.Rmd"), overwrite = TRUE)
-      message("Rmd file saved at: ", file.path(getwd(), "debug_map_interpretation.Rmd"))
       
       tryCatch(
         {
@@ -2431,11 +2394,9 @@ server <- function(input, output, session) {
             clean = TRUE,
             envir = new.env(parent = globalenv())
           )
-          message("PDF rendering successful: ", file)
         },
         error = function(e) {
-          message("PDF rendering failed: ", e$message)
-          stop("Failed to generate PDF. Please ensure a LaTeX distribution (e.g., TinyTeX) is installed and try again. Error: ", e$message)
+          stop("Failed to generate PDF: ", e$message)
         }
       )
     },
@@ -2592,9 +2553,6 @@ server <- function(input, output, session) {
     
     writeLines(rmd_content, temp_md)
     
-    file.copy(temp_md, file.path(getwd(), "debug_explorasi_complete.Rmd"), overwrite = TRUE)
-    message("Rmd file saved at: ", file.path(getwd(), "debug_explorasi_complete.Rmd"))
-    
     tryCatch(
       {
         rmarkdown::render(
@@ -2604,11 +2562,9 @@ server <- function(input, output, session) {
           clean = TRUE,
           envir = new.env(parent = globalenv())
         )
-        message("PDF rendering successful: ", file)
       },
       error = function(e) {
-        message("PDF rendering failed: ", e$message)
-        stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+        stop("Failed to generate PDF: ", e$message)
       }
     )
     
@@ -3000,9 +2956,6 @@ server <- function(input, output, session) {
     
     writeLines(rmd_content, temp_md)
     
-    file.copy(temp_md, file.path(getwd(), "debug_assumption_tests.Rmd"), overwrite = TRUE)
-    message("Rmd file saved at: ", file.path(getwd(), "debug_assumption_tests.Rmd"))
-    
     tryCatch(
       {
         rmarkdown::render(
@@ -3012,11 +2965,9 @@ server <- function(input, output, session) {
           clean = TRUE,
           envir = new.env(parent = globalenv())
         )
-        message("PDF rendering successful: ", file)
       },
       error = function(e) {
-        message("PDF rendering failed: ", e$message)
-        stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+        stop("Failed to generate PDF: ", e$message)
       }
     )
     
@@ -3671,9 +3622,6 @@ server <- function(input, output, session) {
     
     writeLines(rmd_content, temp_md)
     
-    file.copy(temp_md, file.path(getwd(), "debug_statistic_tests.Rmd"), overwrite = TRUE)
-    message("Rmd file saved at: ", file.path(getwd(), "debug_statistic_tests.Rmd"))
-    
     tryCatch(
       {
         rmarkdown::render(
@@ -3683,11 +3631,9 @@ server <- function(input, output, session) {
           clean = TRUE,
           envir = new.env(parent = globalenv())
         )
-        message("PDF rendering successful: ", file)
       },
       error = function(e) {
-        message("PDF rendering failed: ", e$message)
-        stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+        stop("Failed to generate PDF: ", e$message)
       }
     )
     
@@ -4128,9 +4074,6 @@ server <- function(input, output, session) {
     
     writeLines(rmd_content, temp_md)
     
-    file.copy(temp_md, file.path(getwd(), "debug_regression_report.Rmd"), overwrite = TRUE)
-    message("Rmd file saved at: ", file.path(getwd(), "debug_regression_report.Rmd"))
-    
     tryCatch(
       {
         rmarkdown::render(
@@ -4140,11 +4083,9 @@ server <- function(input, output, session) {
           clean = TRUE,
           envir = new.env(parent = globalenv())
         )
-        message("PDF rendering successful: ", file)
       },
       error = function(e) {
-        message("PDF rendering failed: ", e$message)
-        stop("Gagal menghasilkan PDF. Pastikan distribusi LaTeX (misalnya, TinyTeX) terinstal dan coba lagi. Kesalahan: ", e$message)
+        stop("Failed to generate PDF: ", e$message)
       }
     )
     
