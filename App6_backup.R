@@ -28,6 +28,7 @@ library(moments)
 # Install phantomjs if not available (for PDF generation)
 if (!webshot::is_phantomjs_installed()) {
   webshot::install_phantomjs()
+}
 
 # Load data
 # Gunakan path relatif ini
@@ -39,6 +40,7 @@ if(!"LATITUDE" %in% names(sovi_data) || !"LONGITUDE" %in% names(sovi_data)) {
   set.seed(123)
   sovi_data$LATITUDE <- runif(nrow(sovi_data), -8, -6)  # Indonesia latitude range
   sovi_data$LONGITUDE <- runif(nrow(sovi_data), 106, 108)  # Indonesia longitude range
+}
 
 # Define UI
 ui <- dashboardPage(
@@ -67,6 +69,7 @@ ui <- dashboardPage(
         .content-wrapper, .right-side {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
           min-height: 100vh;
+        }
         
         /* Enhanced Box Styling */
         .box {
@@ -77,10 +80,12 @@ ui <- dashboardPage(
           backdrop-filter: blur(10px);
           border: 1px solid rgba(255, 255, 255, 0.18);
           transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
         
         .box:hover {
           transform: translateY(-5px);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
         
         /* Box Headers */
         .box-header {
@@ -90,11 +95,13 @@ ui <- dashboardPage(
           padding: 15px 20px;
           font-weight: 600;
           letter-spacing: 0.5px;
+        }
         
         .box-header .box-title {
           font-size: 18px;
           font-weight: 700;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
         
         /* Enhanced Download Buttons */
         .download-btn {
@@ -109,6 +116,7 @@ ui <- dashboardPage(
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
           position: relative;
           overflow: hidden;
+        }
         
         .download-btn::before {
           content: '';
@@ -119,13 +127,16 @@ ui <- dashboardPage(
           height: 100%;
           background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
           transition: left 0.5s;
+        }
         
         .download-btn:hover::before {
           left: 100%;
+        }
         
         .download-btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
         
         /* Enhanced Download Section */
         .download-section {
@@ -136,6 +147,7 @@ ui <- dashboardPage(
           margin-top: 30px;
           border: 1px solid rgba(255, 255, 255, 0.2);
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
         
         .download-section h4 {
           color: #2c3e50;
@@ -144,6 +156,7 @@ ui <- dashboardPage(
           margin-bottom: 20px;
           text-align: center;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
         
         .download-section h5 {
           color: #34495e;
@@ -152,33 +165,39 @@ ui <- dashboardPage(
           margin-bottom: 15px;
           border-bottom: 2px solid #ecf0f1;
           padding-bottom: 8px;
+        }
         
         /* Sidebar Enhancements */
         .main-sidebar {
           background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
           box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
         
         .sidebar-menu > li > a {
           border-radius: 8px;
           margin: 5px 15px;
           transition: all 0.3s ease;
           font-weight: 500;
+        }
         
         .sidebar-menu > li > a:hover,
         .sidebar-menu > li.active > a {
           background: linear-gradient(45deg, #667eea, #764ba2);
           box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
           transform: translateX(5px);
+        }
         
         /* Header Styling */
         .main-header .navbar {
           background: linear-gradient(45deg, #667eea, #764ba2);
           box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
         
         .main-header .logo {
           background: linear-gradient(45deg, #2c3e50, #34495e);
           font-weight: 700;
           letter-spacing: 1px;
+        }
         
         /* Form Controls */
         .form-control, .selectize-input {
@@ -187,11 +206,13 @@ ui <- dashboardPage(
           padding: 12px 15px;
           transition: all 0.3s ease;
           background: rgba(255, 255, 255, 0.9);
+        }
         
         .form-control:focus, .selectize-input.focus {
           border-color: #667eea;
           box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
           background: white;
+        }
         
         /* Action Buttons */
         .btn {
@@ -202,26 +223,32 @@ ui <- dashboardPage(
           padding: 10px 25px;
           transition: all 0.3s ease;
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
         
         .btn:hover {
           transform: translateY(-2px);
           box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
         
         .btn-primary {
           background: linear-gradient(45deg, #667eea, #764ba2);
           border: none;
+        }
         
         .btn-warning {
           background: linear-gradient(45deg, #f39c12, #e67e22);
           border: none;
+        }
         
         .btn-success {
           background: linear-gradient(45deg, #27ae60, #2ecc71);
           border: none;
+        }
         
         .btn-info {
           background: linear-gradient(45deg, #3498db, #2980b9);
           border: none;
+        }
         
         /* Tables */
         .dataTables_wrapper {
@@ -229,10 +256,12 @@ ui <- dashboardPage(
           border-radius: 15px;
           padding: 20px;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
         
         .table {
           border-radius: 10px;
           overflow: hidden;
+        }
         
         .table thead th {
           background: linear-gradient(45deg, #667eea, #764ba2);
@@ -240,82 +269,102 @@ ui <- dashboardPage(
           border: none;
           font-weight: 600;
           letter-spacing: 0.5px;
+        }
         
         .table tbody tr:hover {
           background-color: rgba(102, 126, 234, 0.1);
           transform: scale(1.01);
           transition: all 0.2s ease;
+        }
         
         /* Tab Navigation */
         .nav-tabs-custom > .nav-tabs {
           border-bottom: 3px solid #667eea;
           background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
           border-radius: 15px 15px 0 0;
+        }
         
         .nav-tabs-custom > .nav-tabs > li.active > a {
           background: linear-gradient(45deg, #667eea, #764ba2);
           color: white;
           border-radius: 10px 10px 0 0;
           font-weight: 600;
+        }
         
         .nav-tabs-custom > .nav-tabs > li > a {
           border-radius: 10px 10px 0 0;
           transition: all 0.3s ease;
           font-weight: 500;
+        }
         
         .nav-tabs-custom > .nav-tabs > li > a:hover {
           background: rgba(102, 126, 234, 0.1);
           color: #667eea;
+        }
         
         /* Progress and Loading */
         .progress {
           border-radius: 10px;
           background: rgba(255, 255, 255, 0.2);
           box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
         
         .progress-bar {
           background: linear-gradient(45deg, #667eea, #764ba2);
           border-radius: 10px;
+        }
         
         /* Responsive adjustments */
         @media (max-width: 768px) {
           .download-btn {
             width: 100%;
             margin: 5px 0;
+          }
           
           .box {
             margin-bottom: 15px;
+          }
           
           .download-section {
             padding: 15px;
             margin-top: 20px;
+          }
+        }
         
         /* Animation keyframes */
         @keyframes fadeInUp {
           from {
             opacity: 0;
             transform: translateY(30px);
+          }
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
         
         .box {
           animation: fadeInUp 0.6s ease-out;
+        }
         
         /* Scrollbar styling */
         ::-webkit-scrollbar {
           width: 8px;
+        }
         
         ::-webkit-scrollbar-track {
           background: rgba(255, 255, 255, 0.1);
           border-radius: 4px;
+        }
         
         ::-webkit-scrollbar-thumb {
           background: linear-gradient(45deg, #667eea, #764ba2);
           border-radius: 4px;
+        }
         
         ::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(45deg, #5a6fd8, #6a4190);
+        }
       "))
     ),
     
@@ -919,7 +968,8 @@ server <- function(input, output, session) {
   )
   
   output$metadata_table <- DT::renderDataTable({
-    DT::datatable(metadata, options = list(pageLength = 17, scrollX = TRUE)))
+    DT::datatable(metadata, options = list(pageLength = 17, scrollX = TRUE))
+  })
   
   # Overview Map (unchanged)
   output$overview_map <- renderLeaflet({
@@ -935,7 +985,8 @@ server <- function(input, output, session) {
         color = "blue",
         fillOpacity = 0.6
       ) %>%
-      setView(lng = mean(sovi_data$LONGITUDE), lat = mean(sovi_data$LATITUDE), zoom = 8))
+      setView(lng = mean(sovi_data$LONGITUDE), lat = mean(sovi_data$LATITUDE), zoom = 8)
+  })
   
   # Data Management (unchanged)
   categorized_data_reactive <- eventReactive(input$categorize, {
@@ -950,20 +1001,23 @@ server <- function(input, output, session) {
     result_data <- sovi_data
     result_data[[paste0(input$cont_var, "_Kategori")]] <- categorized
     
-    return(result_data))
+    return(result_data)
+  })
   
   output$categorized_data <- DT::renderDataTable({
     req(categorized_data_reactive())
     cat_data <- categorized_data_reactive()
     display_data <- cat_data[, c(input$cont_var, paste0(input$cont_var, "_Kategori"))]
-    DT::datatable(display_data, options = list(pageLength = 10, scrollX = TRUE)))
+    DT::datatable(display_data, options = list(pageLength = 10, scrollX = TRUE))
+  })
   
   output$categorization_interpretation <- renderText({
     req(categorized_data_reactive())
     paste("Interpretasi: Variabel", input$cont_var, "telah berhasil dikategorisasi menjadi", 
           input$n_bins, "kategori berdasarkan kuantil. Kategorisasi ini membantu dalam",
           "analisis data dengan mengubah variabel kontinu menjadi variabel kategorikal",
-          "yang dapat digunakan untuk analisis lebih lanjut seperti ANOVA atau Chi-square test."))
+          "yang dapat digunakan untuk analisis lebih lanjut seperti ANOVA atau Chi-square test.")
+  })
   
   # Categorization Map (unchanged)
   output$categorization_map <- renderLeaflet({
@@ -987,7 +1041,8 @@ server <- function(input, output, session) {
       ) %>%
       addLegend(pal = pal, values = ~get(paste0(input$cont_var, "_Kategori")), 
                 title = paste(input$cont_var, "Categories")) %>%
-      setView(lng = mean(cat_data$LONGITUDE), lat = mean(cat_data$LATITUDE), zoom = 8))
+      setView(lng = mean(cat_data$LONGITUDE), lat = mean(cat_data$LATITUDE), zoom = 8)
+  })
   
   # Descriptive Statistics (unchanged)
   output$descriptive_stats <- DT::renderDataTable({
@@ -1005,14 +1060,16 @@ server <- function(input, output, session) {
       stringsAsFactors = FALSE
     )
     
-    DT::datatable(desc_summary, options = list(pageLength = 10, scrollX = TRUE)))
+    DT::datatable(desc_summary, options = list(pageLength = 10, scrollX = TRUE))
+  })
   
   output$descriptive_interpretation <- renderText({
     req(input$desc_vars)
     paste("Interpretasi: Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih.",
           "Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi",
           "menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan",
-          "adanya skewness dalam distribusi data."))
+          "adanya skewness dalam distribusi data.")
+  })
   
   # Visualization (unchanged)
   output$exploration_plot <- renderPlot({
@@ -1023,27 +1080,35 @@ server <- function(input, output, session) {
         geom_histogram(bins = 30, fill = "steelblue", alpha = 0.7) +
         theme_minimal() +
         labs(title = paste("Histogram of", input$plot_var1),
-             x = input$plot_var1, y = "Frequency") else if(input$plot_type == "box") {
+             x = input$plot_var1, y = "Frequency")
+    } else if(input$plot_type == "box") {
       ggplot(sovi_data, aes_string(y = input$plot_var1)) +
         geom_boxplot(fill = "lightblue", alpha = 0.7) +
         theme_minimal() +
         labs(title = paste("Box Plot of", input$plot_var1),
-             y = input$plot_var1) else if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
+             y = input$plot_var1)
+    } else if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
       ggplot(sovi_data, aes_string(x = input$plot_var1, y = input$plot_var2)) +
         geom_point(alpha = 0.6, color = "steelblue") +
         geom_smooth(method = "lm", se = TRUE, color = "red") +
         theme_minimal() +
         labs(title = paste("Scatter Plot:", input$plot_var1, "vs", input$plot_var2),
-             x = input$plot_var1, y = input$plot_var2))
+             x = input$plot_var1, y = input$plot_var2)
+    }
+  })
   
   output$plot_interpretation <- renderText({
     if(input$plot_type == "hist") {
       paste("Interpretasi: Histogram menunjukkan distribusi frekuensi dari variabel", input$plot_var1,
-            ". Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.") else if(input$plot_type == "box") {
+            ". Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.")
+    } else if(input$plot_type == "box") {
       paste("Interpretasi: Box plot menampilkan ringkasan lima angka (minimum, Q1, median, Q3, maksimum)",
-            "dari variabel", input$plot_var1, ". Titik-titik di luar whiskers menunjukkan potensi outliers.") else if(input$plot_type == "scatter") {
+            "dari variabel", input$plot_var1, ". Titik-titik di luar whiskers menunjukkan potensi outliers.")
+    } else if(input$plot_type == "scatter") {
       paste("Interpretasi: Scatter plot menunjukkan hubungan antara", input$plot_var1, "dan", input$plot_var2,
-            ". Garis regresi membantu memvisualisasikan tren hubungan linear antara kedua variabel."))
+            ". Garis regresi membantu memvisualisasikan tren hubungan linear antara kedua variabel.")
+    }
+  })
   
   # Correlation Heatmap (unchanged)
   output$correlation_heatmap <- renderPlot({
@@ -1060,7 +1125,8 @@ server <- function(input, output, session) {
       theme_minimal() +
       theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
       labs(title = "Correlation Heatmap", x = "", y = "") +
-      coord_fixed())
+      coord_fixed()
+  })
   
   output$correlation_interpretation <- renderText({
     numeric_data <- select_if(sovi_data, is.numeric)
@@ -1074,7 +1140,8 @@ server <- function(input, output, session) {
           "Korelasi positif terkuat terjadi antara", rownames(cor_matrix)[max_cor[1]], "dan", 
           colnames(cor_matrix)[max_cor[2]], "dengan nilai", round(cor_matrix[max_cor], 3),
           ". Korelasi negatif terkuat terjadi antara", rownames(cor_matrix)[min_cor[1]], "dan",
-          colnames(cor_matrix)[min_cor[2]], "dengan nilai", round(cor_matrix[min_cor], 3)))
+          colnames(cor_matrix)[min_cor[2]], "dengan nilai", round(cor_matrix[min_cor], 3))
+  })
   
   # Geographic Map (unchanged)
   output$exploration_map <- renderLeaflet({
@@ -1094,13 +1161,15 @@ server <- function(input, output, session) {
         fillOpacity = 0.8
       ) %>%
       addLegend(pal = pal, values = ~get(input$map_var), title = input$map_var) %>%
-      setView(lng = mean(sovi_data$LONGITUDE), lat = mean(sovi_data$LATITUDE), zoom = 8))
+      setView(lng = mean(sovi_data$LONGITUDE), lat = mean(sovi_data$LATITUDE), zoom = 8)
+  })
   
   output$map_interpretation <- renderText({
     req(input$map_var)
     paste("Interpretasi: Peta geografis menunjukkan distribusi spasial dari variabel", input$map_var,
           "di seluruh wilayah. Ukuran dan warna lingkaran menunjukkan nilai variabel,",
-          "memungkinkan identifikasi pola geografis dan kluster nilai tinggi atau rendah."))
+          "memungkinkan identifikasi pola geografis dan kluster nilai tinggi atau rendah.")
+  })
   
   # Assumption Tests (unchanged)
   observeEvent(input$run_tests, {
@@ -1118,7 +1187,8 @@ server <- function(input, output, session) {
       cat("Shapiro-Wilk Test:\n")
       print(shapiro_test)
       cat("\nKolmogorov-Smirnov Test:\n")
-      print(ks_test))
+      print(ks_test)
+    })
     
     output$qq_plot <- renderPlot({
       req(input$normality_var)
@@ -1126,7 +1196,8 @@ server <- function(input, output, session) {
       ggplot(data.frame(sample = var_data), aes(sample = sample)) +
         stat_qq() + stat_qq_line() +
         theme_minimal() +
-        labs(title = paste("Q-Q Plot for", input$normality_var)))
+        labs(title = paste("Q-Q Plot for", input$normality_var))
+    })
     
     output$normality_interpretation <- renderText({
       req(input$normality_var)
@@ -1137,10 +1208,13 @@ server <- function(input, output, session) {
       if(shapiro_test$p.value > 0.05) {
         paste("Interpretasi: Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
               "), kita gagal menolak H0. Data variabel", input$normality_var, 
-              "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%.") else {
+              "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%.")
+      } else {
         paste("Interpretasi: Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
               "), kita menolak H0. Data variabel", input$normality_var, 
-              "tidak berdistribusi normal pada tingkat signifikansi 5%."))
+              "tidak berdistribusi normal pada tingkat signifikansi 5%.")
+      }
+    })
     
     output$homogeneity_test <- renderPrint({
       req(input$normality_var, input$group_var)
@@ -1150,6 +1224,7 @@ server <- function(input, output, session) {
         
         if(is.numeric(group_data)) {
           group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
         
         complete_cases <- complete.cases(var_data, group_data)
         var_data <- var_data[complete_cases]
@@ -1160,8 +1235,11 @@ server <- function(input, output, session) {
         cat("Uji Homogenitas Varians (Levene's Test)\n\n")
         cat("H0: Varians antar kelompok homogen\n")
         cat("H1: Varians antar kelompok tidak homogen\n\n")
-        print(levene_test) else {
-        cat("Pilih variabel kelompok untuk melakukan uji homogenitas"))
+        print(levene_test)
+      } else {
+        cat("Pilih variabel kelompok untuk melakukan uji homogenitas")
+      }
+    })
     
     output$homogeneity_interpretation <- renderText({
       req(input$normality_var, input$group_var)
@@ -1171,6 +1249,7 @@ server <- function(input, output, session) {
         
         if(is.numeric(group_data)) {
           group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
         
         complete_cases <- complete.cases(var_data, group_data)
         var_data <- var_data[complete_cases]
@@ -1182,10 +1261,15 @@ server <- function(input, output, session) {
         if(p_value > 0.05) {
           paste("Interpretasi: Berdasarkan uji Levene (p-value =", round(p_value, 4),
                 "), kita gagal menolak H0. Varians antar kelompok dapat dianggap homogen",
-                "pada tingkat signifikansi 5%.") else {
+                "pada tingkat signifikansi 5%.")
+        } else {
           paste("Interpretasi: Berdasarkan uji Levene (p-value =", round(p_value, 4),
                 "), kita menolak H0. Varians antar kelompok tidak homogen",
-                "pada tingkat signifikansi 5%.")))
+                "pada tingkat signifikansi 5%.")
+        }
+      }
+    })
+  })
   
   # Inferential Statistics (unchanged)
   observeEvent(input$run_ttest1, {
@@ -1199,7 +1283,8 @@ server <- function(input, output, session) {
       cat("One-Sample T-Test\n\n")
       cat("H0: μ =", input$ttest1_mu, "\n")
       cat("H1: μ ≠", input$ttest1_mu, "\n\n")
-      print(ttest_result))
+      print(ttest_result)
+    })
     
     output$ttest1_interpretation <- renderText({
       req(input$ttest1_var, input$ttest1_mu)
@@ -1210,10 +1295,14 @@ server <- function(input, output, session) {
       if(ttest_result$p.value < 0.05) {
         paste("Interpretasi: Dengan p-value =", round(ttest_result$p.value, 4),
               "< 0.05, kita menolak H0. Terdapat perbedaan signifikan antara rata-rata sampel",
-              "dengan nilai hipotesis", input$ttest1_mu, "pada tingkat signifikansi 5%.") else {
+              "dengan nilai hipotesis", input$ttest1_mu, "pada tingkat signifikansi 5%.")
+      } else {
         paste("Interpretasi: Dengan p-value =", round(ttest_result$p.value, 4),
               "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan antara rata-rata sampel",
-              "dengan nilai hipotesis", input$ttest1_mu, "pada tingkat signifikansi 5%.")))
+              "dengan nilai hipotesis", input$ttest1_mu, "pada tingkat signifikansi 5%.")
+      }
+    })
+  })
   
   observeEvent(input$run_ttest2, {
     output$ttest2_result <- renderPrint({
@@ -1225,6 +1314,7 @@ server <- function(input, output, session) {
       if(is.numeric(group_data)) {
         median_val <- median(group_data, na.rm = TRUE)
         group_data <- ifelse(group_data <= median_val, "Low", "High")
+      }
       
       unique_groups <- unique(group_data[!is.na(group_data)])
       if(length(unique_groups) >= 2) {
@@ -1238,8 +1328,11 @@ server <- function(input, output, session) {
         cat("H1: μ1 ≠ μ2\n\n")
         cat("Group 1 (", unique_groups[1], "):", length(group1_data), "observations\n")
         cat("Group 2 (", unique_groups[2], "):", length(group2_data), "observations\n\n")
-        print(ttest_result) else {
-        cat("Error: Need at least 2 groups for comparison"))
+        print(ttest_result)
+      } else {
+        cat("Error: Need at least 2 groups for comparison")
+      }
+    })
     
     output$ttest2_interpretation <- renderText({
       req(input$ttest2_var, input$ttest2_group)
@@ -1250,6 +1343,7 @@ server <- function(input, output, session) {
       if(is.numeric(group_data)) {
         median_val <- median(group_data, na.rm = TRUE)
         group_data <- ifelse(group_data <= median_val, "Low", "High")
+      }
       
       unique_groups <- unique(group_data[!is.na(group_data)])
       if(length(unique_groups) >= 2) {
@@ -1262,11 +1356,16 @@ server <- function(input, output, session) {
           paste("Interpretasi: Dengan p-value =", round(ttest_result$p.value, 4),
                 "< 0.05, kita menolak H0. Terdapat perbedaan signifikan rata-rata",
                 input$ttest2_var, "antara kelompok", unique_groups[1], "dan", unique_groups[2],
-                "pada tingkat signifikansi 5%.") else {
+                "pada tingkat signifikansi 5%.")
+        } else {
           paste("Interpretasi: Dengan p-value =", round(ttest_result$p.value, 4),
                 "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan rata-rata",
                 input$ttest2_var, "antara kelompok", unique_groups[1], "dan", unique_groups[2],
-                "pada tingkat signifikansi 5%.")))
+                "pada tingkat signifikansi 5%.")
+        }
+      }
+    })
+  })
   
   observeEvent(input$run_prop1, {
     output$prop1_result <- renderPrint({
@@ -1276,9 +1375,11 @@ server <- function(input, output, session) {
       
       if(is.numeric(var_data)) {
         median_val <- median(var_data, na.rm = TRUE)
-        var_data <- ifelse(var_data > median_val, 1, 0) else {
+        var_data <- ifelse(var_data > median_val, 1, 0)
+      } else {
         unique_vals <- unique(var_data[!is.na(var_data)])
         var_data <- ifelse(var_data == unique_vals[1], 1, 0)
+      }
       
       var_data <- var_data[!is.na(var_data)]
       successes <- sum(var_data)
@@ -1292,7 +1393,8 @@ server <- function(input, output, session) {
       cat("Sample proportion:", round(successes/n, 4), "\n")
       cat("Sample size:", n, "\n")
       cat("Successes:", successes, "\n\n")
-      print(prop_test))
+      print(prop_test)
+    })
     
     output$prop1_interpretation <- renderText({
       req(input$prop1_var, input$prop1_p)
@@ -1301,9 +1403,11 @@ server <- function(input, output, session) {
       
       if(is.numeric(var_data)) {
         median_val <- median(var_data, na.rm = TRUE)
-        var_data <- ifelse(var_data > median_val, 1, 0) else {
+        var_data <- ifelse(var_data > median_val, 1, 0)
+      } else {
         unique_vals <- unique(var_data[!is.na(var_data)])
         var_data <- ifelse(var_data == unique_vals[1], 1, 0)
+      }
       
       var_data <- var_data[!is.na(var_data)]
       successes <- sum(var_data)
@@ -1314,10 +1418,14 @@ server <- function(input, output, session) {
       if(prop_test$p.value < 0.05) {
         paste("Interpretasi: Dengan p-value =", round(prop_test$p.value, 4),
               "< 0.05, kita menolak H0. Proporsi sampel berbeda signifikan dengan",
-              "proporsi hipotesis", input$prop1_p, "pada tingkat signifikansi 5%.") else {
+              "proporsi hipotesis", input$prop1_p, "pada tingkat signifikansi 5%.")
+      } else {
         paste("Interpretasi: Dengan p-value =", round(prop_test$p.value, 4),
               "> 0.05, kita gagal menolak H0. Proporsi sampel tidak berbeda signifikan dengan",
-              "proporsi hipotesis", input$prop1_p, "pada tingkat signifikansi 5%.")))
+              "proporsi hipotesis", input$prop1_p, "pada tingkat signifikansi 5%.")
+      }
+    })
+  })
   
   observeEvent(input$run_var1, {
     output$var1_result <- renderPrint({
@@ -1338,7 +1446,8 @@ server <- function(input, output, session) {
       cat("Sample size:", n, "\n")
       cat("Chi-square statistic:", round(chi_stat, 4), "\n")
       cat("Degrees of freedom:", n-1, "\n")
-      cat("P-value:", round(p_value, 4), "\n"))
+      cat("P-value:", round(p_value, 4), "\n")
+    })
     
     output$var1_interpretation <- renderText({
       req(input$var1_var, input$var1_sigma)
@@ -1354,10 +1463,14 @@ server <- function(input, output, session) {
       if(p_value < 0.05) {
         paste("Interpretasi: Dengan p-value =", round(p_value, 4),
               "< 0.05, kita menolak H0. Varians sampel berbeda signifikan dengan",
-              "varians hipotesis", input$var1_sigma, "pada tingkat signifikansi 5%.") else {
+              "varians hipotesis", input$var1_sigma, "pada tingkat signifikansi 5%.")
+      } else {
         paste("Interpretasi: Dengan p-value =", round(p_value, 4),
               "> 0.05, kita gagal menolak H0. Varians sampel tidak berbeda signifikan dengan",
-              "varians hipotesis", input$var1_sigma, "pada tingkat signifikansi 5%.")))
+              "varians hipotesis", input$var1_sigma, "pada tingkat signifikansi 5%.")
+      }
+    })
+  })
   
   observeEvent(input$run_anova1, {
     output$anova1_result <- renderPrint({
@@ -1368,6 +1481,7 @@ server <- function(input, output, session) {
       
       if(is.numeric(indep_var)) {
         indep_var <- cut(indep_var, breaks = 3, labels = c("Low", "Medium", "High"))
+      }
       
       complete_cases <- complete.cases(dep_var, indep_var)
       dep_var <- dep_var[complete_cases]
@@ -1384,7 +1498,9 @@ server <- function(input, output, session) {
       if(anova_summary[[1]]$`Pr(>F)`[1] < 0.05) {
         cat("\n\nPost-hoc Test (Tukey HSD):\n")
         tukey_result <- TukeyHSD(anova_result)
-        print(tukey_result))
+        print(tukey_result)
+      }
+    })
     
     output$anova1_interpretation <- renderText({
       req(input$anova1_dep, input$anova1_indep)
@@ -1394,6 +1510,7 @@ server <- function(input, output, session) {
       
       if(is.numeric(indep_var)) {
         indep_var <- cut(indep_var, breaks = 3, labels = c("Low", "Medium", "High"))
+      }
       
       complete_cases <- complete.cases(dep_var, indep_var)
       dep_var <- dep_var[complete_cases]
@@ -1407,11 +1524,15 @@ server <- function(input, output, session) {
         paste("Interpretasi: Dengan p-value =", round(p_value, 4),
               "< 0.05, kita menolak H0. Terdapat perbedaan signifikan rata-rata",
               input$anova1_dep, "antar kelompok", input$anova1_indep,
-              "pada tingkat signifikansi 5%. Post-hoc test menunjukkan kelompok mana yang berbeda.") else {
+              "pada tingkat signifikansi 5%. Post-hoc test menunjukkan kelompok mana yang berbeda.")
+      } else {
         paste("Interpretasi: Dengan p-value =", round(p_value, 4),
               "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan rata-rata",
               input$anova1_dep, "antar kelompok", input$anova1_indep,
-              "pada tingkat signifikansi 5%.")))
+              "pada tingkat signifikansi 5%.")
+      }
+    })
+  })
   
   observeEvent(input$run_anova2, {
     output$anova2_result <- renderPrint({
@@ -1423,8 +1544,10 @@ server <- function(input, output, session) {
       
       if(is.numeric(indep_var1)) {
         indep_var1 <- cut(indep_var1, breaks = 2, labels = c("Low", "High"))
+      }
       if(is.numeric(indep_var2)) {
         indep_var2 <- cut(indep_var2, breaks = 2, labels = c("Low", "High"))
+      }
       
       complete_cases <- complete.cases(dep_var, indep_var1, indep_var2)
       dep_var <- dep_var[complete_cases]
@@ -1436,7 +1559,8 @@ server <- function(input, output, session) {
       
       cat("Two-Way ANOVA\n\n")
       cat("Testing main effects and interaction effect\n\n")
-      print(anova_summary))
+      print(anova_summary)
+    })
     
     output$anova2_interpretation <- renderText({
       req(input$anova2_dep, input$anova2_indep1, input$anova2_indep2)
@@ -1447,8 +1571,10 @@ server <- function(input, output, session) {
       
       if(is.numeric(indep_var1)) {
         indep_var1 <- cut(indep_var1, breaks = 2, labels = c("Low", "High"))
+      }
       if(is.numeric(indep_var2)) {
         indep_var2 <- cut(indep_var2, breaks = 2, labels = c("Low", "High"))
+      }
       
       complete_cases <- complete.cases(dep_var, indep_var1, indep_var2)
       dep_var <- dep_var[complete_cases]
@@ -1468,7 +1594,9 @@ server <- function(input, output, session) {
                               "3. Interaction effect: p-value =", round(p_values[3], 4),
                               ifelse(p_values[3] < 0.05, "(signifikan)", "(tidak signifikan)"))
       
-      return(interpretation)))
+      return(interpretation)
+    })
+  })
   
   # Multiple Linear Regression (unchanged)
   regression_model <- eventReactive(input$run_regression, {
@@ -1485,11 +1613,13 @@ server <- function(input, output, session) {
     
     model <- lm(formula_obj, data = complete_data)
     
-    return(model))
+    return(model)
+  })
   
   output$regression_summary <- renderPrint({
     req(regression_model())
-    summary(regression_model()))
+    summary(regression_model())
+  })
   
   output$regression_interpretation <- renderText({
     req(regression_model())
@@ -1515,7 +1645,8 @@ server <- function(input, output, session) {
       paste(significant_vars, collapse = ", ")
     )
     
-    return(interpretation))
+    return(interpretation)
+  })
   
   output$vif_test <- renderPrint({
     req(regression_model())
@@ -1524,8 +1655,11 @@ server <- function(input, output, session) {
     if(length(input$reg_indep) > 1) {
       vif_result <- car::vif(model)
       cat("Variance Inflation Factor (VIF) Test:\n\n")
-      print(vif_result) else {
-      cat("VIF test tidak dapat dilakukan karena hanya ada satu variabel independen."))
+      print(vif_result)
+    } else {
+      cat("VIF test tidak dapat dilakukan karena hanya ada satu variabel independen.")
+    }
+  })
   
   output$assumption_interpretation <- renderText({
     req(regression_model())
@@ -1535,29 +1669,38 @@ server <- function(input, output, session) {
       vif_result <- car::vif(model)
       if(any(vif_result > 10)) {
         paste("VIF menunjukkan adanya multikolinearitas signifikan (VIF > 10) untuk variabel:",
-              paste(names(vif_result[vif_result > 10]), collapse = ", "), ".\n") else {
-        "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10).\n" else {
+              paste(names(vif_result[vif_result > 10]), collapse = ", "), ".\n")
+      } else {
+        "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10).\n"
+      }
+    } else {
       "VIF test tidak dilakukan karena hanya ada satu variabel independen.\n"
+    }
     
     residuals <- resid(model)
     shapiro_test <- shapiro.test(residuals)
     normality_interpretation <- if(shapiro_test$p.value > 0.05) {
       paste("Uji Shapiro-Wilk untuk normalitas residual (p-value =", round(shapiro_test$p.value, 4),
-            "): Residual dianggap berdistribusi normal.\n") else {
+            "): Residual dianggap berdistribusi normal.\n")
+    } else {
       paste("Uji Shapiro-Wilk untuk normalitas residual (p-value =", round(shapiro_test$p.value, 4),
             "): Residual tidak berdistribusi normal.\n")
+    }
     
     bptest_result <- lmtest::bptest(model)
     homoskedasticity_interpretation <- if(bptest_result$p.value > 0.05) {
       paste("Uji Breusch-Pagan untuk homoskedastisitas (p-value =", round(bptest_result$p.value, 4),
-            "): Varians residual homogen.\n") else {
+            "): Varians residual homogen.\n")
+    } else {
       paste("Uji Breusch-Pagan untuk homoskedastisitas (p-value =", round(bptest_result$p.value, 4),
             "): Varians residual tidak homogen.\n")
+    }
     
     paste("Interpretasi Uji Asumsi Model:\n",
           vif_interpretation,
           normality_interpretation,
-          homoskedasticity_interpretation))
+          homoskedasticity_interpretation)
+  })
   
   output$residual_qq <- renderPlot({
     req(regression_model())
@@ -1568,7 +1711,8 @@ server <- function(input, output, session) {
       stat_qq() +
       stat_qq_line() +
       theme_minimal() +
-      labs(title = "Q-Q Plot of Residuals"))
+      labs(title = "Q-Q Plot of Residuals")
+  })
   
   output$residual_fitted <- renderPlot({
     req(regression_model())
@@ -1579,7 +1723,8 @@ server <- function(input, output, session) {
       geom_point(alpha = 0.6) +
       geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
       theme_minimal() +
-      labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals"))
+      labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals")
+  })
   
   # Reactive values to track test completions and store managed data
   values <- reactiveValues(
@@ -1595,24 +1740,33 @@ server <- function(input, output, session) {
   )
   
   observeEvent(input$categorize, {
-    values$managed_data <- categorized_data_reactive())
+    values$managed_data <- categorized_data_reactive()
+  })
   
   observeEvent(input$run_tests, {
-    values$assumptions_done <- TRUE)
+    values$assumptions_done <- TRUE
+  })
   observeEvent(input$run_ttest1, {
-    values$ttest1_done <- TRUE)
+    values$ttest1_done <- TRUE
+  })
   observeEvent(input$run_ttest2, {
-    values$ttest2_done <- TRUE)
+    values$ttest2_done <- TRUE
+  })
   observeEvent(input$run_prop1, {
-    values$prop1_done <- TRUE)
+    values$prop1_done <- TRUE
+  })
   observeEvent(input$run_var1, {
-    values$var1_done <- TRUE)
+    values$var1_done <- TRUE
+  })
   observeEvent(input$run_anova1, {
-    values$anova1_done <- TRUE)
+    values$anova1_done <- TRUE
+  })
   observeEvent(input$run_anova2, {
-    values$anova2_done <- TRUE)
+    values$anova2_done <- TRUE
+  })
   observeEvent(input$run_regression, {
-    values$regression_done <- TRUE)
+    values$regression_done <- TRUE
+  })
   
   # Download Handlers
   
@@ -1705,20 +1859,24 @@ server <- function(input, output, session) {
             output_file = file,
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
           stop("Failed to generate Word document: ", e$message)
-      ),
+        }
+      )
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   # Other download handlers remain unchanged for brevity, but apply similar changes as above
-  # All download handlers have been converted to Word format
+  # (Add TinyTeX check, comprehensive LaTeX preamble, and error handling to each downloadHandler)
   
   output$download_metadata_csv <- downloadHandler(
     filename = function() { paste0("metadata_", Sys.Date(), ".csv") },
     content = function(file) {
-      write.csv(metadata, file, row.names = FALSE),
+      write.csv(metadata, file, row.names = FALSE)
+    },
     contentType = "text/csv"
   )
   
@@ -1739,7 +1897,8 @@ server <- function(input, output, session) {
         ) %>%
         setView(lng = mean(sovi_data$LONGITUDE), lat = mean(sovi_data$LATITUDE), zoom = 8)
       
-      mapshot(map, file = file, vwidth = 800, vheight = 600),
+      mapshot(map, file = file, vwidth = 800, vheight = 600)
+    },
     contentType = "image/jpeg"
   )
   
@@ -1857,13 +2016,17 @@ server <- function(input, output, session) {
         rmarkdown::render(
           temp_md,
           output_file = file,
-          
+          output_format = "pdf_document",
           clean = TRUE,
           envir = new.env(parent = globalenv())
-        ),
+        )
+      },
       error = function(e) {
         stop("Failed to generate Word document: ", e$message)
-    ), contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+      }
+    )
+    
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Manajemen Data Tab ---
   output$download_categorization_csv <- downloadHandler(
@@ -1872,7 +2035,8 @@ server <- function(input, output, session) {
       req(categorized_data_reactive())
       cat_data <- categorized_data_reactive()
       display_data <- cat_data[, c(input$cont_var, paste0(input$cont_var, "_Kategori"))]
-      write.csv(display_data, file, row.names = FALSE),
+      write.csv(display_data, file, row.names = FALSE)
+    },
     contentType = "text/csv"
   )
   
@@ -1900,7 +2064,8 @@ server <- function(input, output, session) {
                   title = paste(input$cont_var, "Categories")) %>%
         setView(lng = mean(cat_data$LONGITUDE), lat = mean(cat_data$LATITUDE), zoom = 8)
       
-      mapshot(map, file = file, vwidth = 800, vheight = 600),
+      mapshot(map, file = file, vwidth = 800, vheight = 600)
+    },
     contentType = "image/jpeg"
   )
   
@@ -2011,8 +2176,10 @@ server <- function(input, output, session) {
           "",
           "### Validitas Kategorisasi",
           if(max(cat_freq_df$Persentase, na.rm = TRUE) - min(cat_freq_df$Persentase, na.rm = TRUE) <= 10) {
-            "✅ **Distribusi Seimbang:** Perbedaan persentase antar kategori ≤ 10%, menunjukkan kategorisasi yang baik." else {
-            "⚠️ **Distribusi Tidak Seimbang:** Perbedaan persentase antar kategori > 10%, pertimbangkan penyesuaian metode kategorisasi.",
+            "✅ **Distribusi Seimbang:** Perbedaan persentase antar kategori ≤ 10%, menunjukkan kategorisasi yang baik."
+          } else {
+            "⚠️ **Distribusi Tidak Seimbang:** Perbedaan persentase antar kategori > 10%, pertimbangkan penyesuaian metode kategorisasi."
+          },
           "",
           "## Aplikasi Analisis Lanjutan",
           "",
@@ -2042,8 +2209,11 @@ server <- function(input, output, session) {
         )
         
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -2108,20 +2278,26 @@ server <- function(input, output, session) {
       "## Kategorisasi Variabel",
       "",
       if(any(grepl("_cat$|_Kategori$", names(managed_data)))) {
-        paste("Variabel kategorikal yang telah dibuat:", paste(names(managed_data)[grepl("_cat$|_Kategori$", names(managed_data))], collapse = ", ")) else {
-        "Belum ada variabel yang dikategorisasi dalam sesi ini.",
+        paste("Variabel kategorikal yang telah dibuat:", paste(names(managed_data)[grepl("_cat$|_Kategori$", names(managed_data))], collapse = ", "))
+      } else {
+        "Belum ada variabel yang dikategorisasi dalam sesi ini."
+      },
       "",
       "## Statistik Deskriptif Umum",
       "",
       "### Variabel Numerik",
       if(sum(sapply(managed_data, is.numeric)) > 0) {
-        paste("Terdapat", sum(sapply(managed_data, is.numeric)), "variabel numerik siap untuk analisis statistik.") else {
-        "Tidak ada variabel numerik dalam dataset ini.",
+        paste("Terdapat", sum(sapply(managed_data, is.numeric)), "variabel numerik siap untuk analisis statistik.")
+      } else {
+        "Tidak ada variabel numerik dalam dataset ini."
+      },
       "",
       "### Variabel Kategorikal", 
       if(sum(sapply(managed_data, function(x) is.factor(x) || is.character(x))) > 0) {
-        paste("Terdapat", sum(sapply(managed_data, function(x) is.factor(x) || is.character(x))), "variabel kategorikal untuk analisis crosstab dan chi-square.") else {
-        "Tidak ada variabel kategorikal dalam dataset ini.",
+        paste("Terdapat", sum(sapply(managed_data, function(x) is.factor(x) || is.character(x))), "variabel kategorikal untuk analisis crosstab dan chi-square.")
+      } else {
+        "Tidak ada variabel kategorikal dalam dataset ini."
+      },
       "",
       "## Rekomendasi Analisis Lanjutan",
       "",
@@ -2178,10 +2354,14 @@ server <- function(input, output, session) {
           output_file = file,
           clean = TRUE,
           envir = new.env(parent = globalenv())
-        ),
+        )
+      },
       error = function(e) {
         stop("Failed to generate Word document: ", e$message)
-    ), contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+      }
+    )
+    
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Eksplorasi Data Tab ---
   output$download_descriptive_csv <- downloadHandler(
@@ -2198,7 +2378,8 @@ server <- function(input, output, session) {
         Max = sapply(desc_data, function(x) round(max(x, na.rm = TRUE), 3)),
         stringsAsFactors = FALSE
       )
-      write.csv(desc_summary, file, row.names = FALSE),
+      write.csv(desc_summary, file, row.names = FALSE)
+    },
     contentType = "text/csv"
   )
   
@@ -2275,8 +2456,11 @@ server <- function(input, output, session) {
         )
         
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -2289,19 +2473,23 @@ server <- function(input, output, session) {
           geom_histogram(bins = 30, fill = "steelblue", alpha = 0.7) +
           theme_minimal() +
           labs(title = paste("Histogram of", input$plot_var1),
-               x = input$plot_var1, y = "Frequency") else if(input$plot_type == "box") {
+               x = input$plot_var1, y = "Frequency")
+      } else if(input$plot_type == "box") {
         plot <- ggplot(sovi_data, aes_string(y = input$plot_var1)) +
           geom_boxplot(fill = "lightblue", alpha = 0.7) +
           theme_minimal() +
           labs(title = paste("Box Plot of", input$plot_var1),
-               y = input$plot_var1) else if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
+               y = input$plot_var1)
+      } else if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
         plot <- ggplot(sovi_data, aes_string(x = input$plot_var1, y = input$plot_var2)) +
           geom_point(alpha = 0.6, color = "steelblue") +
           geom_smooth(method = "lm", se = TRUE, color = "red") +
           theme_minimal() +
           labs(title = paste("Scatter Plot:", input$plot_var1, "vs", input$plot_var2),
                x = input$plot_var1, y = input$plot_var2)
-      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6),
+      }
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
     contentType = "image/jpeg"
   )
   
@@ -2350,16 +2538,23 @@ server <- function(input, output, session) {
           "",
           "### Interpretasi Korelasi",
           if(abs(correlation) >= 0.7) {
-            paste("Terdapat hubungan yang **kuat** antara", input$plot_var1, "dan", input$plot_var2, "(|r| ≥ 0.7)") else if(abs(correlation) >= 0.5) {
-            paste("Terdapat hubungan yang **sedang** antara", input$plot_var1, "dan", input$plot_var2, "(0.5 ≤ |r| < 0.7)") else if(abs(correlation) >= 0.3) {
-            paste("Terdapat hubungan yang **lemah** antara", input$plot_var1, "dan", input$plot_var2, "(0.3 ≤ |r| < 0.5)") else {
-            paste("Terdapat hubungan yang **sangat lemah** antara", input$plot_var1, "dan", input$plot_var2, "(|r| < 0.3)"),
+            paste("Terdapat hubungan yang **kuat** antara", input$plot_var1, "dan", input$plot_var2, "(|r| ≥ 0.7)")
+          } else if(abs(correlation) >= 0.5) {
+            paste("Terdapat hubungan yang **sedang** antara", input$plot_var1, "dan", input$plot_var2, "(0.5 ≤ |r| < 0.7)")
+          } else if(abs(correlation) >= 0.3) {
+            paste("Terdapat hubungan yang **lemah** antara", input$plot_var1, "dan", input$plot_var2, "(0.3 ≤ |r| < 0.5)")
+          } else {
+            paste("Terdapat hubungan yang **sangat lemah** antara", input$plot_var1, "dan", input$plot_var2, "(|r| < 0.3)")
+          },
           "",
           if(cor_test$p.value < 0.05) {
-            "**Signifikansi:** Hubungan ini signifikan secara statistik (p < 0.05)" else {
-            "**Signifikansi:** Hubungan ini tidak signifikan secara statistik (p ≥ 0.05)",
+            "**Signifikansi:** Hubungan ini signifikan secara statistik (p < 0.05)"
+          } else {
+            "**Signifikansi:** Hubungan ini tidak signifikan secara statistik (p ≥ 0.05)"
+          },
           sep = "\n"
         )
+      }
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
@@ -2384,7 +2579,8 @@ server <- function(input, output, session) {
                                           "scatter" = "Scatter Plot")),
           paste("**Variabel Utama:** ", input$plot_var1),
           if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
-            paste("**Variabel Kedua:** ", input$plot_var2),
+            paste("**Variabel Kedua:** ", input$plot_var2)
+          },
           "",
           "## Statistik Deskriptif",
           "",
@@ -2407,20 +2603,27 @@ server <- function(input, output, session) {
               "",
               "#### Karakteristik Distribusi:",
               if(abs(plot_stats$Nilai[plot_stats$Statistik == "Skewness"]) < 0.5) {
-                "- **Bentuk:** Distribusi relatif simetris (skewness ≈ 0)" else if(plot_stats$Nilai[plot_stats$Statistik == "Skewness"] > 0.5) {
-                "- **Bentuk:** Distribusi skew ke kanan (positive skew)" else {
-                "- **Bentuk:** Distribusi skew ke kiri (negative skew)",
+                "- **Bentuk:** Distribusi relatif simetris (skewness ≈ 0)"
+              } else if(plot_stats$Nilai[plot_stats$Statistik == "Skewness"] > 0.5) {
+                "- **Bentuk:** Distribusi skew ke kanan (positive skew)"
+              } else {
+                "- **Bentuk:** Distribusi skew ke kiri (negative skew)"
+              },
               "",
               if(plot_stats$Nilai[plot_stats$Statistik == "Kurtosis"] > 3) {
-                "- **Kurtosis:** Distribusi leptokurtik (lebih runcing dari normal)" else if(plot_stats$Nilai[plot_stats$Statistik == "Kurtosis"] < 3) {
-                "- **Kurtosis:** Distribusi platykurtik (lebih datar dari normal)" else {
-                "- **Kurtosis:** Distribusi mesokurtik (mendekati normal)",
+                "- **Kurtosis:** Distribusi leptokurtik (lebih runcing dari normal)"
+              } else if(plot_stats$Nilai[plot_stats$Statistik == "Kurtosis"] < 3) {
+                "- **Kurtosis:** Distribusi platykurtik (lebih datar dari normal)"
+              } else {
+                "- **Kurtosis:** Distribusi mesokurtik (mendekati normal)"
+              },
               "",
               "#### Implikasi:",
               "- Histogram membantu mengidentifikasi pola distribusi data",
               "- Dapat mendeteksi adanya outliers atau nilai ekstrem",
               "- Memberikan panduan untuk pemilihan uji statistik yang tepat"
-            ) else if(input$plot_type == "box") {
+            )
+          } else if(input$plot_type == "box") {
             paste(
               "### Analisis Box Plot",
               "",
@@ -2438,7 +2641,8 @@ server <- function(input, output, session) {
               "- Menunjukkan distribusi dan variabilitas data",
               "- Titik di luar whiskers mengindikasikan potensi outliers",
               "- Bentuk box memberikan informasi tentang skewness data"
-            ) else if(input$plot_type == "scatter") {
+            )
+          } else if(input$plot_type == "scatter") {
             paste(
               "### Analisis Scatter Plot",
               "",
@@ -2448,7 +2652,8 @@ server <- function(input, output, session) {
               "- Visualisasi membantu mengidentifikasi pola hubungan linear atau non-linear",
               "- Garis regresi (jika ada) menunjukkan tren hubungan",
               "- Sebaran titik mengindikasikan kekuatan hubungan"
-            ),
+            )
+          },
           scatter_content,
           "",
           "## Kesimpulan",
@@ -2457,13 +2662,15 @@ server <- function(input, output, session) {
           if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
             paste("Berdasarkan analisis scatter plot, terdapat", 
                   if(abs(correlation) >= 0.5) "hubungan yang bermakna" else "hubungan yang lemah",
-                  "antara kedua variabel yang dianalisis.") else {
+                  "antara kedua variabel yang dianalisis.")
+          } else {
             paste("Berdasarkan analisis visualisasi, variabel", input$plot_var1, 
                   "menunjukkan karakteristik distribusi yang", 
                   if(abs(plot_stats$Nilai[plot_stats$Statistik == "Skewness"]) < 0.5) "relatif normal" else "tidak simetris",
                   "dengan variabilitas", 
                   if(plot_stats$Nilai[plot_stats$Statistik == "SD"] / plot_stats$Nilai[plot_stats$Statistik == "Mean"] > 0.3) "tinggi" else "rendah",
-                  "."),
+                  ".")
+          },
           "",
           "### Rekomendasi Analisis Lanjutan",
           "1. Pertimbangkan transformasi data jika distribusi sangat tidak normal",
@@ -2474,8 +2681,11 @@ server <- function(input, output, session) {
         )
         
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -2496,7 +2706,8 @@ server <- function(input, output, session) {
         labs(title = "Correlation Heatmap", x = "", y = "") +
         coord_fixed()
       
-      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6),
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
     contentType = "image/jpeg"
   )
   
@@ -2537,18 +2748,26 @@ server <- function(input, output, session) {
           paste("**Korelasi positif tertinggi:** ", round(cor_matrix[max_cor], 3)),
           paste("- Antara variabel: **", rownames(cor_matrix)[max_cor[1]], "** dan **", colnames(cor_matrix)[max_cor[2]], "**"),
           if(abs(cor_matrix[max_cor]) >= 0.7) {
-            "- Interpretasi: Hubungan positif yang sangat kuat" else if(abs(cor_matrix[max_cor]) >= 0.5) {
-            "- Interpretasi: Hubungan positif yang kuat"   else if(abs(cor_matrix[max_cor]) >= 0.3) {
-            "- Interpretasi: Hubungan positif yang sedang" else {
-            "- Interpretasi: Hubungan positif yang lemah",
+            "- Interpretasi: Hubungan positif yang sangat kuat"
+          } else if(abs(cor_matrix[max_cor]) >= 0.5) {
+            "- Interpretasi: Hubungan positif yang kuat"  
+          } else if(abs(cor_matrix[max_cor]) >= 0.3) {
+            "- Interpretasi: Hubungan positif yang sedang"
+          } else {
+            "- Interpretasi: Hubungan positif yang lemah"
+          },
           "",
           paste("**Korelasi negatif tertinggi:** ", round(cor_matrix[min_cor], 3)),
           paste("- Antara variabel: **", rownames(cor_matrix)[min_cor[1]], "** dan **", colnames(cor_matrix)[min_cor[2]], "**"),
           if(abs(cor_matrix[min_cor]) >= 0.7) {
-            "- Interpretasi: Hubungan negatif yang sangat kuat" else if(abs(cor_matrix[min_cor]) >= 0.5) {
-            "- Interpretasi: Hubungan negatif yang kuat" else if(abs(cor_matrix[min_cor]) >= 0.3) {
-            "- Interpretasi: Hubungan negatif yang sedang" else {
-            "- Interpretasi: Hubungan negatif yang lemah",
+            "- Interpretasi: Hubungan negatif yang sangat kuat"
+          } else if(abs(cor_matrix[min_cor]) >= 0.5) {
+            "- Interpretasi: Hubungan negatif yang kuat"
+          } else if(abs(cor_matrix[min_cor]) >= 0.3) {
+            "- Interpretasi: Hubungan negatif yang sedang"
+          } else {
+            "- Interpretasi: Hubungan negatif yang lemah"
+          },
           "",
           "### Interpretasi Umum",
           "",
@@ -2568,13 +2787,17 @@ server <- function(input, output, session) {
           "",
           "### Untuk Regresi Linear",
           if(any(abs(cor_matrix) >= 0.8, na.rm = TRUE)) {
-            "⚠️ **Peringatan Multikolinearitas:** Ditemukan korelasi sangat tinggi (≥0.8) yang dapat menyebabkan masalah dalam analisis regresi." else {
-            "✅ **Tidak ada masalah multikolinearitas serius** untuk analisis regresi.",
+            "⚠️ **Peringatan Multikolinearitas:** Ditemukan korelasi sangat tinggi (≥0.8) yang dapat menyebabkan masalah dalam analisis regresi."
+          } else {
+            "✅ **Tidak ada masalah multikolinearitas serius** untuk analisis regresi."
+          },
           "",
           "### Untuk Feature Selection",
           if(any(abs(cor_matrix) >= 0.7, na.rm = TRUE)) {
-            "Pertimbangkan untuk menghilangkan salah satu variabel dari pasangan yang berkorelasi sangat tinggi." else {
-            "Semua variabel dapat dipertahankan untuk analisis lebih lanjut.",
+            "Pertimbangkan untuk menghilangkan salah satu variabel dari pasangan yang berkorelasi sangat tinggi."
+          } else {
+            "Semua variabel dapat dipertahankan untuk analisis lebih lanjut."
+          },
           "",
           "## Kesimpulan",
           "Analisis korelasi mengidentifikasi pola hubungan antar variabel yang memberikan insight penting tentang struktur data dan dapat digunakan untuk pemilihan variabel dalam analisis lanjutan.",
@@ -2587,8 +2810,11 @@ server <- function(input, output, session) {
           sep = "\n"
         )
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -2612,7 +2838,8 @@ server <- function(input, output, session) {
         addLegend(pal = pal, values = ~get(input$map_var), title = input$map_var) %>%
         setView(lng = mean(sovi_data$LONGITUDE), lat = mean(sovi_data$LATITUDE), zoom = 8)
       
-      mapshot(map, file = file, vwidth = 800, vheight = 600),
+      mapshot(map, file = file, vwidth = 800, vheight = 600)
+    },
     contentType = "image/jpeg"
   )
   
@@ -2714,8 +2941,11 @@ server <- function(input, output, session) {
           sep = "\n"
         )
         writeLines(simple_rmd, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -2744,18 +2974,21 @@ server <- function(input, output, session) {
         geom_histogram(bins = 30, fill = "steelblue", alpha = 0.7) +
         theme_minimal() +
         labs(title = paste("Histogram dari", input$plot_var1),
-             x = input$plot_var1, y = "Frekuensi") else if(input$plot_type == "box") {
+             x = input$plot_var1, y = "Frekuensi")
+    } else if(input$plot_type == "box") {
       plot <- ggplot(sovi_data, aes_string(y = input$plot_var1)) +
         geom_boxplot(fill = "lightblue", alpha = 0.7) +
         theme_minimal() +
         labs(title = paste("Box Plot dari", input$plot_var1),
-             y = input$plot_var1) else if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
+             y = input$plot_var1)
+    } else if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
       plot <- ggplot(sovi_data, aes_string(x = input$plot_var1, y = input$plot_var2)) +
         geom_point(alpha = 0.6, color = "steelblue") +
         geom_smooth(method = "lm", se = TRUE, color = "red") +
         theme_minimal() +
         labs(title = paste("Scatter Plot:", input$plot_var1, "vs", input$plot_var2),
              x = input$plot_var1, y = input$plot_var2)
+    }
     ggsave(plot_file, plot = plot, device = "jpeg", width = 8, height = 6)
     
     # Simpan peta
@@ -2821,11 +3054,14 @@ server <- function(input, output, session) {
       "\n## Interpretasi Visualisasi\n",
       if(input$plot_type == "hist") {
         paste("Histogram menunjukkan distribusi frekuensi dari variabel ", input$plot_var1,
-              ". Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.") else if(input$plot_type == "box") {
+              ". Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.")
+      } else if(input$plot_type == "box") {
         paste("Box plot menampilkan ringkasan lima angka (minimum, Q1, median, Q3, maksimum) ",
-              "dari variabel ", input$plot_var1, ". Titik-titik di luar whiskers menunjukkan potensi outliers.") else if(input$plot_type == "scatter") {
+              "dari variabel ", input$plot_var1, ". Titik-titik di luar whiskers menunjukkan potensi outliers.")
+      } else if(input$plot_type == "scatter") {
         paste("Scatter plot menunjukkan hubungan antara ", input$plot_var1, " dan ", input$plot_var2,
-              ". Garis regresi membantu memvisualisasikan tren hubungan linear antara kedua variabel."),
+              ". Garis regresi membantu memvisualisasikan tren hubungan linear antara kedua variabel.")
+      },
       "\n\n",
       "## Peta Geografis\n",
       "Peta berikut menunjukkan distribusi spasial dari variabel ", input$map_var, ".\n",
@@ -2857,10 +3093,14 @@ server <- function(input, output, session) {
           output_file = file,
           clean = TRUE,
           envir = new.env(parent = globalenv())
-        ),
+        )
+      },
       error = function(e) {
         stop("Failed to generate Word document: ", e$message)
-    ), contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+      }
+    )
+    
+  }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
   
   # --- Uji Asumsi Tab ---
   output$download_normality_test_pdf <- downloadHandler(
@@ -2893,6 +3133,7 @@ server <- function(input, output, session) {
         group_data <- sovi_data[[input$group_var]]
         if(is.numeric(group_data)) {
           group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
         complete_cases <- complete.cases(var_data, group_data)
         var_data_hom <- var_data[complete_cases]
         group_data_hom <- group_data[complete_cases]
@@ -2912,10 +3153,13 @@ server <- function(input, output, session) {
           "",
           "### Interpretasi Homogenitas",
           if(levene_test$`Pr(>F)`[1] > 0.05) {
-            "Berdasarkan uji Levene, tidak terdapat perbedaan varians yang signifikan antar kelompok (p > 0.05). Asumsi homogenitas varians terpenuhi." else {
-            "Berdasarkan uji Levene, terdapat perbedaan varians yang signifikan antar kelompok (p < 0.05). Asumsi homogenitas varians tidak terpenuhi.",
+            "Berdasarkan uji Levene, tidak terdapat perbedaan varians yang signifikan antar kelompok (p > 0.05). Asumsi homogenitas varians terpenuhi."
+          } else {
+            "Berdasarkan uji Levene, terdapat perbedaan varians yang signifikan antar kelompok (p < 0.05). Asumsi homogenitas varians tidak terpenuhi."
+          },
           sep = "\n"
         )
+      }
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
@@ -2961,38 +3205,51 @@ server <- function(input, output, session) {
           "",
           "### Interpretasi Normalitas",
           if(shapiro_test$p.value > 0.05) {
-            paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4), "> 0.05), kita gagal menolak H0. Data variabel", input$normality_var, "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%. Hal ini mengindikasikan bahwa asumsi normalitas terpenuhi untuk analisis parametrik.") else {
-            paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4), "< 0.05), kita menolak H0. Data variabel", input$normality_var, "tidak berdistribusi normal pada tingkat signifikansi 5%. Disarankan untuk menggunakan transformasi data atau metode non-parametrik."),
+            paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4), "> 0.05), kita gagal menolak H0. Data variabel", input$normality_var, "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%. Hal ini mengindikasikan bahwa asumsi normalitas terpenuhi untuk analisis parametrik.")
+          } else {
+            paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4), "< 0.05), kita menolak H0. Data variabel", input$normality_var, "tidak berdistribusi normal pada tingkat signifikansi 5%. Disarankan untuk menggunakan transformasi data atau metode non-parametrik.")
+          },
           homogeneity_content,
           "",
           "## Kesimpulan dan Rekomendasi",
           "",
           "### Status Asumsi",
           if(shapiro_test$p.value > 0.05) {
-            "- ✓ Asumsi normalitas: TERPENUHI" else {
-            "- ✗ Asumsi normalitas: TIDAK TERPENUHI",
+            "- ✓ Asumsi normalitas: TERPENUHI"
+          } else {
+            "- ✗ Asumsi normalitas: TIDAK TERPENUHI"
+          },
           if(input$group_var != "None") {
             if(exists("levene_test") && levene_test$`Pr(>F)`[1] > 0.05) {
-              "- ✓ Asumsi homogenitas: TERPENUHI" else if(exists("levene_test")) {
-              "- ✗ Asumsi homogenitas: TIDAK TERPENUHI",
+              "- ✓ Asumsi homogenitas: TERPENUHI"
+            } else if(exists("levene_test")) {
+              "- ✗ Asumsi homogenitas: TIDAK TERPENUHI"
+            }
+          },
           "",
           "### Rekomendasi Analisis",
           if(shapiro_test$p.value > 0.05) {
-            "Karena asumsi normalitas terpenuhi, dapat dilanjutkan dengan uji statistik parametrik seperti t-test, ANOVA, atau regresi linear." else {
-            "Karena asumsi normalitas tidak terpenuhi, disarankan untuk:",
+            "Karena asumsi normalitas terpenuhi, dapat dilanjutkan dengan uji statistik parametrik seperti t-test, ANOVA, atau regresi linear."
+          } else {
+            "Karena asumsi normalitas tidak terpenuhi, disarankan untuk:"
+          },
           if(shapiro_test$p.value <= 0.05) {
             paste(
               "1. Melakukan transformasi data (log, square root, dll.)",
               "2. Menggunakan uji non-parametrik (Mann-Whitney, Kruskal-Wallis, dll.)",
               "3. Meningkatkan ukuran sampel jika memungkinkan",
               sep = "\n"
-            ),
+            )
+          },
           sep = "\n"
         )
         
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -3005,12 +3262,13 @@ server <- function(input, output, session) {
         stat_qq() + stat_qq_line() +
         theme_minimal() +
         labs(title = paste("Q-Q Plot for", input$normality_var))
-      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6),
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
     contentType = "image/jpeg"
   )
   
   output$download_normality_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("normality_interpretation_", Sys.Date(), ".docx") },
+    filename = function() { paste0("normality_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
       req(input$normality_var)
       var_data <- sovi_data[[input$normality_var]]
@@ -3020,10 +3278,12 @@ server <- function(input, output, session) {
       interpretation <- if(shapiro_test$p.value > 0.05) {
         paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
               "), kita gagal menolak H0. Data variabel", input$normality_var, 
-              "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%.") else {
+              "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%.")
+      } else {
         paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
               "), kita menolak H0. Data variabel", input$normality_var, 
               "tidak berdistribusi normal pada tingkat signifikansi 5%.")
+      }
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
@@ -3031,7 +3291,7 @@ server <- function(input, output, session) {
           "---",
           "title: 'Interpretasi Uji Normalitas'",
           "date: '", Sys.Date(), "'",
-          "output: word_document",
+          "output: pdf_document",
           "---",
           "",
           "## Interpretasi Uji Normalitas",
@@ -3040,14 +3300,20 @@ server <- function(input, output, session) {
           sep = "\n"
         )
         writeLines(simple_rmd, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
+    },
+    contentType = "application/pdf"
   )
   
   output$download_homogeneity_test_pdf <- downloadHandler(
-    filename = function() { paste0("homogeneity_test_", Sys.Date(), ".docx") },
+    filename = function() { paste0("homogeneity_test_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$normality_var, input$group_var)
       if(input$group_var != "None") {
@@ -3056,6 +3322,7 @@ server <- function(input, output, session) {
         
         if(is.numeric(group_data)) {
           group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
         
         complete_cases <- complete.cases(var_data, group_data)
         var_data <- var_data[complete_cases]
@@ -3068,7 +3335,20 @@ server <- function(input, output, session) {
           "---",
           "title: 'Homogeneity Test Results'",
           "date: '", Sys.Date(), "'",
-          "output: word_document",
+          "output:",
+          "  pdf_document:",
+          "    latex_engine: pdflatex",
+          "    keep_tex: true",
+          "geometry: margin=1in",
+          "header-includes:",
+          "  - \\usepackage{booktabs}",
+          "  - \\usepackage{longtable}",
+          "  - \\usepackage{caption}",
+          "  - \\usepackage[utf8]{inputenc}",
+          "  - \\usepackage{geometry}",
+          "  - \\geometry{a4paper, margin=1in}",
+          "  - \\usepackage{parskip}",
+          "  - \\setlength{\\parskip}{0.5em}",
           "---",
           "\n# Uji Homogenitas Varians (Levene's Test)\n",
           "**H0:** Varians antar kelompok homogen\n",
@@ -3085,19 +3365,26 @@ server <- function(input, output, session) {
             rmarkdown::render(
               temp_md,
               output_file = file,
-              
+              output_format = "pdf_document",
               clean = TRUE,
               envir = new.env(parent = globalenv())
-            ),
+            )
+          },
           error = function(e) {
-            stop("Failed to generate Word document: ", e$message)
-        ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            stop("Failed to generate PDF: ", e$message)
+          }
+        )
+      }
+    },
+    contentType = "application/pdf"
   )
   
   output$download_homogeneity_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("homogeneity_interpretation_", Sys.Date(), ".docx") },
+    filename = function() { paste0("homogeneity_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$normality_var, input$group_var)
       if(input$group_var != "None") {
@@ -3106,6 +3393,7 @@ server <- function(input, output, session) {
         
         if(is.numeric(group_data)) {
           group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
         
         complete_cases <- complete.cases(var_data, group_data)
         var_data <- var_data[complete_cases]
@@ -3117,17 +3405,32 @@ server <- function(input, output, session) {
         interpretation <- if(p_value > 0.05) {
           paste("Berdasarkan uji Levene (p-value =", round(p_value, 4),
                 "), kita gagal menolak H0. Varians antar kelompok dapat dianggap homogen",
-                "pada tingkat signifikansi 5%.") else {
+                "pada tingkat signifikansi 5%.")
+        } else {
           paste("Berdasarkan uji Levene (p-value =", round(p_value, 4),
                 "), kita menolak H0. Varians antar kelompok tidak homogen",
                 "pada tingkat signifikansi 5%.")
+        }
         
         temp_md <- tempfile(fileext = ".Rmd")
         rmd_content <- paste(
           "---",
           "title: 'Homogeneity Test Interpretation'",
           "date: '", Sys.Date(), "'",
-          "output: word_document",
+          "output:",
+          "  pdf_document:",
+          "    latex_engine: pdflatex",
+          "    keep_tex: true",
+          "geometry: margin=1in",
+          "header-includes:",
+          "  - \\usepackage{booktabs}",
+          "  - \\usepackage{longtable}",
+          "  - \\usepackage{caption}",
+          "  - \\usepackage[utf8]{inputenc}",
+          "  - \\usepackage{geometry}",
+          "  - \\geometry{a4paper, margin=1in}",
+          "  - \\usepackage{parskip}",
+          "  - \\setlength{\\parskip}{0.5em}",
           "---",
           "\n# Interpretasi Uji Homogenitas\n",
           interpretation,
@@ -3141,14 +3444,18 @@ server <- function(input, output, session) {
             rmarkdown::render(
               temp_md,
               output_file = file,
-              
+              output_format = "pdf_document",
               clean = TRUE,
               envir = new.env(parent = globalenv())
-            ),
+            )
+          },
           error = function(e) {
-            stop("Failed to generate Word document: ", e$message)
-        ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            stop("Failed to generate PDF: ", e$message)
+          }
+        )
+      }
+    },
+    contentType = "application/pdf"
   )
   
   output$download_asumsi_complete <- downloadHandler(
@@ -3164,9 +3471,11 @@ server <- function(input, output, session) {
       shapiro_test <- shapiro.test(var_data)
       normality_interpretation <- if(shapiro_test$p.value > 0.05) {
         paste("Uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
-              "): Data dianggap berdistribusi normal.") else {
+              "): Data dianggap berdistribusi normal.")
+      } else {
         paste("Uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
               "): Data tidak berdistribusi normal.")
+      }
       
       # Simpan Q-Q plot
       qq_plot_file <- file.path(tempdir(), "qq_plot.jpg")
@@ -3183,6 +3492,7 @@ server <- function(input, output, session) {
         group_data <- sovi_data[[input$group_var]]
         if(is.numeric(group_data)) {
           group_data <- cut(group_data, breaks = 3, labels = c("Rendah", "Sedang", "Tinggi"))
+        }
         complete_cases <- complete.cases(var_data, group_data)
         var_data <- var_data[complete_cases]
         group_data <- group_data[complete_cases]
@@ -3192,9 +3502,12 @@ server <- function(input, output, session) {
           "\n## Uji Homogenitas Varians\n",
           "Uji Levene (p-value =", round(p_value, 4), "): ",
           if(p_value > 0.05) {
-            "Varians antar kelompok dianggap homogen." else {
+            "Varians antar kelompok dianggap homogen."
+          } else {
             "Varians antar kelompok tidak homogen."
+          }
         )
+      }
       
       # Konten Rmd
       rmd_content <- paste(
@@ -3222,13 +3535,17 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
           stop("Failed to generate Word document: ", e$message)
-      ), contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
+        }
+      )
+      
+    }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" 
   )
   
   # --- Statistik Inferensia Tab ---
@@ -3250,9 +3567,12 @@ server <- function(input, output, session) {
           hypothesis_value = input$ttest1_mu,
           result = ttest_result,
           interpretation = if(ttest_result$p.value < 0.05) {
-            paste("Terdapat perbedaan signifikan antara rata-rata sampel (", round(ttest_result$estimate, 4), ") dengan nilai hipotesis (", input$ttest1_mu, ") pada tingkat signifikansi 5%.") else {
+            paste("Terdapat perbedaan signifikan antara rata-rata sampel (", round(ttest_result$estimate, 4), ") dengan nilai hipotesis (", input$ttest1_mu, ") pada tingkat signifikansi 5%.")
+          } else {
             paste("Tidak terdapat perbedaan signifikan antara rata-rata sampel (", round(ttest_result$estimate, 4), ") dengan nilai hipotesis (", input$ttest1_mu, ") pada tingkat signifikansi 5%.")
+          }
         )
+      }
       
       # Two-sample t-test  
       if(values$ttest2_done && !is.null(input$ttest2_var) && !is.null(input$ttest2_group)) {
@@ -3261,6 +3581,7 @@ server <- function(input, output, session) {
         if(is.numeric(group_data)) {
           median_val <- median(group_data, na.rm = TRUE)
           group_data <- ifelse(group_data <= median_val, "Low", "High")
+        }
         unique_groups <- unique(group_data[!is.na(group_data)])
         if(length(unique_groups) >= 2) {
           group1_data <- var_data[group_data == unique_groups[1] & !is.na(var_data) & !is.na(group_data)]
@@ -3274,9 +3595,13 @@ server <- function(input, output, session) {
             groups = unique_groups,
             result = ttest_result,
             interpretation = if(ttest_result$p.value < 0.05) {
-              paste("Terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada tingkat signifikansi 5%.") else {
+              paste("Terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada tingkat signifikansi 5%.")
+            } else {
               paste("Tidak terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada tingkat signifikansi 5%.")
+            }
           )
+        }
+      }
       
       # ANOVA tests
       if(values$anova1_done && !is.null(input$anova1_dep) && !is.null(input$anova1_indep)) {
@@ -3284,6 +3609,7 @@ server <- function(input, output, session) {
         indep_var <- sovi_data[[input$anova1_indep]]
         if(is.numeric(indep_var)) {
           indep_var <- cut(indep_var, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
         complete_cases <- complete.cases(dep_var, indep_var)
         dep_var <- dep_var[complete_cases]
         indep_var <- indep_var[complete_cases]
@@ -3296,9 +3622,12 @@ server <- function(input, output, session) {
           independent = input$anova1_indep,
           result = anova_summary,
           interpretation = if(anova_summary[[1]]$`Pr(>F)`[1] < 0.05) {
-            paste("Terdapat perbedaan rata-rata yang signifikan antar kelompok", input$anova1_indep, "pada tingkat signifikansi 5%.") else {
+            paste("Terdapat perbedaan rata-rata yang signifikan antar kelompok", input$anova1_indep, "pada tingkat signifikansi 5%.")
+          } else {
             paste("Tidak terdapat perbedaan rata-rata yang signifikan antar kelompok", input$anova1_indep, "pada tingkat signifikansi 5%.")
+          }
         )
+      }
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
@@ -3346,7 +3675,8 @@ server <- function(input, output, session) {
                                   "### Interpretasi",
                                   test$interpretation,
                                   ""
-            ) else if(test_name == "ttest2") {
+            )
+          } else if(test_name == "ttest2") {
             content_sections <- c(content_sections,
                                   paste("## ", test$title),
                                   "",
@@ -3366,7 +3696,8 @@ server <- function(input, output, session) {
                                   "### Interpretasi",
                                   test$interpretation,
                                   ""
-            ) else if(test_name == "anova1") {
+            )
+          } else if(test_name == "anova1") {
             content_sections <- c(content_sections,
                                   paste("## ", test$title),
                                   "",
@@ -3386,6 +3717,8 @@ server <- function(input, output, session) {
                                   test$interpretation,
                                   ""
             )
+          }
+        }
         
         # Add conclusion
         content_sections <- c(content_sections,
@@ -3394,10 +3727,15 @@ server <- function(input, output, session) {
                               if(length(tests_performed) > 0) {
                                 significant_tests <- sapply(tests_performed, function(test) {
                                   if(test$title == "One-Sample T-Test" || test$title == "Two-Sample Independent T-Test") {
-                                    test$result$p.value < 0.05 else if(test$title == "One-Way ANOVA") {
-                                    test$result[[1]]$`Pr(>F)`[1] < 0.05)
-                                paste("Dari", length(tests_performed), "uji statistik yang dilakukan,", sum(significant_tests), "uji menunjukkan hasil yang signifikan pada tingkat α = 0.05.") else {
-                                "Tidak ada uji statistik yang berhasil dilakukan. Pastikan untuk menjalankan uji statistik terlebih dahulu.",
+                                    test$result$p.value < 0.05
+                                  } else if(test$title == "One-Way ANOVA") {
+                                    test$result[[1]]$`Pr(>F)`[1] < 0.05
+                                  }
+                                })
+                                paste("Dari", length(tests_performed), "uji statistik yang dilakukan,", sum(significant_tests), "uji menunjukkan hasil yang signifikan pada tingkat α = 0.05.")
+                              } else {
+                                "Tidak ada uji statistik yang berhasil dilakukan. Pastikan untuk menjalankan uji statistik terlebih dahulu."
+                              },
                               "",
                               "### Rekomendasi",
                               "Berdasarkan hasil uji statistik, disarankan untuk:",
@@ -3408,14 +3746,20 @@ server <- function(input, output, session) {
         
         rmd_content <- paste(content_sections, collapse = "\n")
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_ttest2_pdf <- downloadHandler(
-    filename = function() { paste0("ttest2_", Sys.Date(), ".docx") },
+    filename = function() { paste0("ttest2_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$ttest2_var, input$ttest2_group, values$ttest2_done)
       var_data <- sovi_data[[input$ttest2_var]]
@@ -3424,6 +3768,7 @@ server <- function(input, output, session) {
       if(is.numeric(group_data)) {
         median_val <- median(group_data, na.rm = TRUE)
         group_data <- ifelse(group_data <= median_val, "Low", "High")
+      }
       
       unique_groups <- unique(group_data[!is.na(group_data)])
       if(length(unique_groups) >= 2) {
@@ -3436,7 +3781,20 @@ server <- function(input, output, session) {
           "---",
           "title: 'Two-Sample T-Test Results'",
           "date: '", Sys.Date(), "'",
-          "output: word_document",
+          "output:",
+          "  pdf_document:",
+          "    latex_engine: pdflatex",
+          "    keep_tex: true",
+          "geometry: margin=1in",
+          "header-includes:",
+          "  - \\usepackage{booktabs}",
+          "  - \\usepackage{longtable}",
+          "  - \\usepackage{caption}",
+          "  - \\usepackage[utf8]{inputenc}",
+          "  - \\usepackage{geometry}",
+          "  - \\geometry{a4paper, margin=1in}",
+          "  - \\usepackage{parskip}",
+          "  - \\setlength{\\parskip}{0.5em}",
           "---",
           "\n# Two-Sample Independent T-Test\n",
           "Variable: ", input$ttest2_var, "\n",
@@ -3458,28 +3816,37 @@ server <- function(input, output, session) {
             rmarkdown::render(
               temp_md,
               output_file = file,
-              
+              output_format = "pdf_document",
               clean = TRUE,
               envir = new.env(parent = globalenv())
-            ),
+            )
+          },
           error = function(e) {
-            stop("Failed to generate Word document: ", e$message)
-        ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            stop("Failed to generate PDF: ", e$message)
+          }
+        )
+      }
+    },
+    contentType = "application/pdf"
   )
   
   output$download_prop1_pdf <- downloadHandler(
-    filename = function() { paste0("prop1_", Sys.Date(), ".docx") },
+    filename = function() { paste0("prop1_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$prop1_var, input$prop1_p, values$prop1_done)
       var_data <- sovi_data[[input$prop1_var]]
       
       if(is.numeric(var_data)) {
         median_val <- median(var_data, na.rm = TRUE)
-        var_data <- ifelse(var_data > median_val, 1, 0) else {
+        var_data <- ifelse(var_data > median_val, 1, 0)
+      } else {
         unique_vals <- unique(var_data[!is.na(var_data)])
         var_data <- ifelse(var_data == unique_vals[1], 1, 0)
+      }
       
       var_data <- var_data[!is.na(var_data)]
       successes <- sum(var_data)
@@ -3491,8 +3858,21 @@ server <- function(input, output, session) {
         "---",
         "title: 'One-Sample Proportion Test Results'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# One-Sample Proportion Test\n",
         "Variable: ", input$prop1_var, "\n",
         "Hypothesized proportion: ", input$prop1_p, "\n\n",
@@ -3513,19 +3893,25 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_var1_pdf <- downloadHandler(
-    filename = function() { paste0("var1_", Sys.Date(), ".docx") },
+    filename = function() { paste0("var1_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$var1_var, input$var1_sigma, values$var1_done)
       var_data <- sovi_data[[input$var1_var]]
@@ -3541,8 +3927,21 @@ server <- function(input, output, session) {
         "---",
         "title: 'One-Sample Variance Test Results'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# One-Sample Variance Test (Chi-square)\n",
         "Variable: ", input$var1_var, "\n",
         "Hypothesized variance: ", input$var1_sigma, "\n\n",
@@ -3563,19 +3962,25 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_anova1_pdf <- downloadHandler(
-    filename = function() { paste0("anova1_", Sys.Date(), ".docx") },
+    filename = function() { paste0("anova1_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$anova1_dep, input$anova1_indep, values$anova1_done)
       dep_var <- sovi_data[[input$anova1_dep]]
@@ -3583,6 +3988,7 @@ server <- function(input, output, session) {
       
       if(is.numeric(indep_var)) {
         indep_var <- cut(indep_var, breaks = 3, labels = c("Low", "Medium", "High"))
+      }
       
       complete_cases <- complete.cases(dep_var, indep_var)
       dep_var <- dep_var[complete_cases]
@@ -3596,8 +4002,21 @@ server <- function(input, output, session) {
         "---",
         "title: 'One-Way ANOVA Results'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# One-Way ANOVA\n",
         "Dependent Variable: ", input$anova1_dep, "\n",
         "Independent Variable: ", input$anova1_indep, "\n\n",
@@ -3615,19 +4034,25 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_anova2_pdf <- downloadHandler(
-    filename = function() { paste0("anova2_", Sys.Date(), ".docx") },
+    filename = function() { paste0("anova2_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(input$anova2_dep, input$anova2_indep1, input$anova2_indep2, values$anova2_done)
       dep_var <- sovi_data[[input$anova2_dep]]
@@ -3636,8 +4061,10 @@ server <- function(input, output, session) {
       
       if(is.numeric(indep_var1)) {
         indep_var1 <- cut(indep_var1, breaks = 2, labels = c("Low", "High"))
+      }
       if(is.numeric(indep_var2)) {
         indep_var2 <- cut(indep_var2, breaks = 2, labels = c("Low", "High"))
+      }
       
       complete_cases <- complete.cases(dep_var, indep_var1, indep_var2)
       dep_var <- dep_var[complete_cases]
@@ -3652,8 +4079,21 @@ server <- function(input, output, session) {
         "---",
         "title: 'Two-Way ANOVA Results'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# Two-Way ANOVA\n",
         "Dependent Variable: ", input$anova2_dep, "\n",
         "Independent Variables: ", input$anova2_indep1, ", ", input$anova2_indep2, "\n\n",
@@ -3674,14 +4114,17 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_inferensia_complete <- downloadHandler(
@@ -3709,10 +4152,12 @@ server <- function(input, output, session) {
         ttest1_interpretation <- if(ttest_result$p.value < 0.05) {
           paste("Dengan p-value =", round(ttest_result$p.value, 4),
                 "< 0.05, kita menolak H0. Terdapat perbedaan signifikan antara rata-rata sampel",
-                "dengan nilai hipotesis", input$ttest1_mu, ".") else {
+                "dengan nilai hipotesis", input$ttest1_mu, ".")
+        } else {
           paste("Dengan p-value =", round(ttest_result$p.value, 4),
                 "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan antara rata-rata sampel",
                 "dengan nilai hipotesis", input$ttest1_mu, ".")
+        }
         rmd_content <- paste(rmd_content,
                              "## One-Sample T-Test\n",
                              "Variabel: ", input$ttest1_var, "\n",
@@ -3720,6 +4165,7 @@ server <- function(input, output, session) {
                              "P-value: ", round(ttest_result$p.value, 4), "\n",
                              ttest1_interpretation, "\n",
                              sep = "\n")
+      }
       
       if(values$ttest2_done) {
         req(input$ttest2_var, input$ttest2_group)
@@ -3728,6 +4174,7 @@ server <- function(input, output, session) {
         if(is.numeric(group_data)) {
           median_val <- median(group_data, na.rm = TRUE)
           group_data <- ifelse(group_data <= median_val, "Rendah", "Tinggi")
+        }
         unique_groups <- unique(group_data[!is.na(group_data)])
         if(length(unique_groups) >= 2) {
           group1_data <- var_data[group_data == unique_groups[1] & !is.na(var_data) & !is.na(group_data)]
@@ -3736,25 +4183,31 @@ server <- function(input, output, session) {
           ttest2_interpretation <- if(ttest_result$p.value < 0.05) {
             paste("Dengan p-value =", round(ttest_result$p.value, 4),
                   "< 0.05, kita menolak H0. Terdapat perbedaan signifikan rata-rata",
-                  input$ttest2_var, "antara kelompok", unique_groups[1], "dan", unique_groups[2], ".") else {
+                  input$ttest2_var, "antara kelompok", unique_groups[1], "dan", unique_groups[2], ".")
+          } else {
             paste("Dengan p-value =", round(ttest_result$p.value, 4),
                   "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan rata-rata",
                   input$ttest2_var, "antara kelompok", unique_groups[1], "dan", unique_groups[2], ".")
+          }
           rmd_content <- paste(rmd_content,
                                "## Two-Sample T-Test\n",
                                "Variabel: ", input$ttest2_var, "\nKelompok: ", input$ttest2_group, "\n",
                                "P-value: ", round(ttest_result$p.value, 4), "\n",
                                ttest2_interpretation, "\n",
                                sep = "\n")
+        }
+      }
       
       if(values$prop1_done) {
         req(input$prop1_var, input$prop1_p)
         var_data <- sovi_data[[input$prop1_var]]
         if(is.numeric(var_data)) {
           median_val <- median(var_data, na.rm = TRUE)
-          var_data <- ifelse(var_data > median_val, 1, 0) else {
+          var_data <- ifelse(var_data > median_val, 1, 0)
+        } else {
           unique_vals <- unique(var_data[!is.na(var_data)])
           var_data <- ifelse(var_data == unique_vals[1], 1, 0)
+        }
         var_data <- var_data[!is.na(var_data)]
         successes <- sum(var_data)
         n <- length(var_data)
@@ -3762,10 +4215,12 @@ server <- function(input, output, session) {
         prop1_interpretation <- if(prop_test$p.value < 0.05) {
           paste("Dengan p-value =", round(prop_test$p.value, 4),
                 "< 0.05, kita menolak H0. Proporsi sampel berbeda signifikan dengan",
-                "proporsi hipotesis", input$prop1_p, ".") else {
+                "proporsi hipotesis", input$prop1_p, ".")
+        } else {
           paste("Dengan p-value =", round(prop_test$p.value, 4),
                 "> 0.05, kita gagal menolak H0. Proporsi sampel tidak berbeda signifikan dengan",
                 "proporsi hipotesis", input$prop1_p, ".")
+        }
         rmd_content <- paste(rmd_content,
                              "## One-Sample Proportion Test\n",
                              "Variabel: ", input$prop1_var, "\n",
@@ -3773,6 +4228,7 @@ server <- function(input, output, session) {
                              "P-value: ", round(prop_test$p.value, 4), "\n",
                              prop1_interpretation, "\n",
                              sep = "\n")
+      }
       
       if(values$var1_done) {
         req(input$var1_var, input$var1_sigma)
@@ -3785,10 +4241,12 @@ server <- function(input, output, session) {
         var1_interpretation <- if(p_value < 0.05) {
           paste("Dengan p-value =", round(p_value, 4),
                 "< 0.05, kita menolak H0. Varians sampel berbeda signifikan dengan",
-                "varians hipotesis", input$var1_sigma, ".") else {
+                "varians hipotesis", input$var1_sigma, ".")
+        } else {
           paste("Dengan p-value =", round(p_value, 4),
                 "> 0.05, kita gagal menolak H0. Varians sampel tidak berbeda signifikan dengan",
                 "varians hipotesis", input$var1_sigma, ".")
+        }
         rmd_content <- paste(rmd_content,
                              "## One-Sample Variance Test\n",
                              "Variabel: ", input$var1_var, "\n",
@@ -3796,6 +4254,7 @@ server <- function(input, output, session) {
                              "P-value: ", round(p_value, 4), "\n",
                              var1_interpretation, "\n",
                              sep = "\n")
+      }
       
       if(values$anova1_done) {
         req(input$anova1_dep, input$anova1_indep)
@@ -3803,6 +4262,7 @@ server <- function(input, output, session) {
         indep_var <- sovi_data[[input$anova1_indep]]
         if(is.numeric(indep_var)) {
           indep_var <- cut(indep_var, breaks = 3, labels = c("Rendah", "Sedang", "Tinggi"))
+        }
         complete_cases <- complete.cases(dep_var, indep_var)
         dep_var <- dep_var[complete_cases]
         indep_var <- indep_var[complete_cases]
@@ -3812,10 +4272,12 @@ server <- function(input, output, session) {
         anova1_interpretation <- if(p_value < 0.05) {
           paste("Dengan p-value =", round(p_value, 4),
                 "< 0.05, kita menolak H0. Terdapat perbedaan signifikan rata-rata",
-                input$anova1_dep, "antar kelompok", input$anova1_indep, ".") else {
+                input$anova1_dep, "antar kelompok", input$anova1_indep, ".")
+        } else {
           paste("Dengan p-value =", round(p_value, 4),
                 "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan rata-rata",
                 input$anova1_dep, "antar kelompok", input$anova1_indep, ".")
+        }
         rmd_content <- paste(rmd_content,
                              "## One-Way ANOVA\n",
                              "Variabel Dependen: ", input$anova1_dep, "\n",
@@ -3823,6 +4285,7 @@ server <- function(input, output, session) {
                              "P-value: ", round(p_value, 4), "\n",
                              anova1_interpretation, "\n",
                              sep = "\n")
+      }
       
       if(values$anova2_done) {
         req(input$anova2_dep, input$anova2_indep1, input$anova2_indep2)
@@ -3831,8 +4294,10 @@ server <- function(input, output, session) {
         indep_var2 <- sovi_data[[input$anova2_indep2]]
         if(is.numeric(indep_var1)) {
           indep_var1 <- cut(indep_var1, breaks = 2, labels = c("Rendah", "Tinggi"))
+        }
         if(is.numeric(indep_var2)) {
           indep_var2 <- cut(indep_var2, breaks = 2, labels = c("Rendah", "Tinggi"))
+        }
         complete_cases <- complete.cases(dep_var, indep_var1, indep_var2)
         dep_var <- dep_var[complete_cases]
         indep_var1 <- indep_var1[complete_cases]
@@ -3854,6 +4319,7 @@ server <- function(input, output, session) {
                              "Variabel Independen: ", input$anova2_indep1, ", ", input$anova2_indep2, "\n",
                              anova2_interpretation, "\n",
                              sep = "\n")
+      }
       
       writeLines(rmd_content, temp_md)
       
@@ -3862,13 +4328,17 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ), contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+      
+    }, contentType = "application/pdf" )
   
   # --- Regresi Linear Berganda Tab ---
   output$download_regression_summary_pdf <- downloadHandler(
@@ -3906,18 +4376,23 @@ server <- function(input, output, session) {
           "",
           "### Interpretasi VIF",
           if(any(vif_result > 10)) {
-            paste("⚠️ **Peringatan:** Terdeteksi multikolinearitas tinggi (VIF > 10) pada variabel:", paste(names(vif_result[vif_result > 10]), collapse = ", ")) else if(any(vif_result > 5)) {
-            paste("⚠️ **Perhatian:** Terdeteksi multikolinearitas sedang (VIF > 5) pada variabel:", paste(names(vif_result[vif_result > 5]), collapse = ", ")) else {
-            "✅ **Baik:** Tidak ada masalah multikolinearitas yang serius (semua VIF < 5)",
+            paste("⚠️ **Peringatan:** Terdeteksi multikolinearitas tinggi (VIF > 10) pada variabel:", paste(names(vif_result[vif_result > 10]), collapse = ", "))
+          } else if(any(vif_result > 5)) {
+            paste("⚠️ **Perhatian:** Terdeteksi multikolinearitas sedang (VIF > 5) pada variabel:", paste(names(vif_result[vif_result > 5]), collapse = ", "))
+          } else {
+            "✅ **Baik:** Tidak ada masalah multikolinearitas yang serius (semua VIF < 5)"
+          },
           "",
           sep = "\n"
-        ) else {
+        )
+      } else {
         vif_content <- paste(
           "## Uji Multikolinearitas",
           "Tidak dilakukan karena hanya menggunakan satu variabel independen.",
           "",
           sep = "\n"
         )
+      }
       
       # Assumption tests
       residuals <- resid(model)
@@ -3979,8 +4454,10 @@ server <- function(input, output, session) {
           "## Interpretasi Koefisien",
           "",
           if(length(significant_vars) > 0) {
-            paste("### Variabel Signifikan (p < 0.05)") else {
-            "### Tidak Ada Variabel yang Signifikan",
+            paste("### Variabel Signifikan (p < 0.05)")
+          } else {
+            "### Tidak Ada Variabel yang Signifikan"
+          },
           "",
           if(length(significant_vars) > 0) {
             paste(sapply(significant_vars[-1], function(var) { # exclude intercept
@@ -3988,8 +4465,11 @@ server <- function(input, output, session) {
               p_val <- coefficients[var, "Pr(>|t|)"]
               paste("**", var, ":** Setiap peningkatan satu unit", var, 
                     ifelse(coef_val > 0, "meningkatkan", "menurunkan"), 
-                    input$reg_dep, "sebesar", round(abs(coef_val), 4), "unit (p =", round(p_val, 4), ")")), collapse = "\n\n") else {
-            "Tidak ada variabel independen yang memiliki pengaruh signifikan terhadap variabel dependen.",
+                    input$reg_dep, "sebesar", round(abs(coef_val), 4), "unit (p =", round(p_val, 4), ")")
+            }), collapse = "\n\n")
+          } else {
+            "Tidak ada variabel independen yang memiliki pengaruh signifikan terhadap variabel dependen."
+          },
           "",
           vif_content,
           "",
@@ -3998,38 +4478,52 @@ server <- function(input, output, session) {
           "### Normalitas Residual",
           paste("- **Shapiro-Wilk test:** W =", round(shapiro_test$statistic, 4), ", p-value =", round(shapiro_test$p.value, 4)),
           if(shapiro_test$p.value > 0.05) {
-            "- ✅ **Interpretasi:** Residual berdistribusi normal (asumsi terpenuhi)" else {
-            "- ❌ **Interpretasi:** Residual tidak berdistribusi normal (asumsi dilanggar)",
+            "- ✅ **Interpretasi:** Residual berdistribusi normal (asumsi terpenuhi)"
+          } else {
+            "- ❌ **Interpretasi:** Residual tidak berdistribusi normal (asumsi dilanggar)"
+          },
           "",
           "### Homoskedastisitas",
           paste("- **Breusch-Pagan test:** BP =", round(bp_test$statistic, 4), ", p-value =", round(bp_test$p.value, 4)),
           if(bp_test$p.value > 0.05) {
-            "- ✅ **Interpretasi:** Varians residual homogen (asumsi terpenuhi)" else {
-            "- ❌ **Interpretasi:** Terjadi heteroskedastisitas (asumsi dilanggar)",
+            "- ✅ **Interpretasi:** Varians residual homogen (asumsi terpenuhi)"
+          } else {
+            "- ❌ **Interpretasi:** Terjadi heteroskedastisitas (asumsi dilanggar)"
+          },
           "",
           "## Kesimpulan",
           "",
           "### Signifikansi Model",
           if(f_p_value < 0.05) {
-            paste("Model regresi secara keseluruhan **signifikan** (F =", round(f_statistic, 4), ", p <", ifelse(f_p_value < 0.001, "0.001", round(f_p_value, 3)), "). Model dapat menjelaskan", round(r_squared * 100, 2), "% variabilitas dalam", input$reg_dep, ".") else {
-            paste("Model regresi secara keseluruhan **tidak signifikan** (F =", round(f_statistic, 4), ", p =", round(f_p_value, 4), "). Model tidak dapat menjelaskan variabilitas dalam", input$reg_dep, "secara bermakna."),
+            paste("Model regresi secara keseluruhan **signifikan** (F =", round(f_statistic, 4), ", p <", ifelse(f_p_value < 0.001, "0.001", round(f_p_value, 3)), "). Model dapat menjelaskan", round(r_squared * 100, 2), "% variabilitas dalam", input$reg_dep, ".")
+          } else {
+            paste("Model regresi secara keseluruhan **tidak signifikan** (F =", round(f_statistic, 4), ", p =", round(f_p_value, 4), "). Model tidak dapat menjelaskan variabilitas dalam", input$reg_dep, "secara bermakna.")
+          },
           "",
           "### Rekomendasi",
           if(f_p_value < 0.05 && length(significant_vars) > 1) {
-            "1. Model dapat digunakan untuk prediksi dengan memperhatikan variabel signifikan\n2. Lakukan validasi model dengan data baru jika memungkinkan\n3. Pertimbangkan transformasi jika asumsi dilanggar" else {
-            "1. Pertimbangkan penambahan variabel independen lain\n2. Evaluasi spesifikasi model (transformasi, interaksi)\n3. Cek outliers dan influential observations",
+            "1. Model dapat digunakan untuk prediksi dengan memperhatikan variabel signifikan\n2. Lakukan validasi model dengan data baru jika memungkinkan\n3. Pertimbangkan transformasi jika asumsi dilanggar"
+          } else {
+            "1. Pertimbangkan penambahan variabel independen lain\n2. Evaluasi spesifikasi model (transformasi, interaksi)\n3. Cek outliers dan influential observations"
+          },
           sep = "\n"
         )
         
         writeLines(rmd_content, temp_rmd)
-        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE), error = function(e) {
-        stop("Failed to generate Word document: ", e$message)),
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate Word document: ", e$message)
+      })
+    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_regression_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("regression_interpretation_", Sys.Date(), ".docx") },
+    filename = function() { paste0("regression_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(values$regression_done)
       model <- regression_model()
@@ -4056,8 +4550,21 @@ server <- function(input, output, session) {
         "---",
         "title: 'Regression Interpretation'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# Regression Interpretation\n",
         interpretation,
         sep = "\n"
@@ -4070,19 +4577,25 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_vif_test_pdf <- downloadHandler(
-    filename = function() { paste0("vif_test_", Sys.Date(), ".docx") },
+    filename = function() { paste0("vif_test_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(values$regression_done)
       model <- regression_model()
@@ -4092,8 +4605,21 @@ server <- function(input, output, session) {
         "---",
         "title: 'VIF Test Results'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# Variance Inflation Factor (VIF) Test\n",
         sep = "\n"
       )
@@ -4101,8 +4627,10 @@ server <- function(input, output, session) {
       if(length(input$reg_indep) > 1) {
         vif_result <- car::vif(model)
         vif_text <- paste("VIF Values:\n", paste(names(vif_result), ":", round(vif_result, 4), collapse = "\n"), "\n")
-        rmd_content <- paste(rmd_content, vif_text, sep = "\n") else {
+        rmd_content <- paste(rmd_content, vif_text, sep = "\n")
+      } else {
         rmd_content <- paste(rmd_content, "VIF test cannot be performed with only one independent variable.", sep = "\n")
+      }
       
       writeLines(rmd_content, temp_md)
       
@@ -4111,14 +4639,17 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_residual_qq_jpg <- downloadHandler(
@@ -4131,7 +4662,8 @@ server <- function(input, output, session) {
         stat_qq_line() +
         theme_minimal() +
         labs(title = "Q-Q Plot of Residuals")
-      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6),
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
     contentType = "image/jpeg"
   )
   
@@ -4146,13 +4678,17 @@ server <- function(input, output, session) {
         geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
         theme_minimal() +
         labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals")
-      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6),
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
     contentType = "image/jpeg"
   )
   
   output$download_assumption_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("assumption_interpretation_", Sys.Date(), ".docx") },
+    filename = function() { paste0("assumption_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(values$regression_done)
       model <- regression_model()
@@ -4161,32 +4697,53 @@ server <- function(input, output, session) {
         vif_result <- car::vif(model)
         if(any(vif_result > 10)) {
           paste("VIF menunjukkan adanya multikolinearitas signifikan (VIF > 10) untuk variabel:",
-                paste(names(vif_result[vif_result > 10]), collapse = ", "), ".") else {
-          "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10)." else {
+                paste(names(vif_result[vif_result > 10]), collapse = ", "), ".")
+        } else {
+          "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10)."
+        }
+      } else {
         "VIF test tidak dilakukan karena hanya ada satu variabel independen."
+      }
       
       residuals <- resid(model)
       shapiro_test <- shapiro.test(residuals)
       normality_interpretation <- if(shapiro_test$p.value > 0.05) {
         paste("Uji Shapiro-Wilk untuk normalitas residual (p-value =", round(shapiro_test$p.value, 4),
-              "): Residual dianggap berdistribusi normal.") else {
+              "): Residual dianggap berdistribusi normal.")
+      } else {
         paste("Uji Shapiro-Wilk untuk normalitas residual (p-value =", round(shapiro_test$p.value, 4),
               "): Residual tidak berdistribusi normal.")
+      }
       
       bptest_result <- lmtest::bptest(model)
       homoskedasticity_interpretation <- if(bptest_result$p.value > 0.05) {
         paste("Uji Breusch-Pagan untuk homoskedastisitas (p-value =", round(bptest_result$p.value, 4),
-              "): Varians residual homogen.") else {
+              "): Varians residual homogen.")
+      } else {
         paste("Uji Breusch-Pagan untuk homoskedastisitas (p-value =", round(bptest_result$p.value, 4),
               "): Varians residual tidak homogen.")
+      }
       
       temp_md <- tempfile(fileext = ".Rmd")
       rmd_content <- paste(
         "---",
         "title: 'Regression Assumptions Interpretation'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# Interpretasi Uji Asumsi Model\n",
         vif_interpretation, "\n\n",
         normality_interpretation, "\n\n",
@@ -4201,19 +4758,25 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ),
-    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
   )
   
   output$download_regresi_complete <- downloadHandler(
-    filename = function() { paste0("regresi_complete_", Sys.Date(), ".docx") },
+    filename = function() { paste0("regresi_complete_", Sys.Date(), ".pdf") },
     content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
       
       req(values$regression_done)
       temp_md <- tempfile(fileext = ".Rmd")
@@ -4249,32 +4812,54 @@ server <- function(input, output, session) {
         vif_result <- car::vif(model)
         if(any(vif_result > 10)) {
           paste("VIF menunjukkan adanya multikolinearitas signifikan (VIF > 10) untuk variabel: ",
-                paste(names(vif_result[vif_result > 10]), collapse = ", "), ".") else {
-          "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10)." else {
+                paste(names(vif_result[vif_result > 10]), collapse = ", "), ".")
+        } else {
+          "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10)."
+        }
+      } else {
         "Uji VIF tidak dilakukan karena hanya ada satu variabel independen."
+      }
       
       residuals <- resid(model)
       shapiro_test <- shapiro.test(residuals)
       normality_interpretation <- if(shapiro_test$p.value > 0.05) {
         paste("Uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
-              "): Residual dianggap berdistribusi normal.") else {
+              "): Residual dianggap berdistribusi normal.")
+      } else {
         paste("Uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
               "): Residual tidak berdistribusi normal.")
+      }
       
       bptest_result <- lmtest::bptest(model)
       homoskedasticity_interpretation <- if(bptest_result$p.value > 0.05) {
         paste("Uji Breusch-Pagan (p-value =", round(bptest_result$p.value, 4),
-              "): Varians residual homogen.") else {
+              "): Varians residual homogen.")
+      } else {
         paste("Uji Breusch-Pagan (p-value =", round(bptest_result$p.value, 4),
               "): Varians residual tidak homogen.")
+      }
       
       # Konten Rmd
       rmd_content <- paste(
         "---",
         "title: 'Laporan Regresi Linear Berganda'",
         "date: '", Sys.Date(), "'",
-          "output: word_document",
-          "---",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage{pdflscape}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
         "\n# Regresi Linear Berganda\n",
         "## Ringkasan Model\n",
         "Variabel Dependen: ", input$reg_dep, "\n",
@@ -4288,7 +4873,7 @@ server <- function(input, output, session) {
         "panderOptions('table.style', 'rmarkdown')",
         "pander::pander(summary(model)$coefficients)",
         "```",
-        "\n\n",
+        "\n\\newpage\n",
         "## Uji Asumsi\n",
         vif_interpretation, "\n",
         normality_interpretation, "\n",
@@ -4311,13 +4896,18 @@ server <- function(input, output, session) {
           rmarkdown::render(
             temp_md,
             output_file = file,
-            
+            output_format = "pdf_document",
             clean = TRUE,
             envir = new.env(parent = globalenv())
-          ),
+          )
+        },
         error = function(e) {
-          stop("Failed to generate Word document: ", e$message)
-      ), contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+      
+    }, contentType = "application/pdf" )
+}
 
 # Run the application
 shinyApp(ui = ui, server = server)
