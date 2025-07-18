@@ -491,7 +491,7 @@ ui <- dashboardPage(
                            br(),
                            downloadButton("download_categorization_map_jpg", "Categorization Map (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_categorization_interpretation_pdf", "Interpretation (PDF)", class = "btn btn-info download-btn")
+                           downloadButton("download_categorization_interpretation_pdf", "Complete Data Management Report (Word)", class = "btn btn-info download-btn")
                     ),
                     column(8,
                            h5("Complete Page Download:"),
@@ -624,11 +624,11 @@ ui <- dashboardPage(
                            br(),
                            downloadButton("download_plot_jpg", "Current Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_plot_interpretation_pdf", "Plot Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_plot_interpretation_pdf", "Complete Plot Analysis Report (Word)", class = "btn btn-info download-btn"),
                            br(),
                            downloadButton("download_correlation_jpg", "Correlation Heatmap (JPG)", class = "btn btn-warning download-btn"),
                            br(),
-                           downloadButton("download_correlation_interpretation_pdf", "Correlation Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_correlation_interpretation_pdf", "Complete Correlation Analysis Report (Word)", class = "btn btn-info download-btn"),
                            br(),
                            downloadButton("download_exploration_map_jpg", "Geographic Map (JPG)", class = "btn btn-warning download-btn"),
                            br(),
@@ -1772,7 +1772,7 @@ server <- function(input, output, session) {
   
   # --- Beranda Tab ---
   output$download_welcome_pdf <- downloadHandler(
-    filename = function() { paste0("welcome_report_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("welcome_report_", Sys.Date(), ".docx") },
     content = function(file) {
       if (!tinytex::is_tinytex()) {
         tinytex::install_tinytex()
@@ -1960,38 +1960,151 @@ server <- function(input, output, session) {
   )
   
   output$download_categorization_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("categorization_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("data_management_complete_report_", Sys.Date(), ".docx") },
     content = function(file) {
-      # Pastikan TinyTeX terinstal
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(categorized_data_reactive())
+      
+      # Get original and categorized data
+      original_data <- sovi_data[[input$cont_var]]
+      categorized_data <- categorized_data_reactive()[[paste0(input$cont_var, "_cat")]]
+      
+      # Calculate statistics for original data
+      original_stats <- data.frame(
+        Statistik = c("Count", "Mean", "Median", "SD", "Min", "Max", "Skewness", "Kurtosis"),
+        Nilai = c(
+          length(original_data[!is.na(original_data)]),
+          round(mean(original_data, na.rm = TRUE), 4),
+          round(median(original_data, na.rm = TRUE), 4),
+          round(sd(original_data, na.rm = TRUE), 4),
+          round(min(original_data, na.rm = TRUE), 4),
+          round(max(original_data, na.rm = TRUE), 4),
+          round(moments::skewness(original_data, na.rm = TRUE), 4),
+          round(moments::kurtosis(original_data, na.rm = TRUE), 4)
+        )
+      )
+      
+      # Calculate category frequencies
+      cat_freq <- table(categorized_data, useNA = "always")
+      cat_freq_df <- data.frame(
+        Kategori = names(cat_freq),
+        Frekuensi = as.numeric(cat_freq),
+        Persentase = round(as.numeric(cat_freq) / sum(cat_freq, na.rm = TRUE) * 100, 2)
+      )
+      
+      # Calculate quantile boundaries
+      quantile_breaks <- quantile(original_data, probs = seq(0, 1, length.out = input$n_bins + 1), na.rm = TRUE)
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
-        simple_rmd <- paste(
+        rmd_content <- paste(
           "---",
-          "title: 'Interpretasi Kategorisasi'",
+          "title: 'Laporan Lengkap Manajemen Data - Kategorisasi'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
+          "",
+          "# Laporan Manajemen Data - Kategorisasi Variabel",
+          "",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan hasil kategorisasi variabel kontinu menjadi variabel kategorikal untuk analisis lebih lanjut.",
+          "",
+          "## Spesifikasi Kategorisasi",
+          "",
+          paste("**Variabel Asli:** ", input$cont_var),
+          paste("**Jumlah Kategori:** ", input$n_bins),
+          paste("**Metode:** Kategorisasi berdasarkan kuantil"),
+          paste("**Variabel Hasil:** ", paste0(input$cont_var, "_cat")),
+          "",
+          "## Data Asli - Statistik Deskriptif",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "original_stats <- data.frame(",
+          paste("  Statistik = c(", paste(paste0("'", original_stats$Statistik, "'"), collapse = ", "), "),"),
+          paste("  Nilai = c(", paste(original_stats$Nilai, collapse = ", "), ")"),
+          ")",
+          "kable(original_stats, caption = paste('Statistik Deskriptif Variabel Asli -', '", input$cont_var, "'))",
+          "```",
+          "",
+          "## Batas Kategori (Quantile Breaks)",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "breaks_df <- data.frame(",
+          paste("  Kuantil = c(", paste(paste0("'", names(quantile_breaks), "'"), collapse = ", "), "),"),
+          paste("  Nilai = c(", paste(round(quantile_breaks, 4), collapse = ", "), ")"),
+          ")",
+          "kable(breaks_df, caption = 'Batas Kategori Berdasarkan Kuantil')",
+          "```",
+          "",
+          "## Distribusi Kategori",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "cat_freq_df <- data.frame(",
+          paste("  Kategori = c(", paste(paste0("'", cat_freq_df$Kategori, "'"), collapse = ", "), "),"),
+          paste("  Frekuensi = c(", paste(cat_freq_df$Frekuensi, collapse = ", "), "),"),
+          paste("  Persentase = c(", paste(cat_freq_df$Persentase, collapse = ", "), ")"),
+          ")",
+          "kable(cat_freq_df, caption = 'Distribusi Frekuensi Kategori')",
+          "```",
           "",
           "## Interpretasi Kategorisasi",
           "",
-          paste("Variabel", input$cont_var, "telah berhasil dikategorisasi menjadi", input$n_bins,
-                "kategori berdasarkan kuantil. Kategorisasi ini membantu dalam analisis data dengan mengubah",
-                "variabel kontinu menjadi variabel kategorikal yang dapat digunakan untuk analisis lebih lanjut seperti ANOVA atau Chi-square test."),
+          "### Proses Kategorisasi",
+          paste("Variabel kontinu **", input$cont_var, "** telah berhasil dikategorisasi menjadi **", input$n_bins, "** kategori menggunakan metode kuantil. Setiap kategori memiliki distribusi data yang relatif seimbang."),
+          "",
+          "### Karakteristik Hasil Kategorisasi",
+          paste("- **Total observasi:** ", sum(cat_freq_df$Frekuensi, na.rm = TRUE)),
+          paste("- **Kategori dengan frekuensi tertinggi:** ", cat_freq_df$Kategori[which.max(cat_freq_df$Frekuensi)], " (", max(cat_freq_df$Frekuensi, na.rm = TRUE), " observasi)"),
+          paste("- **Kategori dengan frekuensi terendah:** ", cat_freq_df$Kategori[which.min(cat_freq_df$Frekuensi)], " (", min(cat_freq_df$Frekuensi, na.rm = TRUE), " observasi)"),
+          "",
+          "### Manfaat Kategorisasi",
+          "1. **Simplifikasi Analisis:** Memudahkan interpretasi dan visualisasi data",
+          "2. **Analisis Komparatif:** Memungkinkan perbandingan antar kelompok",
+          "3. **Uji Statistik:** Mendukung uji ANOVA, Chi-square, dan uji non-parametrik",
+          "4. **Segmentasi:** Membantu dalam identifikasi pola dan tren data",
+          "",
+          "### Validitas Kategorisasi",
+          if(max(cat_freq_df$Persentase, na.rm = TRUE) - min(cat_freq_df$Persentase, na.rm = TRUE) <= 10) {
+            "✅ **Distribusi Seimbang:** Perbedaan persentase antar kategori ≤ 10%, menunjukkan kategorisasi yang baik."
+          } else {
+            "⚠️ **Distribusi Tidak Seimbang:** Perbedaan persentase antar kategori > 10%, pertimbangkan penyesuaian metode kategorisasi."
+          },
+          "",
+          "## Aplikasi Analisis Lanjutan",
+          "",
+          "### Uji Statistik yang Dapat Dilakukan",
+          "1. **ANOVA:** Membandingkan rata-rata variabel lain antar kategori",
+          "2. **Chi-square Test:** Menguji independensi dengan variabel kategorikal lain",
+          "3. **Kruskal-Wallis Test:** Alternatif non-parametrik untuk ANOVA",
+          "4. **Post-hoc Tests:** Identifikasi perbedaan spesifik antar kategori",
+          "",
+          "### Visualisasi yang Disarankan",
+          "- Bar chart untuk distribusi frekuensi kategori",
+          "- Box plot untuk membandingkan variabel lain antar kategori",
+          "- Stacked bar chart untuk analisis silang dengan variabel kategorikal lain",
+          "",
+          "## Kesimpulan",
+          "",
+          paste("Kategorisasi variabel", input$cont_var, "telah berhasil dilakukan dengan menghasilkan", input$n_bins, "kategori yang dapat digunakan untuk analisis statistik lebih lanjut. Distribusi kategori menunjukkan pola yang", 
+                if(max(cat_freq_df$Persentase, na.rm = TRUE) - min(cat_freq_df$Persentase, na.rm = TRUE) <= 10) "seimbang" else "perlu diperhatikan",
+                "dan siap untuk digunakan dalam analisis inferensia."),
+          "",
+          "### Rekomendasi",
+          "1. Gunakan variabel kategorikal ini untuk analisis perbandingan antar kelompok",
+          "2. Pertimbangkan analisis ANOVA untuk mengidentifikasi perbedaan signifikan",
+          "3. Lakukan visualisasi untuk memahami pola distribusi yang lebih baik",
+          "4. Dokumentasikan metodologi kategorisasi untuk reproducibility",
           sep = "\n"
         )
-        writeLines(simple_rmd, temp_rmd)
+        
+        writeLines(rmd_content, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
 
   
@@ -2182,42 +2295,199 @@ server <- function(input, output, session) {
   )
   
   output$download_plot_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("plot_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("plot_complete_analysis_", Sys.Date(), ".docx") },
     content = function(file) {
       req(input$plot_var1)
       
-      interpretation <- if(input$plot_type == "hist") {
-        paste("Histogram menunjukkan distribusi frekuensi dari variabel", input$plot_var1,
-              ". Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.")
-      } else if(input$plot_type == "box") {
-        paste("Box plot menampilkan ringkasan lima angka (minimum, Q1, median, Q3, maksimum)",
-              "dari variabel", input$plot_var1, ". Titik-titik di luar whiskers menunjukkan potensi outliers.")
-      } else if(input$plot_type == "scatter") {
-        paste("Scatter plot menunjukkan hubungan antara", input$plot_var1, "dan", input$plot_var2,
-              ". Garis regresi membantu memvisualisasikan tren hubungan linear antara kedua variabel.")
+      # Get plot data and statistics
+      plot_data <- sovi_data[[input$plot_var1]]
+      plot_data <- plot_data[!is.na(plot_data)]
+      
+      # Calculate statistics
+      plot_stats <- data.frame(
+        Statistik = c("Count", "Mean", "Median", "SD", "Min", "Max", "Skewness", "Kurtosis"),
+        Nilai = c(
+          length(plot_data),
+          round(mean(plot_data), 4),
+          round(median(plot_data), 4),
+          round(sd(plot_data), 4),
+          round(min(plot_data), 4),
+          round(max(plot_data), 4),
+          round(moments::skewness(plot_data), 4),
+          round(moments::kurtosis(plot_data), 4)
+        )
+      )
+      
+      # Additional analysis for scatter plots
+      scatter_content <- ""
+      if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
+        plot_data2 <- sovi_data[[input$plot_var2]]
+        complete_cases <- complete.cases(plot_data, plot_data2)
+        plot_data_clean <- plot_data[complete_cases]
+        plot_data2_clean <- plot_data2[complete_cases]
+        
+        correlation <- cor(plot_data_clean, plot_data2_clean)
+        cor_test <- cor.test(plot_data_clean, plot_data2_clean)
+        
+        scatter_content <- paste(
+          "",
+          "## Analisis Korelasi (Scatter Plot)",
+          "",
+          paste("**Korelasi Pearson:** r =", round(correlation, 4)),
+          paste("**P-value:** ", round(cor_test$p.value, 4)),
+          paste("**95% Confidence Interval:** [", round(cor_test$conf.int[1], 4), ",", round(cor_test$conf.int[2], 4), "]"),
+          "",
+          "### Interpretasi Korelasi",
+          if(abs(correlation) >= 0.7) {
+            paste("Terdapat hubungan yang **kuat** antara", input$plot_var1, "dan", input$plot_var2, "(|r| ≥ 0.7)")
+          } else if(abs(correlation) >= 0.5) {
+            paste("Terdapat hubungan yang **sedang** antara", input$plot_var1, "dan", input$plot_var2, "(0.5 ≤ |r| < 0.7)")
+          } else if(abs(correlation) >= 0.3) {
+            paste("Terdapat hubungan yang **lemah** antara", input$plot_var1, "dan", input$plot_var2, "(0.3 ≤ |r| < 0.5)")
+          } else {
+            paste("Terdapat hubungan yang **sangat lemah** antara", input$plot_var1, "dan", input$plot_var2, "(|r| < 0.3)")
+          },
+          "",
+          if(cor_test$p.value < 0.05) {
+            "**Signifikansi:** Hubungan ini signifikan secara statistik (p < 0.05)"
+          } else {
+            "**Signifikansi:** Hubungan ini tidak signifikan secara statistik (p ≥ 0.05)"
+          },
+          sep = "\n"
+        )
       }
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
-        simple_rmd <- paste(
+        rmd_content <- paste(
           "---",
-          "title: 'Interpretasi Visualisasi'",
+          "title: 'Laporan Lengkap Analisis Visualisasi Data'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
+          "",
+          "# Laporan Analisis Visualisasi Data",
+          "",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan analisis lengkap dari visualisasi data yang dipilih, termasuk statistik deskriptif dan interpretasi visual.",
+          "",
+          "## Spesifikasi Visualisasi",
+          "",
+          paste("**Tipe Plot:** ", switch(input$plot_type,
+                                       "hist" = "Histogram",
+                                       "box" = "Box Plot", 
+                                       "scatter" = "Scatter Plot")),
+          paste("**Variabel Utama:** ", input$plot_var1),
+          if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
+            paste("**Variabel Kedua:** ", input$plot_var2)
+          },
+          "",
+          "## Statistik Deskriptif",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "plot_stats <- data.frame(",
+          paste("  Statistik = c(", paste(paste0("'", plot_stats$Statistik, "'"), collapse = ", "), "),"),
+          paste("  Nilai = c(", paste(plot_stats$Nilai, collapse = ", "), ")"),
+          ")",
+          "kable(plot_stats, caption = paste('Statistik Deskriptif -', '", input$plot_var1, "'))",
+          "```",
           "",
           "## Interpretasi Visualisasi",
           "",
-          interpretation,
+          if(input$plot_type == "hist") {
+            paste(
+              "### Analisis Histogram",
+              "",
+              paste("Histogram menunjukkan distribusi frekuensi dari variabel **", input$plot_var1, "**. Bentuk distribusi memberikan informasi penting tentang karakteristik data:"),
+              "",
+              "#### Karakteristik Distribusi:",
+              if(abs(plot_stats$Nilai[plot_stats$Statistik == "Skewness"]) < 0.5) {
+                "- **Bentuk:** Distribusi relatif simetris (skewness ≈ 0)"
+              } else if(plot_stats$Nilai[plot_stats$Statistik == "Skewness"] > 0.5) {
+                "- **Bentuk:** Distribusi skew ke kanan (positive skew)"
+              } else {
+                "- **Bentuk:** Distribusi skew ke kiri (negative skew)"
+              },
+              "",
+              if(plot_stats$Nilai[plot_stats$Statistik == "Kurtosis"] > 3) {
+                "- **Kurtosis:** Distribusi leptokurtik (lebih runcing dari normal)"
+              } else if(plot_stats$Nilai[plot_stats$Statistik == "Kurtosis"] < 3) {
+                "- **Kurtosis:** Distribusi platykurtik (lebih datar dari normal)"
+              } else {
+                "- **Kurtosis:** Distribusi mesokurtik (mendekati normal)"
+              },
+              "",
+              "#### Implikasi:",
+              "- Histogram membantu mengidentifikasi pola distribusi data",
+              "- Dapat mendeteksi adanya outliers atau nilai ekstrem",
+              "- Memberikan panduan untuk pemilihan uji statistik yang tepat"
+            )
+          } else if(input$plot_type == "box") {
+            paste(
+              "### Analisis Box Plot",
+              "",
+              paste("Box plot menampilkan ringkasan lima angka dari variabel **", input$plot_var1, "**:"),
+              "",
+              "#### Komponen Box Plot:",
+              paste("- **Minimum:** ", plot_stats$Nilai[plot_stats$Statistik == "Min"]),
+              paste("- **Q1 (Kuartil 1):** ", "≈", round(quantile(plot_data, 0.25), 4)),
+              paste("- **Median (Q2):** ", plot_stats$Nilai[plot_stats$Statistik == "Median"]),
+              paste("- **Q3 (Kuartil 3):** ", "≈", round(quantile(plot_data, 0.75), 4)),
+              paste("- **Maximum:** ", plot_stats$Nilai[plot_stats$Statistik == "Max"]),
+              "",
+              "#### Interpretasi:",
+              "- Box plot efektif untuk mengidentifikasi outliers",
+              "- Menunjukkan distribusi dan variabilitas data",
+              "- Titik di luar whiskers mengindikasikan potensi outliers",
+              "- Bentuk box memberikan informasi tentang skewness data"
+            )
+          } else if(input$plot_type == "scatter") {
+            paste(
+              "### Analisis Scatter Plot",
+              "",
+              paste("Scatter plot menunjukkan hubungan antara **", input$plot_var1, "** dan **", input$plot_var2, "**."),
+              "",
+              "#### Karakteristik Hubungan:",
+              "- Visualisasi membantu mengidentifikasi pola hubungan linear atau non-linear",
+              "- Garis regresi (jika ada) menunjukkan tren hubungan",
+              "- Sebaran titik mengindikasikan kekuatan hubungan"
+            )
+          },
+          scatter_content,
+          "",
+          "## Kesimpulan",
+          "",
+          "### Temuan Utama",
+          if(input$plot_type == "scatter" && !is.null(input$plot_var2)) {
+            paste("Berdasarkan analisis scatter plot, terdapat", 
+                  if(abs(correlation) >= 0.5) "hubungan yang bermakna" else "hubungan yang lemah",
+                  "antara kedua variabel yang dianalisis.")
+          } else {
+            paste("Berdasarkan analisis visualisasi, variabel", input$plot_var1, 
+                  "menunjukkan karakteristik distribusi yang", 
+                  if(abs(plot_stats$Nilai[plot_stats$Statistik == "Skewness"]) < 0.5) "relatif normal" else "tidak simetris",
+                  "dengan variabilitas", 
+                  if(plot_stats$Nilai[plot_stats$Statistik == "SD"] / plot_stats$Nilai[plot_stats$Statistik == "Mean"] > 0.3) "tinggi" else "rendah",
+                  ".")
+          },
+          "",
+          "### Rekomendasi Analisis Lanjutan",
+          "1. Pertimbangkan transformasi data jika distribusi sangat tidak normal",
+          "2. Investigasi outliers yang teridentifikasi",
+          "3. Lakukan uji normalitas formal jika diperlukan untuk analisis parametrik",
+          if(input$plot_type == "scatter") "4. Pertimbangkan analisis regresi untuk modeling hubungan",
           sep = "\n"
         )
-        writeLines(simple_rmd, temp_rmd)
+        
+        writeLines(rmd_content, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_correlation_jpg <- downloadHandler(
@@ -2243,7 +2513,7 @@ server <- function(input, output, session) {
   )
   
   output$download_correlation_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("correlation_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("correlation_complete_analysis_", Sys.Date(), ".docx") },
     content = function(file) {
       numeric_data <- select_if(sovi_data, is.numeric)
       cor_matrix <- cor(numeric_data, use = "complete.obs")
@@ -2253,31 +2523,100 @@ server <- function(input, output, session) {
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
-        simple_rmd <- paste(
+        rmd_content <- paste(
           "---",
-          "title: 'Interpretasi Peta Korelasi'",
+          "title: 'Laporan Lengkap Analisis Korelasi'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
           "",
-          "## Interpretasi Peta Korelasi",
+          "# Laporan Analisis Korelasi",
           "",
-          "Peta korelasi menunjukkan hubungan linear antara semua variabel numerik.",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan analisis korelasi lengkap antar variabel numerik dalam dataset, termasuk interpretasi dan signifikansi hubungan.",
           "",
-          paste("Korelasi positif terkuat terjadi antara", rownames(cor_matrix)[max_cor[1]], "dan",
-                colnames(cor_matrix)[max_cor[2]], "dengan nilai", round(cor_matrix[max_cor], 3)),
+          "## Metodologi",
+          "Analisis menggunakan korelasi Pearson untuk mengukur hubungan linear antar variabel dengan penanganan missing values menggunakan complete observations.",
           "",
-          paste("Korelasi negatif terkuat terjadi antara", rownames(cor_matrix)[min_cor[1]], "dan",
-                colnames(cor_matrix)[min_cor[2]], "dengan nilai", round(cor_matrix[min_cor], 3)),
+          paste("**Total variabel numerik:** ", ncol(numeric_data)),
+          paste("**Total observasi:** ", nrow(numeric_data)),
+          "",
+          "## Hasil Analisis Korelasi",
+          "",
+          "### Korelasi Ekstrem",
+          "",
+          paste("**Korelasi positif tertinggi:** ", round(cor_matrix[max_cor], 3)),
+          paste("- Antara variabel: **", rownames(cor_matrix)[max_cor[1]], "** dan **", colnames(cor_matrix)[max_cor[2]], "**"),
+          if(abs(cor_matrix[max_cor]) >= 0.7) {
+            "- Interpretasi: Hubungan positif yang sangat kuat"
+          } else if(abs(cor_matrix[max_cor]) >= 0.5) {
+            "- Interpretasi: Hubungan positif yang kuat"  
+          } else if(abs(cor_matrix[max_cor]) >= 0.3) {
+            "- Interpretasi: Hubungan positif yang sedang"
+          } else {
+            "- Interpretasi: Hubungan positif yang lemah"
+          },
+          "",
+          paste("**Korelasi negatif tertinggi:** ", round(cor_matrix[min_cor], 3)),
+          paste("- Antara variabel: **", rownames(cor_matrix)[min_cor[1]], "** dan **", colnames(cor_matrix)[min_cor[2]], "**"),
+          if(abs(cor_matrix[min_cor]) >= 0.7) {
+            "- Interpretasi: Hubungan negatif yang sangat kuat"
+          } else if(abs(cor_matrix[min_cor]) >= 0.5) {
+            "- Interpretasi: Hubungan negatif yang kuat"
+          } else if(abs(cor_matrix[min_cor]) >= 0.3) {
+            "- Interpretasi: Hubungan negatif yang sedang"
+          } else {
+            "- Interpretasi: Hubungan negatif yang lemah"
+          },
+          "",
+          "### Interpretasi Umum",
+          "",
+          "#### Skala Korelasi Pearson:",
+          "- **0.70 - 1.00:** Korelasi sangat kuat",
+          "- **0.50 - 0.69:** Korelasi kuat", 
+          "- **0.30 - 0.49:** Korelasi sedang",
+          "- **0.10 - 0.29:** Korelasi lemah",
+          "- **0.00 - 0.09:** Korelasi sangat lemah",
+          "",
+          "#### Distribusi Korelasi:",
+          paste("- Korelasi kuat (|r| ≥ 0.5):", sum(abs(cor_matrix) >= 0.5, na.rm = TRUE), "pasangan"),
+          paste("- Korelasi sedang (0.3 ≤ |r| < 0.5):", sum(abs(cor_matrix) >= 0.3 & abs(cor_matrix) < 0.5, na.rm = TRUE), "pasangan"),
+          paste("- Korelasi lemah (|r| < 0.3):", sum(abs(cor_matrix) < 0.3, na.rm = TRUE), "pasangan"),
+          "",
+          "## Implikasi untuk Analisis",
+          "",
+          "### Untuk Regresi Linear",
+          if(any(abs(cor_matrix) >= 0.8, na.rm = TRUE)) {
+            "⚠️ **Peringatan Multikolinearitas:** Ditemukan korelasi sangat tinggi (≥0.8) yang dapat menyebabkan masalah dalam analisis regresi."
+          } else {
+            "✅ **Tidak ada masalah multikolinearitas serius** untuk analisis regresi."
+          },
+          "",
+          "### Untuk Feature Selection",
+          if(any(abs(cor_matrix) >= 0.7, na.rm = TRUE)) {
+            "Pertimbangkan untuk menghilangkan salah satu variabel dari pasangan yang berkorelasi sangat tinggi."
+          } else {
+            "Semua variabel dapat dipertahankan untuk analisis lebih lanjut."
+          },
+          "",
+          "## Kesimpulan",
+          "Analisis korelasi mengidentifikasi pola hubungan antar variabel yang memberikan insight penting tentang struktur data dan dapat digunakan untuk pemilihan variabel dalam analisis lanjutan.",
+          "",
+          "### Rekomendasi",
+          "1. **Analisis Lanjutan:** Fokus pada pasangan variabel dengan korelasi tinggi untuk investigasi lebih dalam",
+          "2. **Preprocessing:** Pertimbangkan transformasi atau penghapusan variabel dengan korelasi sangat tinggi",
+          "3. **Model Selection:** Gunakan informasi korelasi untuk pemilihan fitur dalam machine learning",
+          "4. **Validasi:** Lakukan uji signifikansi korelasi untuk konfirmasi statistik",
           sep = "\n"
         )
-        writeLines(simple_rmd, temp_rmd)
+        writeLines(rmd_content, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_exploration_map_jpg <- downloadHandler(
