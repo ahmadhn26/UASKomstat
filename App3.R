@@ -21,6 +21,7 @@ library(knitr)
 library(webshot)
 library(broom)
 library(lmtest)
+library(moments)
 
 
 
@@ -619,7 +620,7 @@ ui <- dashboardPage(
                            h5("Individual Downloads:"),
                            downloadButton("download_descriptive_csv", "Descriptive Stats (CSV)", class = "btn btn-primary download-btn"),
                            br(),
-                           downloadButton("download_descriptive_interpretation_pdf", "Descriptive Interpretation (PDF)", class = "btn btn-info download-btn"),
+                           downloadButton("download_descriptive_interpretation_pdf", "Complete Descriptive Report (Word)", class = "btn btn-info download-btn"),
                            br(),
                            downloadButton("download_plot_jpg", "Current Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
@@ -695,7 +696,7 @@ ui <- dashboardPage(
                   fluidRow(
                     column(4,
                            h5("Individual Downloads:"),
-                           downloadButton("download_normality_test_pdf", "Normality Test Results (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_normality_test_pdf", "Complete Assumption Tests Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_qq_plot_jpg", "Q-Q Plot (JPG)", class = "btn btn-warning download-btn"),
                            br(),
@@ -829,7 +830,7 @@ ui <- dashboardPage(
                   fluidRow(
                     column(4,
                            h5("Individual Test Downloads:"),
-                           downloadButton("download_ttest1_pdf", "1-Sample T-Test (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_ttest1_pdf", "Complete Inferential Statistics Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_ttest2_pdf", "2-Sample T-Test (PDF)", class = "btn btn-primary download-btn"),
                            br(),
@@ -909,7 +910,7 @@ ui <- dashboardPage(
                   fluidRow(
                     column(4,
                            h5("Individual Downloads:"),
-                           downloadButton("download_regression_summary_pdf", "Regression Summary (PDF)", class = "btn btn-primary download-btn"),
+                           downloadButton("download_regression_summary_pdf", "Complete Regression Analysis Report (Word)", class = "btn btn-primary download-btn"),
                            br(),
                            downloadButton("download_regression_interpretation_pdf", "Regression Interpretation (PDF)", class = "btn btn-info download-btn"),
                            br(),
@@ -2071,57 +2072,84 @@ server <- function(input, output, session) {
   )
   
   output$download_descriptive_interpretation_pdf <- downloadHandler(
-    filename = function() { paste0("descriptive_interpretation_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("descriptive_complete_report_", Sys.Date(), ".docx") },
     content = function(file) {
       req(input$desc_vars)
       
-      # Create simple HTML content
-      html_content <- paste0(
-        "<html><head><title>Descriptive Statistics Interpretation</title></head><body>",
-        "<h1>Interpretasi Statistik Deskriptif</h1>",
-        "<p><strong>Tanggal:</strong> ", Sys.Date(), "</p>",
-        "<p>Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih: ",
-        paste(input$desc_vars, collapse = ", "), ".</p>",
-        "<p>Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi ",
-        "menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan ",
-        "adanya skewness dalam distribusi data.</p>",
-        "</body></html>"
+      # Calculate descriptive statistics
+      desc_data <- sovi_data[, input$desc_vars, drop = FALSE]
+      desc_summary <- data.frame(
+        Variable = names(desc_data),
+        Mean = round(sapply(desc_data, function(x) mean(x, na.rm = TRUE)), 3),
+        Median = round(sapply(desc_data, function(x) median(x, na.rm = TRUE)), 3),
+        SD = round(sapply(desc_data, function(x) sd(x, na.rm = TRUE)), 3),
+        Min = round(sapply(desc_data, function(x) min(x, na.rm = TRUE)), 3),
+        Max = round(sapply(desc_data, function(x) max(x, na.rm = TRUE)), 3),
+        stringsAsFactors = FALSE
       )
       
-      # Write HTML to temp file
-      temp_html <- tempfile(fileext = ".html")
-      writeLines(html_content, temp_html)
-      
       tryCatch({
-        # Try to use wkhtmltopdf if available, otherwise use pandoc
-        if (Sys.which("wkhtmltopdf") != "") {
-          system(paste("wkhtmltopdf", temp_html, file))
-        } else {
-          # Use rmarkdown with simple output
-          temp_rmd <- tempfile(fileext = ".Rmd")
-          simple_rmd <- paste(
-            "---",
-            "title: 'Interpretasi Statistik Deskriptif'",
-            "date: '", Sys.Date(), "'",
-            "output: pdf_document",
-            "---",
-            "",
-            "## Interpretasi Statistik Deskriptif",
-            "",
-            "Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih:",
-            paste(input$desc_vars, collapse = ", "), ".",
-            "",
-            "Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan adanya skewness dalam distribusi data.",
-            sep = "\n"
-          )
-          writeLines(simple_rmd, temp_rmd)
-          rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
-        }
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        rmd_content <- paste(
+          "---",
+          "title: 'Laporan Lengkap Statistik Deskriptif'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
+          "date: '", Sys.Date(), "'",
+          "output: word_document",
+          "---",
+          "",
+          "# Laporan Statistik Deskriptif",
+          "",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan analisis statistik deskriptif lengkap untuk variabel yang dipilih dalam sistem SEVA.",
+          "",
+          "## Variabel yang Dianalisis",
+          paste("Variabel yang dipilih:", paste(input$desc_vars, collapse = ", ")),
+          "",
+          "## Hasil Statistik Deskriptif",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "desc_summary <- data.frame(",
+          paste("  Variable = c(", paste(paste0("'", desc_summary$Variable, "'"), collapse = ", "), "),"),
+          paste("  Mean = c(", paste(desc_summary$Mean, collapse = ", "), "),"),
+          paste("  Median = c(", paste(desc_summary$Median, collapse = ", "), "),"),
+          paste("  SD = c(", paste(desc_summary$SD, collapse = ", "), "),"),
+          paste("  Min = c(", paste(desc_summary$Min, collapse = ", "), "),"),
+          paste("  Max = c(", paste(desc_summary$Max, collapse = ", "), ")"),
+          ")",
+          "kable(desc_summary, caption = 'Statistik Deskriptif')",
+          "```",
+          "",
+          "## Interpretasi",
+          "",
+          "### Analisis Tendensi Sentral",
+          "Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih. Mean (rata-rata) dan median memberikan gambaran tentang tendensi sentral data.",
+          "",
+          "### Analisis Variabilitas", 
+          "Standar deviasi (SD) menunjukkan tingkat variabilitas atau sebaran data. Nilai yang lebih tinggi mengindikasikan data yang lebih tersebar.",
+          "",
+          "### Analisis Distribusi",
+          "Perbedaan antara mean dan median dapat mengindikasikan adanya skewness dalam distribusi data:",
+          "- Jika mean > median: data cenderung skew ke kanan (positive skew)",
+          "- Jika mean < median: data cenderung skew ke kiri (negative skew)",  
+          "- Jika mean ≈ median: data cenderung terdistribusi normal",
+          "",
+          "### Analisis Range",
+          "Nilai minimum dan maksimum menunjukkan rentang data dan dapat membantu mengidentifikasi potensi outliers.",
+          "",
+          "## Kesimpulan",
+          "Berdasarkan analisis statistik deskriptif, variabel-variabel yang dipilih menunjukkan karakteristik yang dapat digunakan untuk analisis lebih lanjut dalam konteks kerentanan sosial-ekonomi.",
+          sep = "\n"
+        )
+        
+        writeLines(rmd_content, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_plot_jpg <- downloadHandler(
@@ -2476,7 +2504,7 @@ server <- function(input, output, session) {
   
   # --- Uji Asumsi Tab ---
   output$download_normality_test_pdf <- downloadHandler(
-    filename = function() { paste0("normality_test_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("assumption_tests_complete_report_", Sys.Date(), ".docx") },
     content = function(file) {
       req(input$normality_var, values$assumptions_done)
       
@@ -2485,38 +2513,144 @@ server <- function(input, output, session) {
       shapiro_test <- shapiro.test(var_data)
       ks_test <- ks.test(var_data, "pnorm", mean(var_data), sd(var_data))
       
+      # Calculate descriptive statistics for the variable
+      desc_stats <- data.frame(
+        Statistik = c("Mean", "Median", "Standard Deviation", "Minimum", "Maximum", "Skewness", "Kurtosis"),
+        Nilai = c(
+          round(mean(var_data), 4),
+          round(median(var_data), 4), 
+          round(sd(var_data), 4),
+          round(min(var_data), 4),
+          round(max(var_data), 4),
+          round(moments::skewness(var_data), 4),
+          round(moments::kurtosis(var_data), 4)
+        )
+      )
+      
+      # Homogeneity test if applicable
+      homogeneity_content <- ""
+      if(input$group_var != "None") {
+        group_data <- sovi_data[[input$group_var]]
+        if(is.numeric(group_data)) {
+          group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
+        complete_cases <- complete.cases(var_data, group_data)
+        var_data_hom <- var_data[complete_cases]
+        group_data_hom <- group_data[complete_cases]
+        levene_test <- car::leveneTest(var_data_hom, group_data_hom)
+        
+        homogeneity_content <- paste(
+          "",
+          "## Uji Homogenitas Varians",
+          "",
+          paste("Variabel Kelompok:", input$group_var),
+          "",
+          "**H0:** Varians antar kelompok homogen",
+          "**H1:** Varians antar kelompok tidak homogen",
+          "",
+          paste("F-statistic:", round(levene_test$`F value`[1], 4)),
+          paste("P-value:", round(levene_test$`Pr(>F)`[1], 4)),
+          "",
+          "### Interpretasi Homogenitas",
+          if(levene_test$`Pr(>F)`[1] > 0.05) {
+            "Berdasarkan uji Levene, tidak terdapat perbedaan varians yang signifikan antar kelompok (p > 0.05). Asumsi homogenitas varians terpenuhi."
+          } else {
+            "Berdasarkan uji Levene, terdapat perbedaan varians yang signifikan antar kelompok (p < 0.05). Asumsi homogenitas varians tidak terpenuhi."
+          },
+          sep = "\n"
+        )
+      }
+      
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
-        simple_rmd <- paste(
+        rmd_content <- paste(
           "---",
-          "title: 'Hasil Uji Normalitas'",
+          "title: 'Laporan Lengkap Uji Asumsi Statistik'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
+          "",
+          "# Laporan Uji Asumsi Statistik",
+          "",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan hasil uji asumsi statistik yang diperlukan sebelum melakukan analisis inferensia. Uji yang dilakukan meliputi uji normalitas dan uji homogenitas varians.",
+          "",
+          paste("## Variabel yang Diuji:", input$normality_var),
+          "",
+          "## Statistik Deskriptif",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "desc_stats <- data.frame(",
+          paste("  Statistik = c(", paste(paste0("'", desc_stats$Statistik, "'"), collapse = ", "), "),"),
+          paste("  Nilai = c(", paste(desc_stats$Nilai, collapse = ", "), ")"),
+          ")",
+          "kable(desc_stats, caption = 'Statistik Deskriptif Variabel')",
+          "```",
           "",
           "## Uji Normalitas",
           "",
-          paste("Variabel:", input$normality_var),
-          "",
-          "**H0:** Data berdistribusi normal",
-          "**H1:** Data tidak berdistribusi normal",
+          "### Hipotesis",
+          "- **H0:** Data berdistribusi normal",
+          "- **H1:** Data tidak berdistribusi normal",
           "",
           "### Shapiro-Wilk Test",
-          paste("Statistic:", round(shapiro_test$statistic, 4)),
-          paste("P-value:", round(shapiro_test$p.value, 4)),
+          paste("- W-statistic:", round(shapiro_test$statistic, 4)),
+          paste("- P-value:", round(shapiro_test$p.value, 4)),
           "",
-          "### Kolmogorov-Smirnov Test", 
-          paste("Statistic:", round(ks_test$statistic, 4)),
-          paste("P-value:", round(ks_test$p.value, 4)),
+          "### Kolmogorov-Smirnov Test",
+          paste("- D-statistic:", round(ks_test$statistic, 4)),
+          paste("- P-value:", round(ks_test$p.value, 4)),
+          "",
+          "### Interpretasi Normalitas",
+          if(shapiro_test$p.value > 0.05) {
+            paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4), "> 0.05), kita gagal menolak H0. Data variabel", input$normality_var, "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%. Hal ini mengindikasikan bahwa asumsi normalitas terpenuhi untuk analisis parametrik.")
+          } else {
+            paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4), "< 0.05), kita menolak H0. Data variabel", input$normality_var, "tidak berdistribusi normal pada tingkat signifikansi 5%. Disarankan untuk menggunakan transformasi data atau metode non-parametrik.")
+          },
+          homogeneity_content,
+          "",
+          "## Kesimpulan dan Rekomendasi",
+          "",
+          "### Status Asumsi",
+          if(shapiro_test$p.value > 0.05) {
+            "- ✓ Asumsi normalitas: TERPENUHI"
+          } else {
+            "- ✗ Asumsi normalitas: TIDAK TERPENUHI"
+          },
+          if(input$group_var != "None") {
+            if(exists("levene_test") && levene_test$`Pr(>F)`[1] > 0.05) {
+              "- ✓ Asumsi homogenitas: TERPENUHI"
+            } else if(exists("levene_test")) {
+              "- ✗ Asumsi homogenitas: TIDAK TERPENUHI"
+            }
+          },
+          "",
+          "### Rekomendasi Analisis",
+          if(shapiro_test$p.value > 0.05) {
+            "Karena asumsi normalitas terpenuhi, dapat dilanjutkan dengan uji statistik parametrik seperti t-test, ANOVA, atau regresi linear."
+          } else {
+            "Karena asumsi normalitas tidak terpenuhi, disarankan untuk:"
+          },
+          if(shapiro_test$p.value <= 0.05) {
+            paste(
+              "1. Melakukan transformasi data (log, square root, dll.)",
+              "2. Menggunakan uji non-parametrik (Mann-Whitney, Kruskal-Wallis, dll.)",
+              "3. Meningkatkan ukuran sampel jika memungkinkan",
+              sep = "\n"
+            )
+          },
           sep = "\n"
         )
-        writeLines(simple_rmd, temp_rmd)
+        
+        writeLines(rmd_content, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_qq_plot_jpg <- downloadHandler(
@@ -2831,42 +2965,208 @@ server <- function(input, output, session) {
   
   # --- Statistik Inferensia Tab ---
   output$download_ttest1_pdf <- downloadHandler(
-    filename = function() { paste0("ttest1_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("inferential_statistics_complete_report_", Sys.Date(), ".docx") },
     content = function(file) {
-      req(input$ttest1_var, input$ttest1_mu, values$ttest1_done)
-      var_data <- sovi_data[[input$ttest1_var]]
-      var_data <- var_data[!is.na(var_data)]
-      ttest_result <- t.test(var_data, mu = input$ttest1_mu)
+      # Collect all statistical tests that have been performed
+      tests_performed <- list()
+      
+      # One-sample t-test
+      if(values$ttest1_done && !is.null(input$ttest1_var) && !is.null(input$ttest1_mu)) {
+        var_data <- sovi_data[[input$ttest1_var]]
+        var_data <- var_data[!is.na(var_data)]
+        ttest_result <- t.test(var_data, mu = input$ttest1_mu)
+        
+        tests_performed$ttest1 <- list(
+          title = "One-Sample T-Test",
+          variable = input$ttest1_var,
+          hypothesis_value = input$ttest1_mu,
+          result = ttest_result,
+          interpretation = if(ttest_result$p.value < 0.05) {
+            paste("Terdapat perbedaan signifikan antara rata-rata sampel (", round(ttest_result$estimate, 4), ") dengan nilai hipotesis (", input$ttest1_mu, ") pada tingkat signifikansi 5%.")
+          } else {
+            paste("Tidak terdapat perbedaan signifikan antara rata-rata sampel (", round(ttest_result$estimate, 4), ") dengan nilai hipotesis (", input$ttest1_mu, ") pada tingkat signifikansi 5%.")
+          }
+        )
+      }
+      
+      # Two-sample t-test  
+      if(values$ttest2_done && !is.null(input$ttest2_var) && !is.null(input$ttest2_group)) {
+        var_data <- sovi_data[[input$ttest2_var]]
+        group_data <- sovi_data[[input$ttest2_group]]
+        if(is.numeric(group_data)) {
+          median_val <- median(group_data, na.rm = TRUE)
+          group_data <- ifelse(group_data <= median_val, "Low", "High")
+        }
+        unique_groups <- unique(group_data[!is.na(group_data)])
+        if(length(unique_groups) >= 2) {
+          group1_data <- var_data[group_data == unique_groups[1] & !is.na(var_data) & !is.na(group_data)]
+          group2_data <- var_data[group_data == unique_groups[2] & !is.na(var_data) & !is.na(group_data)]
+          ttest_result <- t.test(group1_data, group2_data)
+          
+          tests_performed$ttest2 <- list(
+            title = "Two-Sample Independent T-Test",
+            variable = input$ttest2_var,
+            group_var = input$ttest2_group,
+            groups = unique_groups,
+            result = ttest_result,
+            interpretation = if(ttest_result$p.value < 0.05) {
+              paste("Terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada tingkat signifikansi 5%.")
+            } else {
+              paste("Tidak terdapat perbedaan rata-rata yang signifikan antara kelompok", unique_groups[1], "dan", unique_groups[2], "pada tingkat signifikansi 5%.")
+            }
+          )
+        }
+      }
+      
+      # ANOVA tests
+      if(values$anova1_done && !is.null(input$anova1_dep) && !is.null(input$anova1_indep)) {
+        dep_var <- sovi_data[[input$anova1_dep]]
+        indep_var <- sovi_data[[input$anova1_indep]]
+        if(is.numeric(indep_var)) {
+          indep_var <- cut(indep_var, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
+        complete_cases <- complete.cases(dep_var, indep_var)
+        dep_var <- dep_var[complete_cases]
+        indep_var <- indep_var[complete_cases]
+        anova_result <- aov(dep_var ~ indep_var)
+        anova_summary <- summary(anova_result)
+        
+        tests_performed$anova1 <- list(
+          title = "One-Way ANOVA",
+          dependent = input$anova1_dep,
+          independent = input$anova1_indep,
+          result = anova_summary,
+          interpretation = if(anova_summary[[1]]$`Pr(>F)`[1] < 0.05) {
+            paste("Terdapat perbedaan rata-rata yang signifikan antar kelompok", input$anova1_indep, "pada tingkat signifikansi 5%.")
+          } else {
+            paste("Tidak terdapat perbedaan rata-rata yang signifikan antar kelompok", input$anova1_indep, "pada tingkat signifikansi 5%.")
+          }
+        )
+      }
       
       tryCatch({
         temp_rmd <- tempfile(fileext = ".Rmd")
-        simple_rmd <- paste(
+        
+        # Build content based on tests performed
+        content_sections <- c(
           "---",
-          "title: 'Hasil One-Sample T-Test'",
+          "title: 'Laporan Lengkap Statistik Inferensia'", 
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
           "date: '", Sys.Date(), "'",
-          "output: pdf_document",
+          "output: word_document",
           "---",
           "",
-          "## One-Sample T-Test",
+          "# Laporan Statistik Inferensia",
           "",
-          paste("Variable:", input$ttest1_var),
-          paste("Hypothesized mean:", input$ttest1_mu),
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan hasil analisis statistik inferensia yang dilakukan untuk menguji hipotesis penelitian menggunakan berbagai uji statistik.",
           "",
-          paste("**H0:** μ =", input$ttest1_mu),
-          paste("**H1:** μ ≠", input$ttest1_mu),
-          "",
-          paste("T-statistic:", round(ttest_result$statistic, 4)),
-          paste("P-value:", round(ttest_result$p.value, 4)),
-          paste("Confidence Interval: [", round(ttest_result$conf.int[1], 4), ",", round(ttest_result$conf.int[2], 4), "]"),
-          sep = "\n"
+          paste("## Total Uji yang Dilakukan:", length(tests_performed)),
+          ""
         )
-        writeLines(simple_rmd, temp_rmd)
+        
+        # Add each test result
+        for(test_name in names(tests_performed)) {
+          test <- tests_performed[[test_name]]
+          
+          if(test_name == "ttest1") {
+            content_sections <- c(content_sections,
+              paste("## ", test$title),
+              "",
+              paste("**Variabel:** ", test$variable),
+              paste("**Nilai Hipotesis:** ", test$hypothesis_value),
+              "",
+              "### Hipotesis",
+              paste("- H0: μ =", test$hypothesis_value),
+              paste("- H1: μ ≠", test$hypothesis_value),
+              "",
+              "### Hasil Uji",
+              paste("- T-statistic:", round(test$result$statistic, 4)),
+              paste("- Degrees of freedom:", test$result$parameter),
+              paste("- P-value:", round(test$result$p.value, 4)),
+              paste("- 95% Confidence Interval: [", round(test$result$conf.int[1], 4), ",", round(test$result$conf.int[2], 4), "]"),
+              paste("- Sample mean:", round(test$result$estimate, 4)),
+              "",
+              "### Interpretasi",
+              test$interpretation,
+              ""
+            )
+          } else if(test_name == "ttest2") {
+            content_sections <- c(content_sections,
+              paste("## ", test$title),
+              "",
+              paste("**Variabel:** ", test$variable),
+              paste("**Kelompok:** ", test$group_var),
+              "",
+              "### Hipotesis",
+              "- H0: μ1 = μ2 (tidak ada perbedaan rata-rata antar kelompok)",
+              "- H1: μ1 ≠ μ2 (ada perbedaan rata-rata antar kelompok)",
+              "",
+              "### Hasil Uji",
+              paste("- T-statistic:", round(test$result$statistic, 4)),
+              paste("- Degrees of freedom:", round(test$result$parameter, 2)),
+              paste("- P-value:", round(test$result$p.value, 4)),
+              paste("- 95% Confidence Interval: [", round(test$result$conf.int[1], 4), ",", round(test$result$conf.int[2], 4), "]"),
+              "",
+              "### Interpretasi",
+              test$interpretation,
+              ""
+            )
+          } else if(test_name == "anova1") {
+            content_sections <- c(content_sections,
+              paste("## ", test$title),
+              "",
+              paste("**Variabel Dependen:** ", test$dependent),
+              paste("**Variabel Independen:** ", test$independent),
+              "",
+              "### Hipotesis",
+              "- H0: μ1 = μ2 = μ3 = ... (semua rata-rata kelompok sama)",
+              "- H1: Minimal ada satu rata-rata kelompok yang berbeda",
+              "",
+              "### Hasil Uji",
+              paste("- F-statistic:", round(test$result[[1]]$`F value`[1], 4)),
+              paste("- Degrees of freedom:", test$result[[1]]$Df[1], ",", test$result[[1]]$Df[2]),
+              paste("- P-value:", round(test$result[[1]]$`Pr(>F)`[1], 4)),
+              "",
+              "### Interpretasi",
+              test$interpretation,
+              ""
+            )
+          }
+        }
+        
+        # Add conclusion
+        content_sections <- c(content_sections,
+          "## Kesimpulan Umum",
+          "",
+          if(length(tests_performed) > 0) {
+            significant_tests <- sapply(tests_performed, function(test) {
+              if(test$title == "One-Sample T-Test" || test$title == "Two-Sample Independent T-Test") {
+                test$result$p.value < 0.05
+              } else if(test$title == "One-Way ANOVA") {
+                test$result[[1]]$`Pr(>F)`[1] < 0.05
+              }
+            })
+            paste("Dari", length(tests_performed), "uji statistik yang dilakukan,", sum(significant_tests), "uji menunjukkan hasil yang signifikan pada tingkat α = 0.05.")
+          } else {
+            "Tidak ada uji statistik yang berhasil dilakukan. Pastikan untuk menjalankan uji statistik terlebih dahulu."
+          },
+          "",
+          "### Rekomendasi",
+          "Berdasarkan hasil uji statistik, disarankan untuk:",
+          "1. Mempertimbangkan temuan signifikan dalam konteks penelitian",
+          "2. Melakukan analisis lanjutan jika diperlukan",
+          "3. Memvalidasi hasil dengan data tambahan jika memungkinkan"
+        )
+        
+        rmd_content <- paste(content_sections, collapse = "\n")
+        writeLines(rmd_content, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_ttest2_pdf <- downloadHandler(
@@ -3472,39 +3772,180 @@ server <- function(input, output, session) {
   
   # --- Regresi Linear Berganda Tab ---
   output$download_regression_summary_pdf <- downloadHandler(
-    filename = function() { paste0("regression_summary_", Sys.Date(), ".pdf") },
+    filename = function() { paste0("regression_complete_report_", Sys.Date(), ".docx") },
     content = function(file) {
       req(values$regression_done)
       model <- regression_model()
       model_summary <- summary(model)
       
-      tryCatch({
-        temp_rmd <- tempfile(fileext = ".Rmd")
-        simple_rmd <- paste(
-          "---",
-          "title: 'Ringkasan Regresi'",
-          "date: '", Sys.Date(), "'",
-          "output: pdf_document",
-          "---",
+      # Get regression statistics
+      r_squared <- model_summary$r.squared
+      adj_r_squared <- model_summary$adj.r.squared
+      f_statistic <- model_summary$fstatistic[1]
+      f_p_value <- pf(f_statistic, model_summary$fstatistic[2], model_summary$fstatistic[3], lower.tail = FALSE)
+      
+      # Get coefficients
+      coefficients <- model_summary$coefficients
+      significant_vars <- rownames(coefficients)[coefficients[, "Pr(>|t|)"] < 0.05]
+      
+      # VIF test for multicollinearity
+      vif_content <- ""
+      if(length(input$reg_indep) > 1) {
+        vif_result <- car::vif(model)
+        vif_content <- paste(
+          "## Uji Multikolinearitas (VIF)",
           "",
-          "## Multiple Linear Regression Summary",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "vif_data <- data.frame(",
+          paste("  Variable = c(", paste(paste0("'", names(vif_result), "'"), collapse = ", "), "),"),
+          paste("  VIF = c(", paste(round(vif_result, 4), collapse = ", "), ")"),
+          ")",
+          "kable(vif_data, caption = 'Variance Inflation Factor (VIF)')",
+          "```",
           "",
-          paste("Dependent Variable:", input$reg_dep),
-          paste("Independent Variables:", paste(input$reg_indep, collapse = ", ")),
+          "### Interpretasi VIF",
+          if(any(vif_result > 10)) {
+            paste("⚠️ **Peringatan:** Terdeteksi multikolinearitas tinggi (VIF > 10) pada variabel:", paste(names(vif_result[vif_result > 10]), collapse = ", "))
+          } else if(any(vif_result > 5)) {
+            paste("⚠️ **Perhatian:** Terdeteksi multikolinearitas sedang (VIF > 5) pada variabel:", paste(names(vif_result[vif_result > 5]), collapse = ", "))
+          } else {
+            "✅ **Baik:** Tidak ada masalah multikolinearitas yang serius (semua VIF < 5)"
+          },
           "",
-          paste("R-squared:", round(model_summary$r.squared, 4)),
-          paste("Adjusted R-squared:", round(model_summary$adj.r.squared, 4)),
-          paste("F-statistic:", round(model_summary$fstatistic[1], 4)),
-          paste("P-value:", round(pf(model_summary$fstatistic[1], model_summary$fstatistic[2], model_summary$fstatistic[3], lower.tail = FALSE), 4)),
           sep = "\n"
         )
-        writeLines(simple_rmd, temp_rmd)
+      } else {
+        vif_content <- paste(
+          "## Uji Multikolinearitas",
+          "Tidak dilakukan karena hanya menggunakan satu variabel independen.",
+          "",
+          sep = "\n"
+        )
+      }
+      
+      # Assumption tests
+      residuals <- resid(model)
+      shapiro_test <- shapiro.test(residuals)
+      bp_test <- lmtest::bptest(model)
+      
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        rmd_content <- paste(
+          "---",
+          "title: 'Laporan Lengkap Analisis Regresi Linear Berganda'",
+          "author: 'SEVA - Socio-Economic Vulnerability Analyzer'",
+          "date: '", Sys.Date(), "'",
+          "output: word_document",
+          "---",
+          "",
+          "# Laporan Analisis Regresi Linear Berganda",
+          "",
+          "## Ringkasan Eksekutif",
+          "Laporan ini menyajikan hasil analisis regresi linear berganda lengkap termasuk interpretasi koefisien, uji signifikansi, dan pemeriksaan asumsi model.",
+          "",
+          "## Spesifikasi Model",
+          "",
+          paste("**Variabel Dependen:** ", input$reg_dep),
+          paste("**Variabel Independen:** ", paste(input$reg_indep, collapse = ", ")),
+          paste("**Jumlah Observasi:** ", nobs(model)),
+          "",
+          "### Persamaan Regresi",
+          paste(input$reg_dep, "= β₀ +", paste(paste("β", 1:length(input$reg_indep), "×", input$reg_indep, sep = ""), collapse = " + "), "+ ε"),
+          "",
+          "## Hasil Estimasi Model",
+          "",
+          "### Koefisien Regresi",
+          "",
+          "```{r echo=FALSE, results='asis'}",
+          "library(knitr)",
+          "coef_data <- data.frame(",
+          paste("  Variable = c(", paste(paste0("'", rownames(coefficients), "'"), collapse = ", "), "),"),
+          paste("  Estimate = c(", paste(round(coefficients[, "Estimate"], 4), collapse = ", "), "),"),
+          paste("  Std_Error = c(", paste(round(coefficients[, "Std. Error"], 4), collapse = ", "), "),"),
+          paste("  t_value = c(", paste(round(coefficients[, "t value"], 4), collapse = ", "), "),"),
+          paste("  p_value = c(", paste(round(coefficients[, "Pr(>|t|)"], 4), collapse = ", "), "),"),
+          paste("  Significant = c(", paste(paste0("'", ifelse(coefficients[, "Pr(>|t|)"] < 0.05, "***", 
+                                                            ifelse(coefficients[, "Pr(>|t|)"] < 0.01, "**",
+                                                                  ifelse(coefficients[, "Pr(>|t|)"] < 0.1, "*", ""))), "'"), collapse = ", "), ")"),
+          ")",
+          "kable(coef_data, caption = 'Koefisien Regresi dan Signifikansi')",
+          "```",
+          "",
+          "**Catatan:** *** p < 0.001, ** p < 0.01, * p < 0.05",
+          "",
+          "### Goodness of Fit",
+          "",
+          paste("- **R-squared:** ", round(r_squared, 4), " (", round(r_squared * 100, 2), "% variabilitas dijelaskan)"),
+          paste("- **Adjusted R-squared:** ", round(adj_r_squared, 4)),
+          paste("- **F-statistic:** ", round(f_statistic, 4)),
+          paste("- **F test p-value:** ", round(f_p_value, 4), if(f_p_value < 0.05) " (Model signifikan)" else " (Model tidak signifikan)"),
+          "",
+          "## Interpretasi Koefisien",
+          "",
+          if(length(significant_vars) > 0) {
+            paste("### Variabel Signifikan (p < 0.05)")
+          } else {
+            "### Tidak Ada Variabel yang Signifikan"
+          },
+          "",
+          if(length(significant_vars) > 0) {
+            paste(sapply(significant_vars[-1], function(var) { # exclude intercept
+              coef_val <- coefficients[var, "Estimate"]
+              p_val <- coefficients[var, "Pr(>|t|)"]
+              paste("**", var, ":** Setiap peningkatan satu unit", var, 
+                    ifelse(coef_val > 0, "meningkatkan", "menurunkan"), 
+                    input$reg_dep, "sebesar", round(abs(coef_val), 4), "unit (p =", round(p_val, 4), ")")
+            }), collapse = "\n\n")
+          } else {
+            "Tidak ada variabel independen yang memiliki pengaruh signifikan terhadap variabel dependen."
+          },
+          "",
+          vif_content,
+          "",
+          "## Uji Asumsi Model",
+          "",
+          "### Normalitas Residual",
+          paste("- **Shapiro-Wilk test:** W =", round(shapiro_test$statistic, 4), ", p-value =", round(shapiro_test$p.value, 4)),
+          if(shapiro_test$p.value > 0.05) {
+            "- ✅ **Interpretasi:** Residual berdistribusi normal (asumsi terpenuhi)"
+          } else {
+            "- ❌ **Interpretasi:** Residual tidak berdistribusi normal (asumsi dilanggar)"
+          },
+          "",
+          "### Homoskedastisitas",
+          paste("- **Breusch-Pagan test:** BP =", round(bp_test$statistic, 4), ", p-value =", round(bp_test$p.value, 4)),
+          if(bp_test$p.value > 0.05) {
+            "- ✅ **Interpretasi:** Varians residual homogen (asumsi terpenuhi)"
+          } else {
+            "- ❌ **Interpretasi:** Terjadi heteroskedastisitas (asumsi dilanggar)"
+          },
+          "",
+          "## Kesimpulan",
+          "",
+          "### Signifikansi Model",
+          if(f_p_value < 0.05) {
+            paste("Model regresi secara keseluruhan **signifikan** (F =", round(f_statistic, 4), ", p <", ifelse(f_p_value < 0.001, "0.001", round(f_p_value, 3)), "). Model dapat menjelaskan", round(r_squared * 100, 2), "% variabilitas dalam", input$reg_dep, ".")
+          } else {
+            paste("Model regresi secara keseluruhan **tidak signifikan** (F =", round(f_statistic, 4), ", p =", round(f_p_value, 4), "). Model tidak dapat menjelaskan variabilitas dalam", input$reg_dep, "secara bermakna.")
+          },
+          "",
+          "### Rekomendasi",
+          if(f_p_value < 0.05 && length(significant_vars) > 1) {
+            "1. Model dapat digunakan untuk prediksi dengan memperhatikan variabel signifikan\n2. Lakukan validasi model dengan data baru jika memungkinkan\n3. Pertimbangkan transformasi jika asumsi dilanggar"
+          } else {
+            "1. Pertimbangkan penambahan variabel independen lain\n2. Evaluasi spesifikasi model (transformasi, interaksi)\n3. Cek outliers dan influential observations"
+          },
+          sep = "\n"
+        )
+        
+        writeLines(rmd_content, temp_rmd)
         rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
       }, error = function(e) {
-        stop("Failed to generate PDF: ", e$message)
+        stop("Failed to generate Word document: ", e$message)
       })
     },
-    contentType = "application/pdf"
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
   output$download_regression_interpretation_pdf <- downloadHandler(
