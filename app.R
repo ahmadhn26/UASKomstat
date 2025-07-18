@@ -15,15 +15,13 @@ library(tidyr)  # Added for spread function
 library(reshape2)
 library(RColorBrewer)
 
-
-
-# Load data
-sovi_data <- read.csv("C:/Komstat 3/sovi_data.csv")
-distance_data <- read.csv("C:/Komstat 3/distance.csv")
+# Load data with relative paths
+sovi_data <- read.csv("sovi_data.csv")
+distance_data <- read.csv("distance.csv")
 
 # Define UI
 ui <- dashboardPage(
-  skin = "purple",
+  skin = "blue",
   
   # Header
   dashboardHeader(title = "Socio-Economic Vulnerability Analyzer (SEVA)"),
@@ -44,14 +42,201 @@ ui <- dashboardPage(
   dashboardBody(
     tags$head(
       tags$style(HTML("
+        /* Modern color scheme and improved styling */
         .content-wrapper, .right-side {
-          background-color: #f4f4f4;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
         }
+        
+        .main-sidebar {
+          background-color: #2c3e50 !important;
+        }
+        
+        .main-sidebar .sidebar .sidebar-menu > li > a {
+          color: #ecf0f1 !important;
+          border-left: 3px solid transparent;
+          transition: all 0.3s ease;
+        }
+        
+        .main-sidebar .sidebar .sidebar-menu > li.active > a,
+        .main-sidebar .sidebar .sidebar-menu > li:hover > a {
+          background-color: #34495e !important;
+          border-left: 3px solid #3498db;
+          color: #ffffff !important;
+        }
+        
         .box {
+          margin-bottom: 25px;
+          border-radius: 15px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+          border: none;
+          background: rgba(255,255,255,0.95);
+          backdrop-filter: blur(10px);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        
+        .box-header {
+          border-radius: 15px 15px 0 0;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white !important;
+          padding: 20px;
+        }
+        
+        .box-header .box-title {
+          color: white !important;
+          font-weight: 600;
+          font-size: 18px;
+        }
+        
+        .box-body {
+          padding: 25px;
+          background: rgba(255,255,255,0.98);
+          border-radius: 0 0 15px 15px;
+        }
+        
+        /* Modern button styling */
+        .btn {
+          border-radius: 25px;
+          padding: 10px 25px;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          transition: all 0.3s ease;
+          border: none;
+          margin: 8px 5px;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .btn-primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+        
+        .btn-success {
+          background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+          color: white;
+        }
+        
+        .btn-warning {
+          background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+          color: white;
+        }
+        
+        .btn-info {
+          background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+          color: white;
+        }
+        
+        .btn-danger {
+          background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+          color: white;
+        }
+        
+        /* Form controls */
+        .form-control {
+          border-radius: 10px;
+          border: 2px solid #e9ecef;
+          padding: 12px 15px;
+          transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .selectize-input {
+          border-radius: 10px !important;
+          border: 2px solid #e9ecef !important;
+          padding: 12px 15px !important;
+        }
+        
+        .selectize-input.focus {
+          border-color: #667eea !important;
+          box-shadow: 0 0 15px rgba(102, 126, 234, 0.3) !important;
+        }
+        
+        /* Data tables */
+        .dataTables_wrapper {
+          background: white;
+          border-radius: 15px;
+          padding: 20px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Main header */
+        .main-header .navbar {
+          background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+          border: none;
+        }
+        
+        .main-header .logo {
+          background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%) !important;
+          color: white !important;
+          font-weight: 600;
+        }
+        
+        /* Improved spacing and typography */
+        h3, h4 {
+          color: #2c3e50;
+          font-weight: 600;
           margin-bottom: 20px;
         }
+        
+        p, li {
+          color: #555;
+          line-height: 1.6;
+          margin-bottom: 10px;
+        }
+        
         .download-btn {
           margin: 10px 5px;
+          min-width: 200px;
+        }
+        
+        /* Modern cards for content sections */
+        .info-card {
+          background: rgba(255,255,255,0.95);
+          border-radius: 15px;
+          padding: 25px;
+          margin-bottom: 20px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+          border-left: 5px solid #667eea;
+        }
+        
+        /* Loading and active states */
+        .shiny-output-error {
+          background: #fee;
+          border: 1px solid #fcc;
+          border-radius: 10px;
+          padding: 15px;
+        }
+        
+        .shiny-output-error:before {
+          content: '⚠ ';
+          color: #f66;
+        }
+        
+        /* Responsive design improvements */
+        @media (max-width: 768px) {
+          .box {
+            margin-bottom: 15px;
+          }
+          
+          .download-btn {
+            min-width: 150px;
+            margin: 5px 2px;
+          }
         }
       "))
     ),
@@ -61,33 +246,60 @@ ui <- dashboardPage(
       tabItem(tabName = "beranda",
               fluidRow(
                 box(
-                  title = "Selamat Datang di SEVA", 
+                  title = "🏠 Selamat Datang di SEVA", 
                   status = "primary", 
                   solidHeader = TRUE,
                   width = 12,
-                  h3("Socio-Economic Vulnerability Analyzer"),
-                  p("Dashboard ini dirancang untuk menganalisis kerentanan sosial-ekonomi berbagai daerah menggunakan berbagai indikator demografis, ekonomi, dan sosial."),
-                  p("Fitur utama dashboard ini meliputi:"),
-                  tags$ul(
-                    tags$li("Manajemen dan kategorisasi data"),
-                    tags$li("Eksplorasi data dengan visualisasi interaktif"),
-                    tags$li("Uji asumsi statistik"),
-                    tags$li("Analisis statistik inferensia"),
-                    tags$li("Analisis regresi linear berganda")
+                  div(class = "info-card",
+                    h3("📊 Socio-Economic Vulnerability Analyzer"),
+                    p("Dashboard ini dirancang untuk menganalisis kerentanan sosial-ekonomi berbagai daerah menggunakan berbagai indikator demografis, ekonomi, dan sosial."),
+                    
+                    h4("🎯 Fitur Utama:"),
+                    div(style = "display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0;",
+                      div(style = "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 15px; text-align: center;",
+                        h5("🗄️ Manajemen Data"),
+                        p("Kategorisasi dan pengelolaan dataset")
+                      ),
+                      div(style = "background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%); color: white; padding: 20px; border-radius: 15px; text-align: center;",
+                        h5("📈 Eksplorasi Data"),
+                        p("Visualisasi interaktif dan analisis deskriptif")
+                      ),
+                      div(style = "background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 15px; text-align: center;",
+                        h5("🧪 Uji Asumsi"),
+                        p("Pengujian normalitas dan homogenitas")
+                      ),
+                      div(style = "background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 20px; border-radius: 15px; text-align: center;",
+                        h5("📊 Statistik Inferensia"),
+                        p("T-test, ANOVA, dan uji proporsi")
+                      ),
+                      div(style = "background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; padding: 20px; border-radius: 15px; text-align: center;",
+                        h5("📉 Regresi Linear"),
+                        p("Analisis regresi berganda dan diagnostik")
+                      )
+                    )
                   ),
-                  downloadButton("download_welcome", "Download Laporan Beranda", class = "btn btn-primary download-btn")
+                  br(),
+                  div(style = "text-align: center;",
+                    downloadButton("download_welcome", "📄 Download Laporan Beranda", class = "btn btn-primary download-btn")
+                  )
                 )
               ),
               
               fluidRow(
                 box(
-                  title = "Metadata", 
-                  status = "primary", 
+                  title = "📋 Dataset Metadata", 
+                  status = "info", 
                   solidHeader = TRUE,
                   width = 12,
+                  div(class = "info-card",
+                    h4("📊 Informasi Dataset"),
+                    p("Berikut adalah metadata dari dataset yang digunakan dalam analisis kerentanan sosial-ekonomi:")
+                  ),
                   DT::dataTableOutput("metadata_table"),
                   br(),
-                  downloadButton("download_metadata", "Download Metadata", class = "btn btn-success download-btn")
+                  div(style = "text-align: center;",
+                    downloadButton("download_metadata", "📥 Download Metadata", class = "btn btn-success download-btn")
+                  )
                 )
               )
       ),
@@ -96,7 +308,7 @@ ui <- dashboardPage(
       tabItem(tabName = "manajemen",
               fluidRow(
                 box(
-                  title = "Pengaturan", 
+                  title = "⚙️ Pengaturan", 
                   status = "warning", 
                   solidHeader = TRUE,
                   width = 4,
@@ -107,7 +319,7 @@ ui <- dashboardPage(
                 ),
                 
                 box(
-                  title = "Hasil Kategorisasi Data", 
+                  title = "📊 Hasil Kategorisasi Data", 
                   status = "primary", 
                   solidHeader = TRUE,
                   width = 8,
@@ -124,14 +336,14 @@ ui <- dashboardPage(
       # Eksplorasi Data Tab
       tabItem(tabName = "eksplorasi",
               tabBox(
-                title = "Eksplorasi Data",
+                title = "📈 Eksplorasi Data",
                 width = 12,
                 
                 # Tab 1: Statistik Deskriptif
-                tabPanel("Statistik Deskriptif",
+                tabPanel("📊 Statistik Deskriptif",
                          fluidRow(
                            box(
-                             title = "Pengaturan Variabel",
+                             title = "⚙️ Pengaturan Variabel",
                              status = "warning",
                              solidHeader = TRUE,
                              width = 4,
@@ -1343,41 +1555,76 @@ server <- function(input, output, session) {
     }
   )
   
-  # Normality Test Download
+  # Normality Test Download - Enhanced with better error handling
   output$download_normality <- downloadHandler(
     filename = function() { 
       paste("SEVA_Normality_Test_", Sys.Date(), ".txt", sep = "") 
     },
     content = function(file) {
-      req(input$normality_var)
-      var_data <- sovi_data[[input$normality_var]]
-      var_data <- var_data[!is.na(var_data)]
-      shapiro_test <- shapiro.test(var_data)
-      
-      content <- paste(
-        "SEVA - Normality Test Report",
-        "Generated on:", Sys.Date(),
-        "",
-        paste("Variable tested:", input$normality_var),
-        "",
-        "H0: Data berdistribusi normal",
-        "H1: Data tidak berdistribusi normal",
-        "",
-        "Shapiro-Wilk Test Results:",
-        paste("W =", round(shapiro_test$statistic, 4)),
-        paste("p-value =", round(shapiro_test$p.value, 4)),
-        "",
-        "Interpretation:",
-        if(shapiro_test$p.value > 0.05) {
-          paste("Dengan p-value =", round(shapiro_test$p.value, 4),
-                "> 0.05, kita gagal menolak H0. Data dapat dianggap berdistribusi normal.")
+      tryCatch({
+        # Use default variable if none selected
+        var_name <- if(is.null(input$normality_var) || input$normality_var == "") {
+          names(select_if(sovi_data, is.numeric))[1]
         } else {
-          paste("Dengan p-value =", round(shapiro_test$p.value, 4),
-                "< 0.05, kita menolak H0. Data tidak berdistribusi normal.")
-        },
-        sep = "\n"
-      )
-      writeLines(content, file)
+          input$normality_var
+        }
+        
+        var_data <- sovi_data[[var_name]]
+        var_data <- var_data[!is.na(var_data)]
+        
+        if(length(var_data) < 3) {
+          content <- paste(
+            "SEVA - Normality Test Report",
+            "Generated on:", Sys.Date(),
+            "",
+            "ERROR: Insufficient data for normality test.",
+            "Please select a variable with more observations.",
+            sep = "\n"
+          )
+        } else {
+          shapiro_test <- shapiro.test(var_data)
+          
+          content <- paste(
+            "SEVA - Normality Test Report",
+            "Generated on:", Sys.Date(),
+            "",
+            paste("Variable tested:", var_name),
+            paste("Sample size:", length(var_data)),
+            "",
+            "H0: Data berdistribusi normal",
+            "H1: Data tidak berdistribusi normal",
+            "",
+            "Shapiro-Wilk Test Results:",
+            paste("W =", round(shapiro_test$statistic, 4)),
+            paste("p-value =", round(shapiro_test$p.value, 4)),
+            "",
+            "Interpretation:",
+            if(shapiro_test$p.value > 0.05) {
+              paste("Dengan p-value =", round(shapiro_test$p.value, 4),
+                    "> 0.05, kita gagal menolak H0. Data dapat dianggap berdistribusi normal.")
+            } else {
+              paste("Dengan p-value =", round(shapiro_test$p.value, 4),
+                    "< 0.05, kita menolak H0. Data tidak berdistribusi normal.")
+            },
+            "",
+            "Note: Shapiro-Wilk test is most reliable for sample sizes between 3 and 5000.",
+            sep = "\n"
+          )
+        }
+        writeLines(content, file)
+      }, error = function(e) {
+        content <- paste(
+          "SEVA - Normality Test Report",
+          "Generated on:", Sys.Date(),
+          "",
+          "ERROR: Unable to perform normality test.",
+          paste("Error message:", e$message),
+          "",
+          "Please ensure a valid numeric variable is selected.",
+          sep = "\n"
+        )
+        writeLines(content, file)
+      })
     }
   )
   
@@ -1432,48 +1679,103 @@ server <- function(input, output, session) {
     }
   )
   
-  # Assumption Tests Report Download
+  # Assumption Tests Report Download - Enhanced
   output$download_assumption_report <- downloadHandler(
     filename = function() { 
       paste("SEVA_Assumption_Tests_Report_", Sys.Date(), ".txt", sep = "") 
     },
     content = function(file) {
-      req(input$normality_var)
-      
-      # Normality test
-      var_data <- sovi_data[[input$normality_var]]
-      var_data <- var_data[!is.na(var_data)]
-      shapiro_test <- shapiro.test(var_data)
-      
-      content <- paste(
-        "SEVA - Assumption Tests Complete Report",
-        "Generated on:", Sys.Date(),
-        "",
-        "=== NORMALITY TEST ===",
-        "",
-        paste("Variable:", input$normality_var),
-        "H0: Data berdistribusi normal",
-        "H1: Data tidak berdistribusi normal",
-        "",
-        paste("Shapiro-Wilk W =", round(shapiro_test$statistic, 4)),
-        paste("p-value =", round(shapiro_test$p.value, 4)),
-        "",
-        if(shapiro_test$p.value > 0.05) {
-          "Conclusion: Data berdistribusi normal (gagal menolak H0)"
+      tryCatch({
+        # Use default variable if none selected
+        var_name <- if(is.null(input$normality_var) || input$normality_var == "") {
+          names(select_if(sovi_data, is.numeric))[1]
         } else {
-          "Conclusion: Data tidak berdistribusi normal (menolak H0)"
-        },
-        "",
-        "=== HOMOGENEITY TEST ===",
-        "",
-        if(input$group_var != "None") {
-          paste("Grouping variable:", input$group_var, "- See separate homogeneity report")
+          input$normality_var
+        }
+        
+        # Normality test
+        var_data <- sovi_data[[var_name]]
+        var_data <- var_data[!is.na(var_data)]
+        
+        content_parts <- c(
+          "SEVA - Assumption Tests Complete Report",
+          paste("Generated on:", Sys.Date()),
+          "",
+          "=== NORMALITY TEST ===",
+          "",
+          paste("Variable:", var_name),
+          paste("Sample size:", length(var_data)),
+          "H0: Data berdistribusi normal",
+          "H1: Data tidak berdistribusi normal",
+          ""
+        )
+        
+        if(length(var_data) >= 3) {
+          shapiro_test <- shapiro.test(var_data)
+          content_parts <- c(content_parts,
+            paste("Shapiro-Wilk W =", round(shapiro_test$statistic, 4)),
+            paste("p-value =", round(shapiro_test$p.value, 4)),
+            "",
+            if(shapiro_test$p.value > 0.05) {
+              "Conclusion: Data berdistribusi normal (gagal menolak H0)"
+            } else {
+              "Conclusion: Data tidak berdistribusi normal (menolak H0)"
+            }
+          )
         } else {
-          "No grouping variable selected for homogeneity test"
-        },
-        sep = "\n"
-      )
-      writeLines(content, file)
+          content_parts <- c(content_parts,
+            "ERROR: Insufficient data for normality test (need at least 3 observations)"
+          )
+        }
+        
+        content_parts <- c(content_parts,
+          "",
+          "=== HOMOGENEITY TEST ===",
+          ""
+        )
+        
+        # Check for grouping variable
+        group_var <- input$group_var
+        if(!is.null(group_var) && group_var != "None" && group_var != "") {
+          content_parts <- c(content_parts,
+            paste("Grouping variable:", group_var),
+            "See separate homogeneity test results for detailed analysis."
+          )
+        } else {
+          content_parts <- c(content_parts,
+            "No grouping variable selected for homogeneity test.",
+            "To perform homogeneity tests, please select a grouping variable."
+          )
+        }
+        
+        content_parts <- c(content_parts,
+          "",
+          "=== SUMMARY ===",
+          "",
+          "This report provides assumption tests commonly used before:",
+          "- t-tests and ANOVA (normality assumption)",
+          "- Independent samples tests (homogeneity of variance)",
+          "- Regression analysis (residual normality)",
+          "",
+          "Always verify assumptions before interpreting statistical test results."
+        )
+        
+        content <- paste(content_parts, collapse = "\n")
+        writeLines(content, file)
+        
+      }, error = function(e) {
+        content <- paste(
+          "SEVA - Assumption Tests Complete Report",
+          paste("Generated on:", Sys.Date()),
+          "",
+          "ERROR: Unable to generate assumption tests report.",
+          paste("Error message:", e$message),
+          "",
+          "Please ensure variables are properly selected and try again.",
+          sep = "\n"
+        )
+        writeLines(content, file)
+      })
     }
   )
   
@@ -1776,35 +2078,106 @@ server <- function(input, output, session) {
     }
   )
   
-  # Inferential Statistics Report Download
+  # Inferential Statistics Report Download - Enhanced
   output$download_inferential_report <- downloadHandler(
     filename = function() { 
       paste("SEVA_Inferential_Statistics_Report_", Sys.Date(), ".txt", sep = "") 
     },
     content = function(file) {
-      content <- paste(
-        "SEVA - Complete Inferential Statistics Report",
-        "Generated on:", Sys.Date(),
-        "",
-        "This report contains all inferential statistical analyses performed.",
-        "Individual test results are available in separate download files.",
-        "",
-        "Available Tests:",
-        "- One-Sample T-Test",
-        "- Two-Sample Independent T-Test", 
-        "- One-Sample Proportion Test",
-        "- One-Sample Variance Test",
-        "- One-Way ANOVA",
-        "- Two-Way ANOVA",
-        "",
-        "Each test includes:",
-        "- Null and alternative hypotheses",
-        "- Test statistics and p-values",
-        "- Statistical interpretations",
-        "- Conclusions at 5% significance level",
-        sep = "\n"
-      )
-      writeLines(content, file)
+      tryCatch({
+        content_parts <- c(
+          "SEVA - Complete Inferential Statistics Report",
+          paste("Generated on:", Sys.Date()),
+          "",
+          "=== OVERVIEW ===",
+          "",
+          "This report provides a comprehensive guide to inferential statistical analyses",
+          "available in the SEVA dashboard. Each test can be performed individually",
+          "and results downloaded separately.",
+          "",
+          "=== AVAILABLE STATISTICAL TESTS ===",
+          "",
+          "1. ONE-SAMPLE T-TEST",
+          "   Purpose: Test if a sample mean differs from a hypothesized value",
+          "   Assumptions: Normal distribution, random sampling",
+          "   Use when: Comparing sample mean to known population mean",
+          "",
+          "2. TWO-SAMPLE INDEPENDENT T-TEST",
+          "   Purpose: Compare means of two independent groups",
+          "   Assumptions: Normal distribution, equal variances, independence",
+          "   Use when: Comparing two groups (e.g., treatment vs control)",
+          "",
+          "3. ONE-SAMPLE PROPORTION TEST",
+          "   Purpose: Test if a sample proportion differs from hypothesized proportion",
+          "   Assumptions: Large sample size, random sampling",
+          "   Use when: Testing proportions or percentages",
+          "",
+          "4. ONE-SAMPLE VARIANCE TEST",
+          "   Purpose: Test if sample variance differs from hypothesized variance",
+          "   Assumptions: Normal distribution",
+          "   Use when: Testing variability or consistency",
+          "",
+          "5. ONE-WAY ANOVA",
+          "   Purpose: Compare means across multiple groups",
+          "   Assumptions: Normal distribution, equal variances, independence",
+          "   Use when: Comparing 3 or more groups simultaneously",
+          "",
+          "6. TWO-WAY ANOVA",
+          "   Purpose: Examine effects of two factors and their interaction",
+          "   Assumptions: Normal distribution, equal variances, independence",
+          "   Use when: Testing effects of two categorical variables",
+          "",
+          "=== GENERAL GUIDELINES ===",
+          "",
+          "Before performing any test:",
+          "- Check assumptions using the 'Uji Asumsi' tab",
+          "- Ensure adequate sample size",
+          "- Verify data quality and completeness",
+          "",
+          "Interpretation guidelines:",
+          "- α = 0.05 is the standard significance level",
+          "- p < 0.05 indicates statistical significance",
+          "- Always consider practical significance alongside statistical significance",
+          "- Report confidence intervals when available",
+          "",
+          "=== DATASET INFORMATION ===",
+          "",
+          paste("Dataset contains", ncol(sovi_data), "variables and", nrow(sovi_data), "observations"),
+          paste("Numeric variables:", length(names(select_if(sovi_data, is.numeric)))),
+          paste("Categorical variables:", length(names(select_if(sovi_data, function(x) !is.numeric(x))))),
+          "",
+          "=== HOW TO USE ===",
+          "",
+          "1. Navigate to the 'Statistik Inferensia' tab",
+          "2. Select the appropriate test for your research question",
+          "3. Choose variables and set parameters",
+          "4. Run the test and interpret results",
+          "5. Download individual test reports for detailed analysis",
+          "",
+          "=== CONTACT AND SUPPORT ===",
+          "",
+          "For questions about statistical methods or interpretation:",
+          "- Consult statistical textbooks for detailed methodology",
+          "- Consider professional statistical consultation for complex analyses",
+          "- Validate results with alternative software when possible"
+        )
+        
+        content <- paste(content_parts, collapse = "\n")
+        writeLines(content, file)
+        
+      }, error = function(e) {
+        content <- paste(
+          "SEVA - Complete Inferential Statistics Report",
+          paste("Generated on:", Sys.Date()),
+          "",
+          "ERROR: Unable to generate inferential statistics report.",
+          paste("Error message:", e$message),
+          "",
+          "This appears to be a system error. Please try again or contact support.",
+          sep = "\n"
+        )
+        writeLines(content, file)
+      })
     }
   )
   
@@ -1903,65 +2276,163 @@ server <- function(input, output, session) {
       paste("SEVA_Complete_Regression_Report_", Sys.Date(), ".txt", sep = "") 
     },
     content = function(file) {
-      req(regression_model())
-      model <- regression_model()
-      model_summary <- summary(model)
-      residuals_data <- residuals(model)
-      shapiro_test <- shapiro.test(residuals_data)
-      
-      content <- paste(
-        "SEVA - Complete Multiple Linear Regression Report",
-        "Generated on:", Sys.Date(),
-        "",
-        "=== MODEL SPECIFICATION ===",
-        "",
-        paste("Dependent variable:", input$reg_dep),
-        paste("Independent variables:", paste(input$reg_indep, collapse = ", ")),
-        "",
-        "=== REGRESSION RESULTS ===",
-        "",
-        paste(capture.output(print(model_summary)), collapse = "\n"),
-        "",
-        "=== MODEL INTERPRETATION ===",
-        "",
-        paste("R-squared =", round(model_summary$r.squared, 4), 
-              "- Model explains", round(model_summary$r.squared * 100, 2), "% of variance"),
-        paste("Adjusted R-squared =", round(model_summary$adj.r.squared, 4)),
-        paste("F-statistic =", round(model_summary$fstatistic[1], 4)),
-        "",
-        "=== ASSUMPTION TESTS ===",
-        "",
-        "Normality of Residuals:",
-        paste("Shapiro-Wilk p-value =", round(shapiro_test$p.value, 4)),
-        if(shapiro_test$p.value > 0.05) {
-          "✓ Residuals are normally distributed"
+      tryCatch({
+        # Check if regression model exists
+        if(exists("regression_model") && !is.null(regression_model()) && 
+           !is.null(input$reg_dep) && !is.null(input$reg_indep)) {
+          
+          model <- regression_model()
+          model_summary <- summary(model)
+          residuals_data <- residuals(model)
+          
+          content_parts <- c(
+            "SEVA - Complete Multiple Linear Regression Report",
+            paste("Generated on:", Sys.Date()),
+            "",
+            "=== MODEL SPECIFICATION ===",
+            "",
+            paste("Dependent variable:", input$reg_dep),
+            paste("Independent variables:", paste(input$reg_indep, collapse = ", ")),
+            paste("Sample size:", nobs(model)),
+            "",
+            "=== REGRESSION RESULTS ===",
+            "",
+            paste(capture.output(print(model_summary)), collapse = "\n"),
+            "",
+            "=== MODEL INTERPRETATION ===",
+            "",
+            paste("R-squared =", round(model_summary$r.squared, 4), 
+                  "- Model explains", round(model_summary$r.squared * 100, 2), "% of variance"),
+            paste("Adjusted R-squared =", round(model_summary$adj.r.squared, 4)),
+            paste("F-statistic =", round(model_summary$fstatistic[1], 4)),
+            paste("Degrees of freedom:", model_summary$fstatistic[2], "and", model_summary$fstatistic[3]),
+            ""
+          )
+          
+          # Assumption tests
+          content_parts <- c(content_parts,
+            "=== ASSUMPTION TESTS ===",
+            "",
+            "1. Normality of Residuals:"
+          )
+          
+          if(length(residuals_data) >= 3) {
+            shapiro_test <- shapiro.test(residuals_data)
+            content_parts <- c(content_parts,
+              paste("   Shapiro-Wilk p-value =", round(shapiro_test$p.value, 4)),
+              if(shapiro_test$p.value > 0.05) {
+                "   ✓ Residuals are normally distributed"
+              } else {
+                "   ✗ Residuals are not normally distributed"
+              }
+            )
+          } else {
+            content_parts <- c(content_parts,
+              "   Insufficient data for normality test"
+            )
+          }
+          
+          content_parts <- c(content_parts,
+            "",
+            "2. Multicollinearity:"
+          )
+          
+          if(length(input$reg_indep) > 1) {
+            content_parts <- c(content_parts,
+              "   Check VIF values in separate assumptions report",
+              "   VIF > 5 indicates potential multicollinearity issues"
+            )
+          } else {
+            content_parts <- c(content_parts,
+              "   Not applicable (single predictor model)"
+            )
+          }
+          
+          content_parts <- c(content_parts,
+            "",
+            "3. Homoscedasticity:",
+            "   Check residual vs fitted plots for constant variance",
+            "   Look for random scatter around horizontal line",
+            "",
+            "=== CONCLUSIONS ===",
+            ""
+          )
+          
+          # Model significance
+          f_p_value <- pf(model_summary$fstatistic[1], model_summary$fstatistic[2], 
+                         model_summary$fstatistic[3], lower.tail = FALSE)
+          
+          content_parts <- c(content_parts,
+            paste("Overall model is", 
+                  if(f_p_value < 0.05) {
+                    paste("statistically significant (p =", round(f_p_value, 4), ")")
+                  } else {
+                    paste("not statistically significant (p =", round(f_p_value, 4), ")")
+                  }
+            ),
+            ""
+          )
+          
+          # Significant predictors
+          sig_predictors <- names(which(model_summary$coefficients[,4] < 0.05))
+          if(length(sig_predictors) > 0) {
+            content_parts <- c(content_parts,
+              "Significant predictors (p < 0.05):",
+              paste("  ", sig_predictors, collapse = "\n")
+            )
+          } else {
+            content_parts <- c(content_parts,
+              "No significant predictors at α = 0.05 level"
+            )
+          }
+          
+          content_parts <- c(content_parts,
+            "",
+            "=== RECOMMENDATIONS ===",
+            "",
+            "- Verify all regression assumptions before interpreting results",
+            "- Consider data transformations if assumptions are violated", 
+            "- Check for outliers and influential observations",
+            "- Validate model with additional data if possible"
+          )
+          
         } else {
-          "✗ Residuals are not normally distributed"
-        },
-        "",
-        if(length(input$reg_indep) > 1) {
-          "Multicollinearity: See VIF values in assumptions report"
-        } else {
-          "Multicollinearity: Not applicable (single predictor)"
-        },
-        "",
-        "Homoscedasticity: Check residual plots",
-        "",
-        "=== CONCLUSIONS ===",
-        "",
-        "Model is", 
-        if(pf(model_summary$fstatistic[1], model_summary$fstatistic[2], 
-              model_summary$fstatistic[3], lower.tail = FALSE) < 0.05) {
-          "statistically significant overall."
-        } else {
-          "not statistically significant overall."
-        },
-        "",
-        "Significant predictors (p < 0.05):",
-        paste(names(which(model_summary$coefficients[,4] < 0.05)), collapse = ", "),
-        sep = "\n"
-      )
-      writeLines(content, file)
+          # No regression model available
+          content_parts <- c(
+            "SEVA - Complete Multiple Linear Regression Report",
+            paste("Generated on:", Sys.Date()),
+            "",
+            "ERROR: No regression model available.",
+            "",
+            "To generate a regression report:",
+            "1. Go to the 'Regresi Linear Berganda' tab",
+            "2. Select dependent and independent variables",
+            "3. Click 'Jalankan Regresi' button",
+            "4. Then download the report",
+            "",
+            "The regression model must be created before downloading the report."
+          )
+        }
+        
+        content <- paste(content_parts, collapse = "\n")
+        writeLines(content, file)
+        
+      }, error = function(e) {
+        content <- paste(
+          "SEVA - Complete Multiple Linear Regression Report",
+          paste("Generated on:", Sys.Date()),
+          "",
+          "ERROR: Unable to generate regression report.",
+          paste("Error message:", e$message),
+          "",
+          "Please ensure:",
+          "- Regression model has been created",
+          "- Variables are properly selected",
+          "- Data is available for analysis",
+          sep = "\n"
+        )
+        writeLines(content, file)
+      })
     }
   )
 }
