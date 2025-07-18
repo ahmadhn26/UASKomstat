@@ -1967,51 +1967,28 @@ server <- function(input, output, session) {
       }
       
       req(categorized_data_reactive())
-      temp_md <- tempfile(fileext = ".Rmd")
       
-      # Konten Rmd dengan header-includes untuk paket LaTeX
-      rmd_content <- paste(
-        "---",
-        "title: 'Interpretasi Kategorisasi'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Interpretasi Kategorisasi\n",
-        "Variabel ", input$cont_var, " telah berhasil dikategorisasi menjadi ", input$n_bins,
-        " kategori berdasarkan kuantil. Kategorisasi ini membantu dalam analisis data dengan mengubah",
-        " variabel kontinu menjadi variabel kategorikal yang dapat digunakan untuk analisis lebih lanjut seperti ANOVA atau Chi-square test.",
-        sep = "\n"
-      )
-      
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Interpretasi Kategorisasi'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Interpretasi Kategorisasi",
+          "",
+          paste("Variabel", input$cont_var, "telah berhasil dikategorisasi menjadi", input$n_bins,
+                "kategori berdasarkan kuantil. Kategorisasi ini membantu dalam analisis data dengan mengubah",
+                "variabel kontinu menjadi variabel kategorikal yang dapat digunakan untuk analisis lebih lanjut seperti ANOVA atau Chi-square test."),
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2096,55 +2073,53 @@ server <- function(input, output, session) {
   output$download_descriptive_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("descriptive_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$desc_vars)
-      temp_md <- tempfile(fileext = ".Rmd")
-      rmd_content <- paste(
-        "---",
-        "title: 'Descriptive Statistics Interpretation'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Interpretasi Statistik Deskriptif\n",
-        "Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih: ",
-        paste(input$desc_vars, collapse = ", "), ".\n",
-        "Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi",
-        " menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan",
-        " adanya skewness dalam distribusi data.",
-        sep = "\n"
-      )
-      writeLines(rmd_content, temp_md)
       
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
+      # Create simple HTML content
+      html_content <- paste0(
+        "<html><head><title>Descriptive Statistics Interpretation</title></head><body>",
+        "<h1>Interpretasi Statistik Deskriptif</h1>",
+        "<p><strong>Tanggal:</strong> ", Sys.Date(), "</p>",
+        "<p>Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih: ",
+        paste(input$desc_vars, collapse = ", "), ".</p>",
+        "<p>Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi ",
+        "menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan ",
+        "adanya skewness dalam distribusi data.</p>",
+        "</body></html>"
       )
+      
+      # Write HTML to temp file
+      temp_html <- tempfile(fileext = ".html")
+      writeLines(html_content, temp_html)
+      
+      tryCatch({
+        # Try to use wkhtmltopdf if available, otherwise use pandoc
+        if (Sys.which("wkhtmltopdf") != "") {
+          system(paste("wkhtmltopdf", temp_html, file))
+        } else {
+          # Use rmarkdown with simple output
+          temp_rmd <- tempfile(fileext = ".Rmd")
+          simple_rmd <- paste(
+            "---",
+            "title: 'Interpretasi Statistik Deskriptif'",
+            "date: '", Sys.Date(), "'",
+            "output: pdf_document",
+            "---",
+            "",
+            "## Interpretasi Statistik Deskriptif",
+            "",
+            "Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih:",
+            paste(input$desc_vars, collapse = ", "), ".",
+            "",
+            "Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan adanya skewness dalam distribusi data.",
+            sep = "\n"
+          )
+          writeLines(simple_rmd, temp_rmd)
+          rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+        }
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2181,12 +2156,8 @@ server <- function(input, output, session) {
   output$download_plot_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("plot_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$plot_var1)
-      temp_md <- tempfile(fileext = ".Rmd")
+      
       interpretation <- if(input$plot_type == "hist") {
         paste("Histogram menunjukkan distribusi frekuensi dari variabel", input$plot_var1,
               ". Bentuk distribusi dapat memberikan informasi tentang normalitas data dan adanya outliers.")
@@ -2198,45 +2169,25 @@ server <- function(input, output, session) {
               ". Garis regresi membantu memvisualisasikan tren hubungan linear antara kedua variabel.")
       }
       
-      rmd_content <- paste(
-        "---",
-        "title: 'Plot Interpretation'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Interpretasi Visualisasi\n",
-        interpretation,
-        sep = "\n"
-      )
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Interpretasi Visualisasi'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Interpretasi Visualisasi",
+          "",
+          interpretation,
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2266,60 +2217,37 @@ server <- function(input, output, session) {
   output$download_correlation_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("correlation_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       numeric_data <- select_if(sovi_data, is.numeric)
       cor_matrix <- cor(numeric_data, use = "complete.obs")
       cor_matrix[upper.tri(cor_matrix, diag = TRUE)] <- NA
       max_cor <- which(cor_matrix == max(cor_matrix, na.rm = TRUE), arr.ind = TRUE)
       min_cor <- which(cor_matrix == min(cor_matrix, na.rm = TRUE), arr.ind = TRUE)
       
-      temp_md <- tempfile(fileext = ".Rmd")
-      rmd_content <- paste(
-        "---",
-        "title: 'Correlation Interpretation'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Interpretasi Peta Korelasi\n",
-        "Peta korelasi menunjukkan hubungan linear antara semua variabel numerik.\n",
-        "Korelasi positif terkuat terjadi antara ", rownames(cor_matrix)[max_cor[1]], " dan ",
-        colnames(cor_matrix)[max_cor[2]], " dengan nilai ", round(cor_matrix[max_cor], 3), ".\n",
-        "Korelasi negatif terkuat terjadi antara ", rownames(cor_matrix)[min_cor[1]], " dan ",
-        colnames(cor_matrix)[min_cor[2]], " dengan nilai ", round(cor_matrix[min_cor], 3), ".",
-        sep = "\n"
-      )
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Interpretasi Peta Korelasi'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Interpretasi Peta Korelasi",
+          "",
+          "Peta korelasi menunjukkan hubungan linear antara semua variabel numerik.",
+          "",
+          paste("Korelasi positif terkuat terjadi antara", rownames(cor_matrix)[max_cor[1]], "dan",
+                colnames(cor_matrix)[max_cor[2]], "dengan nilai", round(cor_matrix[max_cor], 3)),
+          "",
+          paste("Korelasi negatif terkuat terjadi antara", rownames(cor_matrix)[min_cor[1]], "dan",
+                colnames(cor_matrix)[min_cor[2]], "dengan nilai", round(cor_matrix[min_cor], 3)),
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2352,53 +2280,29 @@ server <- function(input, output, session) {
   output$download_map_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("map_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$map_var)
-      temp_md <- tempfile(fileext = ".Rmd")
-      rmd_content <- paste(
-        "---",
-        "title: 'Geographic Map Interpretation'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Interpretasi Peta Geografis\n",
-        "Peta geografis menunjukkan distribusi spasial dari variabel ", input$map_var,
-        " di seluruh wilayah. Ukuran dan warna lingkaran menunjukkan nilai variabel,",
-        " memungkinkan identifikasi pola geografis dan kluster nilai tinggi atau rendah.",
-        sep = "\n"
-      )
-      writeLines(rmd_content, temp_md)
       
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Interpretasi Peta Geografis'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Interpretasi Peta Geografis",
+          "",
+          paste("Peta geografis menunjukkan distribusi spasial dari variabel", input$map_var,
+                "di seluruh wilayah. Ukuran dan warna lingkaran menunjukkan nilai variabel,",
+                "memungkinkan identifikasi pola geografis dan kluster nilai tinggi atau rendah."),
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2574,66 +2478,43 @@ server <- function(input, output, session) {
   output$download_normality_test_pdf <- downloadHandler(
     filename = function() { paste0("normality_test_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$normality_var, values$assumptions_done)
-      temp_md <- tempfile(fileext = ".Rmd")
       
       var_data <- sovi_data[[input$normality_var]]
       var_data <- var_data[!is.na(var_data)]
       shapiro_test <- shapiro.test(var_data)
       ks_test <- ks.test(var_data, "pnorm", mean(var_data), sd(var_data))
       
-      rmd_content <- paste(
-        "---",
-        "title: 'Normality Test Results'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Uji Normalitas\n",
-        "Variabel: ", input$normality_var, "\n\n",
-        "**H0:** Data berdistribusi normal\n",
-        "**H1:** Data tidak berdistribusi normal\n\n",
-        "## Shapiro-Wilk Test\n",
-        "Statistic: ", round(shapiro_test$statistic, 4), "\n",
-        "P-value: ", round(shapiro_test$p.value, 4), "\n\n",
-        "## Kolmogorov-Smirnov Test\n",
-        "Statistic: ", round(ks_test$statistic, 4), "\n",
-        "P-value: ", round(ks_test$p.value, 4), "\n",
-        sep = "\n"
-      )
-      
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Hasil Uji Normalitas'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Uji Normalitas",
+          "",
+          paste("Variabel:", input$normality_var),
+          "",
+          "**H0:** Data berdistribusi normal",
+          "**H1:** Data tidak berdistribusi normal",
+          "",
+          "### Shapiro-Wilk Test",
+          paste("Statistic:", round(shapiro_test$statistic, 4)),
+          paste("P-value:", round(shapiro_test$p.value, 4)),
+          "",
+          "### Kolmogorov-Smirnov Test", 
+          paste("Statistic:", round(ks_test$statistic, 4)),
+          paste("P-value:", round(ks_test$p.value, 4)),
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2655,10 +2536,6 @@ server <- function(input, output, session) {
   output$download_normality_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("normality_interpretation_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$normality_var)
       var_data <- sovi_data[[input$normality_var]]
       var_data <- var_data[!is.na(var_data)]
@@ -2674,47 +2551,25 @@ server <- function(input, output, session) {
               "tidak berdistribusi normal pada tingkat signifikansi 5%.")
       }
       
-      temp_md <- tempfile(fileext = ".Rmd")
-      rmd_content <- paste(
-        "---",
-        "title: 'Normality Test Interpretation'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Interpretasi Uji Normalitas\n",
-        interpretation,
-        sep = "\n"
-      )
-      
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Interpretasi Uji Normalitas'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Interpretasi Uji Normalitas",
+          "",
+          interpretation,
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -2978,62 +2833,38 @@ server <- function(input, output, session) {
   output$download_ttest1_pdf <- downloadHandler(
     filename = function() { paste0("ttest1_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(input$ttest1_var, input$ttest1_mu, values$ttest1_done)
       var_data <- sovi_data[[input$ttest1_var]]
       var_data <- var_data[!is.na(var_data)]
       ttest_result <- t.test(var_data, mu = input$ttest1_mu)
       
-      temp_md <- tempfile(fileext = ".Rmd")
-      rmd_content <- paste(
-        "---",
-        "title: 'One-Sample T-Test Results'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# One-Sample T-Test\n",
-        "Variable: ", input$ttest1_var, "\n",
-        "Hypothesized mean: ", input$ttest1_mu, "\n\n",
-        "**H0:** μ = ", input$ttest1_mu, "\n",
-        "**H1:** μ ≠ ", input$ttest1_mu, "\n\n",
-        "T-statistic: ", round(ttest_result$statistic, 4), "\n",
-        "P-value: ", round(ttest_result$p.value, 4), "\n",
-        "Confidence Interval: [", round(ttest_result$conf.int[1], 4), ", ", round(ttest_result$conf.int[2], 4), "]\n",
-        sep = "\n"
-      )
-      
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Hasil One-Sample T-Test'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## One-Sample T-Test",
+          "",
+          paste("Variable:", input$ttest1_var),
+          paste("Hypothesized mean:", input$ttest1_mu),
+          "",
+          paste("**H0:** μ =", input$ttest1_mu),
+          paste("**H1:** μ ≠", input$ttest1_mu),
+          "",
+          paste("T-statistic:", round(ttest_result$statistic, 4)),
+          paste("P-value:", round(ttest_result$p.value, 4)),
+          paste("Confidence Interval: [", round(ttest_result$conf.int[1], 4), ",", round(ttest_result$conf.int[2], 4), "]"),
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
@@ -3643,60 +3474,35 @@ server <- function(input, output, session) {
   output$download_regression_summary_pdf <- downloadHandler(
     filename = function() { paste0("regression_summary_", Sys.Date(), ".pdf") },
     content = function(file) {
-      if (!tinytex::is_tinytex()) {
-        tinytex::install_tinytex()
-      }
-      
       req(values$regression_done)
       model <- regression_model()
       model_summary <- summary(model)
       
-      temp_md <- tempfile(fileext = ".Rmd")
-      rmd_content <- paste(
-        "---",
-        "title: 'Regression Summary'",
-        "date: '", Sys.Date(), "'",
-        "output:",
-        "  pdf_document:",
-        "    latex_engine: pdflatex",
-        "    keep_tex: true",
-        "geometry: margin=1in",
-        "header-includes:",
-        "  - \\usepackage{booktabs}",
-        "  - \\usepackage{longtable}",
-        "  - \\usepackage{caption}",
-        "  - \\usepackage[utf8]{inputenc}",
-        "  - \\usepackage{geometry}",
-        "  - \\geometry{a4paper, margin=1in}",
-        "  - \\usepackage{parskip}",
-        "  - \\setlength{\\parskip}{0.5em}",
-        "---",
-        "\n# Multiple Linear Regression Summary\n",
-        "Dependent Variable: ", input$reg_dep, "\n",
-        "Independent Variables: ", paste(input$reg_indep, collapse = ", "), "\n\n",
-        "R-squared: ", round(model_summary$r.squared, 4), "\n",
-        "Adjusted R-squared: ", round(model_summary$adj.r.squared, 4), "\n",
-        "F-statistic: ", round(model_summary$fstatistic[1], 4), "\n",
-        "P-value: ", round(pf(model_summary$fstatistic[1], model_summary$fstatistic[2], model_summary$fstatistic[3], lower.tail = FALSE), 4), "\n",
-        sep = "\n"
-      )
-      
-      writeLines(rmd_content, temp_md)
-      
-      tryCatch(
-        {
-          rmarkdown::render(
-            temp_md,
-            output_file = file,
-            output_format = "pdf_document",
-            clean = TRUE,
-            envir = new.env(parent = globalenv())
-          )
-        },
-        error = function(e) {
-          stop("Failed to generate PDF: ", e$message)
-        }
-      )
+      tryCatch({
+        temp_rmd <- tempfile(fileext = ".Rmd")
+        simple_rmd <- paste(
+          "---",
+          "title: 'Ringkasan Regresi'",
+          "date: '", Sys.Date(), "'",
+          "output: pdf_document",
+          "---",
+          "",
+          "## Multiple Linear Regression Summary",
+          "",
+          paste("Dependent Variable:", input$reg_dep),
+          paste("Independent Variables:", paste(input$reg_indep, collapse = ", ")),
+          "",
+          paste("R-squared:", round(model_summary$r.squared, 4)),
+          paste("Adjusted R-squared:", round(model_summary$adj.r.squared, 4)),
+          paste("F-statistic:", round(model_summary$fstatistic[1], 4)),
+          paste("P-value:", round(pf(model_summary$fstatistic[1], model_summary$fstatistic[2], model_summary$fstatistic[3], lower.tail = FALSE), 4)),
+          sep = "\n"
+        )
+        writeLines(simple_rmd, temp_rmd)
+        rmarkdown::render(temp_rmd, output_file = file, quiet = TRUE)
+      }, error = function(e) {
+        stop("Failed to generate PDF: ", e$message)
+      })
     },
     contentType = "application/pdf"
   )
