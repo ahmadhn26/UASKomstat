@@ -1,0 +1,39 @@
+---
+title: 'Correlation Interpretation'
+date: '
+2025-07-18
+'
+output:
+  pdf_document:
+    latex_engine: pdflatex
+    keep_tex: true
+geometry: margin=1in
+---
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{parskip}
+\setlength{\parskip}{0.5em}
+
+# Interpretasi Peta Korelasi
+
+Peta korelasi menunjukkan hubungan linear antara semua variabel numerik.
+
+Korelasi positif terkuat terjadi antara 
+ILLITERATE
+ dan 
+NOELECTRIC
+ dengan nilai 
+0.782
+.
+
+Korelasi negatif terkuat terjadi antara 
+RENTED
+ dan 
+LOWEDU
+ dengan nilai 
+-0.681
+.

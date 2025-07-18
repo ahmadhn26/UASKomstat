@@ -1,0 +1,29 @@
+---
+title: 'Descriptive Statistics Interpretation'
+date: '
+2025-07-18
+'
+output:
+  pdf_document:
+    latex_engine: pdflatex
+    keep_tex: true
+geometry: margin=1in
+---
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{parskip}
+\setlength{\parskip}{0.5em}
+
+# Interpretasi Statistik Deskriptif
+
+Statistik deskriptif menunjukkan karakteristik dasar dari variabel yang dipilih: 
+DISTRICTCODE, CHILDREN, FEMALE, ELDERLY, FHEAD
+.
+
+Mean dan median memberikan gambaran tentang tendensi sentral, sedangkan standar deviasi
+ menunjukkan variabilitas data. Perbedaan antara mean dan median dapat mengindikasikan
+ adanya skewness dalam distribusi data.
