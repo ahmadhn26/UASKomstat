@@ -1267,8 +1267,7 @@ server <- function(input, output, session) {
                 "), kita menolak H0. Varians antar kelompok tidak homogen",
                 "pada tingkat signifikansi 5%.")
         }
-      }
-    })
+      })
   })
   
   # Inferential Statistics (unchanged)
@@ -1300,8 +1299,7 @@ server <- function(input, output, session) {
         paste("Interpretasi: Dengan p-value =", round(ttest_result$p.value, 4),
               "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan antara rata-rata sampel",
               "dengan nilai hipotesis", input$ttest1_mu, "pada tingkat signifikansi 5%.")
-      }
-    })
+      })
   })
   
   observeEvent(input$run_ttest2, {
@@ -1363,8 +1361,7 @@ server <- function(input, output, session) {
                 input$ttest2_var, "antara kelompok", unique_groups[1], "dan", unique_groups[2],
                 "pada tingkat signifikansi 5%.")
         }
-      }
-    })
+      })
   })
   
   observeEvent(input$run_prop1, {
@@ -1423,8 +1420,7 @@ server <- function(input, output, session) {
         paste("Interpretasi: Dengan p-value =", round(prop_test$p.value, 4),
               "> 0.05, kita gagal menolak H0. Proporsi sampel tidak berbeda signifikan dengan",
               "proporsi hipotesis", input$prop1_p, "pada tingkat signifikansi 5%.")
-      }
-    })
+      })
   })
   
   observeEvent(input$run_var1, {
@@ -1468,8 +1464,7 @@ server <- function(input, output, session) {
         paste("Interpretasi: Dengan p-value =", round(p_value, 4),
               "> 0.05, kita gagal menolak H0. Varians sampel tidak berbeda signifikan dengan",
               "varians hipotesis", input$var1_sigma, "pada tingkat signifikansi 5%.")
-      }
-    })
+      })
   })
   
   observeEvent(input$run_anova1, {
@@ -1530,8 +1525,7 @@ server <- function(input, output, session) {
               "> 0.05, kita gagal menolak H0. Tidak terdapat perbedaan signifikan rata-rata",
               input$anova1_dep, "antar kelompok", input$anova1_indep,
               "pada tingkat signifikansi 5%.")
-      }
-    })
+      })
   })
   
   observeEvent(input$run_anova2, {
@@ -3357,9 +3351,7 @@ server <- function(input, output, session) {
           error = function(e) {
             stop("Failed to generate Word document: ", e$message)
           }
-        )
-      }
-    },
+        )    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -3420,9 +3412,7 @@ server <- function(input, output, session) {
           error = function(e) {
             stop("Failed to generate Word document: ", e$message)
           }
-        )
-      }
-    },
+        )    },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
   
@@ -3725,8 +3715,6 @@ server <- function(input, output, session) {
   output$download_ttest2_pdf <- downloadHandler(
     filename = function() { paste0("ttest2_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(input$ttest2_var, input$ttest2_group, values$ttest2_done)
       var_data <- sovi_data[[input$ttest2_var]]
       group_data <- sovi_data[[input$ttest2_group]]
@@ -3778,7 +3766,6 @@ server <- function(input, output, session) {
             stop("Failed to generate Word document: ", e$message)
           }
         )
-      }
     },
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   )
@@ -3786,8 +3773,6 @@ server <- function(input, output, session) {
   output$download_prop1_pdf <- downloadHandler(
     filename = function() { paste0("prop1_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(input$prop1_var, input$prop1_p, values$prop1_done)
       var_data <- sovi_data[[input$prop1_var]]
       
@@ -3847,8 +3832,6 @@ server <- function(input, output, session) {
   output$download_var1_pdf <- downloadHandler(
     filename = function() { paste0("var1_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(input$var1_var, input$var1_sigma, values$var1_done)
       var_data <- sovi_data[[input$var1_var]]
       var_data <- var_data[!is.na(var_data)]
@@ -3901,8 +3884,6 @@ server <- function(input, output, session) {
   output$download_anova1_pdf <- downloadHandler(
     filename = function() { paste0("anova1_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(input$anova1_dep, input$anova1_indep, values$anova1_done)
       dep_var <- sovi_data[[input$anova1_dep]]
       indep_var <- sovi_data[[input$anova1_indep]]
@@ -3958,8 +3939,6 @@ server <- function(input, output, session) {
   output$download_anova2_pdf <- downloadHandler(
     filename = function() { paste0("anova2_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(input$anova2_dep, input$anova2_indep1, input$anova2_indep2, values$anova2_done)
       dep_var <- sovi_data[[input$anova2_dep]]
       indep_var1 <- sovi_data[[input$anova2_indep1]]
@@ -4414,8 +4393,6 @@ server <- function(input, output, session) {
   output$download_regression_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("regression_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(values$regression_done)
       model <- regression_model()
       model_summary <- summary(model)
@@ -4471,8 +4448,6 @@ server <- function(input, output, session) {
   output$download_vif_test_pdf <- downloadHandler(
     filename = function() { paste0("vif_test_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(values$regression_done)
       model <- regression_model()
       
@@ -4549,8 +4524,6 @@ server <- function(input, output, session) {
   output$download_assumption_interpretation_pdf <- downloadHandler(
     filename = function() { paste0("assumption_interpretation_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(values$regression_done)
       model <- regression_model()
       
@@ -4622,8 +4595,6 @@ server <- function(input, output, session) {
   output$download_regresi_complete <- downloadHandler(
     filename = function() { paste0("regresi_complete_", Sys.Date(), ".docx") },
     content = function(file) {
-      }
-      
       req(values$regression_done)
       temp_md <- tempfile(fileext = ".Rmd")
       
@@ -4737,8 +4708,9 @@ server <- function(input, output, session) {
           stop("Failed to generate Word document: ", e$message)
         }
       )
-      
-    }, contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
+    },
+    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  )
 }
 
 # Run the application
