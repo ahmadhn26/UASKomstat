@@ -20,6 +20,7 @@ library(rmarkdown)
 library(knitr)
 library(webshot)
 library(broom)
+library(lmtest)
 
 
 
@@ -63,20 +64,305 @@ ui <- dashboardPage(
   dashboardBody(
     tags$head(
       tags$style(HTML("
+        /* Modern Color Scheme */
         .content-wrapper, .right-side {
-          background-color: #f4f4f4;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
         }
+        
+        /* Enhanced Box Styling */
         .box {
-          margin-bottom: 20px;
+          margin-bottom: 25px;
+          border-radius: 15px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        
+        .box:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Box Headers */
+        .box-header {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          color: white;
+          border-radius: 15px 15px 0 0;
+          padding: 15px 20px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+        
+        .box-header .box-title {
+          font-size: 18px;
+          font-weight: 700;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Enhanced Download Buttons */
         .download-btn {
-          margin: 10px 5px;
+          margin: 8px 5px;
+          border-radius: 25px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          font-size: 12px;
+          padding: 10px 20px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          position: relative;
+          overflow: hidden;
         }
+        
+        .download-btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+        
+        .download-btn:hover::before {
+          left: 100%;
+        }
+        
+        .download-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Enhanced Download Section */
         .download-section {
-          background-color: #f9f9f9;
-          padding: 15px;
-          border-radius: 5px;
-          margin-top: 20px;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+          backdrop-filter: blur(15px);
+          padding: 25px;
+          border-radius: 20px;
+          margin-top: 30px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .download-section h4 {
+          color: #2c3e50;
+          font-weight: 700;
+          font-size: 20px;
+          margin-bottom: 20px;
+          text-align: center;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .download-section h5 {
+          color: #34495e;
+          font-weight: 600;
+          font-size: 16px;
+          margin-bottom: 15px;
+          border-bottom: 2px solid #ecf0f1;
+          padding-bottom: 8px;
+        }
+        
+        /* Sidebar Enhancements */
+        .main-sidebar {
+          background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+          box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-menu > li > a {
+          border-radius: 8px;
+          margin: 5px 15px;
+          transition: all 0.3s ease;
+          font-weight: 500;
+        }
+        
+        .sidebar-menu > li > a:hover,
+        .sidebar-menu > li.active > a {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+          transform: translateX(5px);
+        }
+        
+        /* Header Styling */
+        .main-header .navbar {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-header .logo {
+          background: linear-gradient(45deg, #2c3e50, #34495e);
+          font-weight: 700;
+          letter-spacing: 1px;
+        }
+        
+        /* Form Controls */
+        .form-control, .selectize-input {
+          border-radius: 10px;
+          border: 2px solid #ecf0f1;
+          padding: 12px 15px;
+          transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .form-control:focus, .selectize-input.focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+          background: white;
+        }
+        
+        /* Action Buttons */
+        .btn {
+          border-radius: 25px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          padding: 10px 25px;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          border: none;
+        }
+        
+        .btn-warning {
+          background: linear-gradient(45deg, #f39c12, #e67e22);
+          border: none;
+        }
+        
+        .btn-success {
+          background: linear-gradient(45deg, #27ae60, #2ecc71);
+          border: none;
+        }
+        
+        .btn-info {
+          background: linear-gradient(45deg, #3498db, #2980b9);
+          border: none;
+        }
+        
+        /* Tables */
+        .dataTables_wrapper {
+          background: rgba(255, 255, 255, 0.95);
+          border-radius: 15px;
+          padding: 20px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table {
+          border-radius: 10px;
+          overflow: hidden;
+        }
+        
+        .table thead th {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          color: white;
+          border: none;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+        
+        .table tbody tr:hover {
+          background-color: rgba(102, 126, 234, 0.1);
+          transform: scale(1.01);
+          transition: all 0.2s ease;
+        }
+        
+        /* Tab Navigation */
+        .nav-tabs-custom > .nav-tabs {
+          border-bottom: 3px solid #667eea;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+          border-radius: 15px 15px 0 0;
+        }
+        
+        .nav-tabs-custom > .nav-tabs > li.active > a {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          color: white;
+          border-radius: 10px 10px 0 0;
+          font-weight: 600;
+        }
+        
+        .nav-tabs-custom > .nav-tabs > li > a {
+          border-radius: 10px 10px 0 0;
+          transition: all 0.3s ease;
+          font-weight: 500;
+        }
+        
+        .nav-tabs-custom > .nav-tabs > li > a:hover {
+          background: rgba(102, 126, 234, 0.1);
+          color: #667eea;
+        }
+        
+        /* Progress and Loading */
+        .progress {
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.2);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          border-radius: 10px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .download-btn {
+            width: 100%;
+            margin: 5px 0;
+          }
+          
+          .box {
+            margin-bottom: 15px;
+          }
+          
+          .download-section {
+            padding: 15px;
+            margin-top: 20px;
+          }
+        }
+        
+        /* Animation keyframes */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .box {
+          animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+          background: linear-gradient(45deg, #667eea, #764ba2);
+          border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(45deg, #5a6fd8, #6a4190);
         }
       "))
     ),
@@ -1439,7 +1725,7 @@ server <- function(input, output, session) {
       labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals")
   })
   
-  # Reactive values to track test completions (unchanged)
+  # Reactive values to track test completions and store managed data
   values <- reactiveValues(
     assumptions_done = FALSE,
     ttest1_done = FALSE,
@@ -1448,8 +1734,13 @@ server <- function(input, output, session) {
     var1_done = FALSE,
     anova1_done = FALSE,
     anova2_done = FALSE,
-    regression_done = FALSE
+    regression_done = FALSE,
+    managed_data = NULL
   )
+  
+  observeEvent(input$categorize, {
+    values$managed_data <- categorized_data_reactive()
+  })
   
   observeEvent(input$run_tests, {
     values$assumptions_done <- TRUE
@@ -2324,7 +2615,310 @@ server <- function(input, output, session) {
   }, contentType = "application/pdf" )
   
   # --- Uji Asumsi Tab ---
-  output$download_assumption_pdf <- downloadHandler( filename = function() { paste0("assumption_tests_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
+  output$download_normality_test_pdf <- downloadHandler(
+    filename = function() { paste0("normality_test_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$normality_var, values$assumptions_done)
+      temp_md <- tempfile(fileext = ".Rmd")
+      
+      var_data <- sovi_data[[input$normality_var]]
+      var_data <- var_data[!is.na(var_data)]
+      shapiro_test <- shapiro.test(var_data)
+      ks_test <- ks.test(var_data, "pnorm", mean(var_data), sd(var_data))
+      
+      rmd_content <- paste(
+        "---",
+        "title: 'Normality Test Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Uji Normalitas\n",
+        "Variabel: ", input$normality_var, "\n\n",
+        "**H0:** Data berdistribusi normal\n",
+        "**H1:** Data tidak berdistribusi normal\n\n",
+        "## Shapiro-Wilk Test\n",
+        "Statistic: ", round(shapiro_test$statistic, 4), "\n",
+        "P-value: ", round(shapiro_test$p.value, 4), "\n\n",
+        "## Kolmogorov-Smirnov Test\n",
+        "Statistic: ", round(ks_test$statistic, 4), "\n",
+        "P-value: ", round(ks_test$p.value, 4), "\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_qq_plot_jpg <- downloadHandler(
+    filename = function() { paste0("qq_plot_", Sys.Date(), ".jpg") },
+    content = function(file) {
+      req(input$normality_var)
+      var_data <- sovi_data[[input$normality_var]]
+      plot <- ggplot(data.frame(sample = var_data), aes(sample = sample)) +
+        stat_qq() + stat_qq_line() +
+        theme_minimal() +
+        labs(title = paste("Q-Q Plot for", input$normality_var))
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
+    contentType = "image/jpeg"
+  )
+  
+  output$download_normality_interpretation_pdf <- downloadHandler(
+    filename = function() { paste0("normality_interpretation_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$normality_var)
+      var_data <- sovi_data[[input$normality_var]]
+      var_data <- var_data[!is.na(var_data)]
+      shapiro_test <- shapiro.test(var_data)
+      
+      interpretation <- if(shapiro_test$p.value > 0.05) {
+        paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
+              "), kita gagal menolak H0. Data variabel", input$normality_var, 
+              "dapat dianggap berdistribusi normal pada tingkat signifikansi 5%.")
+      } else {
+        paste("Berdasarkan uji Shapiro-Wilk (p-value =", round(shapiro_test$p.value, 4),
+              "), kita menolak H0. Data variabel", input$normality_var, 
+              "tidak berdistribusi normal pada tingkat signifikansi 5%.")
+      }
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'Normality Test Interpretation'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Interpretasi Uji Normalitas\n",
+        interpretation,
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_homogeneity_test_pdf <- downloadHandler(
+    filename = function() { paste0("homogeneity_test_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$normality_var, input$group_var)
+      if(input$group_var != "None") {
+        var_data <- sovi_data[[input$normality_var]]
+        group_data <- sovi_data[[input$group_var]]
+        
+        if(is.numeric(group_data)) {
+          group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
+        
+        complete_cases <- complete.cases(var_data, group_data)
+        var_data <- var_data[complete_cases]
+        group_data <- group_data[complete_cases]
+        
+        levene_test <- car::leveneTest(var_data, group_data)
+        
+        temp_md <- tempfile(fileext = ".Rmd")
+        rmd_content <- paste(
+          "---",
+          "title: 'Homogeneity Test Results'",
+          "date: '", Sys.Date(), "'",
+          "output:",
+          "  pdf_document:",
+          "    latex_engine: pdflatex",
+          "    keep_tex: true",
+          "geometry: margin=1in",
+          "header-includes:",
+          "  - \\usepackage{booktabs}",
+          "  - \\usepackage{longtable}",
+          "  - \\usepackage{caption}",
+          "  - \\usepackage[utf8]{inputenc}",
+          "  - \\usepackage{geometry}",
+          "  - \\geometry{a4paper, margin=1in}",
+          "  - \\usepackage{parskip}",
+          "  - \\setlength{\\parskip}{0.5em}",
+          "---",
+          "\n# Uji Homogenitas Varians (Levene's Test)\n",
+          "**H0:** Varians antar kelompok homogen\n",
+          "**H1:** Varians antar kelompok tidak homogen\n\n",
+          "F-statistic: ", round(levene_test$`F value`[1], 4), "\n",
+          "P-value: ", round(levene_test$`Pr(>F)`[1], 4), "\n",
+          sep = "\n"
+        )
+        
+        writeLines(rmd_content, temp_md)
+        
+        tryCatch(
+          {
+            rmarkdown::render(
+              temp_md,
+              output_file = file,
+              output_format = "pdf_document",
+              clean = TRUE,
+              envir = new.env(parent = globalenv())
+            )
+          },
+          error = function(e) {
+            stop("Failed to generate PDF: ", e$message)
+          }
+        )
+      }
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_homogeneity_interpretation_pdf <- downloadHandler(
+    filename = function() { paste0("homogeneity_interpretation_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$normality_var, input$group_var)
+      if(input$group_var != "None") {
+        var_data <- sovi_data[[input$normality_var]]
+        group_data <- sovi_data[[input$group_var]]
+        
+        if(is.numeric(group_data)) {
+          group_data <- cut(group_data, breaks = 3, labels = c("Low", "Medium", "High"))
+        }
+        
+        complete_cases <- complete.cases(var_data, group_data)
+        var_data <- var_data[complete_cases]
+        group_data <- group_data[complete_cases]
+        
+        levene_test <- car::leveneTest(var_data, group_data)
+        p_value <- levene_test$`Pr(>F)`[1]
+        
+        interpretation <- if(p_value > 0.05) {
+          paste("Berdasarkan uji Levene (p-value =", round(p_value, 4),
+                "), kita gagal menolak H0. Varians antar kelompok dapat dianggap homogen",
+                "pada tingkat signifikansi 5%.")
+        } else {
+          paste("Berdasarkan uji Levene (p-value =", round(p_value, 4),
+                "), kita menolak H0. Varians antar kelompok tidak homogen",
+                "pada tingkat signifikansi 5%.")
+        }
+        
+        temp_md <- tempfile(fileext = ".Rmd")
+        rmd_content <- paste(
+          "---",
+          "title: 'Homogeneity Test Interpretation'",
+          "date: '", Sys.Date(), "'",
+          "output:",
+          "  pdf_document:",
+          "    latex_engine: pdflatex",
+          "    keep_tex: true",
+          "geometry: margin=1in",
+          "header-includes:",
+          "  - \\usepackage{booktabs}",
+          "  - \\usepackage{longtable}",
+          "  - \\usepackage{caption}",
+          "  - \\usepackage[utf8]{inputenc}",
+          "  - \\usepackage{geometry}",
+          "  - \\geometry{a4paper, margin=1in}",
+          "  - \\usepackage{parskip}",
+          "  - \\setlength{\\parskip}{0.5em}",
+          "---",
+          "\n# Interpretasi Uji Homogenitas\n",
+          interpretation,
+          sep = "\n"
+        )
+        
+        writeLines(rmd_content, temp_md)
+        
+        tryCatch(
+          {
+            rmarkdown::render(
+              temp_md,
+              output_file = file,
+              output_format = "pdf_document",
+              clean = TRUE,
+              envir = new.env(parent = globalenv())
+            )
+          },
+          error = function(e) {
+            stop("Failed to generate PDF: ", e$message)
+          }
+        )
+      }
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_asumsi_complete <- downloadHandler(
+    filename = function() { paste0("asumsi_complete_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
     
     req(input$normality_var, values$assumptions_done)
     temp_md <- tempfile(fileext = ".Rmd")
@@ -2430,7 +3024,448 @@ server <- function(input, output, session) {
   )
   
   # --- Statistik Inferensia Tab ---
-  output$download_statistic_pdf <- downloadHandler( filename = function() { paste0("statistic_tests_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
+  output$download_ttest1_pdf <- downloadHandler(
+    filename = function() { paste0("ttest1_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$ttest1_var, input$ttest1_mu, values$ttest1_done)
+      var_data <- sovi_data[[input$ttest1_var]]
+      var_data <- var_data[!is.na(var_data)]
+      ttest_result <- t.test(var_data, mu = input$ttest1_mu)
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'One-Sample T-Test Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# One-Sample T-Test\n",
+        "Variable: ", input$ttest1_var, "\n",
+        "Hypothesized mean: ", input$ttest1_mu, "\n\n",
+        "**H0:** μ = ", input$ttest1_mu, "\n",
+        "**H1:** μ ≠ ", input$ttest1_mu, "\n\n",
+        "T-statistic: ", round(ttest_result$statistic, 4), "\n",
+        "P-value: ", round(ttest_result$p.value, 4), "\n",
+        "Confidence Interval: [", round(ttest_result$conf.int[1], 4), ", ", round(ttest_result$conf.int[2], 4), "]\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_ttest2_pdf <- downloadHandler(
+    filename = function() { paste0("ttest2_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$ttest2_var, input$ttest2_group, values$ttest2_done)
+      var_data <- sovi_data[[input$ttest2_var]]
+      group_data <- sovi_data[[input$ttest2_group]]
+      
+      if(is.numeric(group_data)) {
+        median_val <- median(group_data, na.rm = TRUE)
+        group_data <- ifelse(group_data <= median_val, "Low", "High")
+      }
+      
+      unique_groups <- unique(group_data[!is.na(group_data)])
+      if(length(unique_groups) >= 2) {
+        group1_data <- var_data[group_data == unique_groups[1] & !is.na(var_data) & !is.na(group_data)]
+        group2_data <- var_data[group_data == unique_groups[2] & !is.na(var_data) & !is.na(group_data)]
+        ttest_result <- t.test(group1_data, group2_data)
+        
+        temp_md <- tempfile(fileext = ".Rmd")
+        rmd_content <- paste(
+          "---",
+          "title: 'Two-Sample T-Test Results'",
+          "date: '", Sys.Date(), "'",
+          "output:",
+          "  pdf_document:",
+          "    latex_engine: pdflatex",
+          "    keep_tex: true",
+          "geometry: margin=1in",
+          "header-includes:",
+          "  - \\usepackage{booktabs}",
+          "  - \\usepackage{longtable}",
+          "  - \\usepackage{caption}",
+          "  - \\usepackage[utf8]{inputenc}",
+          "  - \\usepackage{geometry}",
+          "  - \\geometry{a4paper, margin=1in}",
+          "  - \\usepackage{parskip}",
+          "  - \\setlength{\\parskip}{0.5em}",
+          "---",
+          "\n# Two-Sample Independent T-Test\n",
+          "Variable: ", input$ttest2_var, "\n",
+          "Groups: ", input$ttest2_group, "\n\n",
+          "**H0:** μ1 = μ2\n",
+          "**H1:** μ1 ≠ μ2\n\n",
+          "Group 1 (", unique_groups[1], "): ", length(group1_data), " observations\n",
+          "Group 2 (", unique_groups[2], "): ", length(group2_data), " observations\n\n",
+          "T-statistic: ", round(ttest_result$statistic, 4), "\n",
+          "P-value: ", round(ttest_result$p.value, 4), "\n",
+          "Confidence Interval: [", round(ttest_result$conf.int[1], 4), ", ", round(ttest_result$conf.int[2], 4), "]\n",
+          sep = "\n"
+        )
+        
+        writeLines(rmd_content, temp_md)
+        
+        tryCatch(
+          {
+            rmarkdown::render(
+              temp_md,
+              output_file = file,
+              output_format = "pdf_document",
+              clean = TRUE,
+              envir = new.env(parent = globalenv())
+            )
+          },
+          error = function(e) {
+            stop("Failed to generate PDF: ", e$message)
+          }
+        )
+      }
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_prop1_pdf <- downloadHandler(
+    filename = function() { paste0("prop1_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$prop1_var, input$prop1_p, values$prop1_done)
+      var_data <- sovi_data[[input$prop1_var]]
+      
+      if(is.numeric(var_data)) {
+        median_val <- median(var_data, na.rm = TRUE)
+        var_data <- ifelse(var_data > median_val, 1, 0)
+      } else {
+        unique_vals <- unique(var_data[!is.na(var_data)])
+        var_data <- ifelse(var_data == unique_vals[1], 1, 0)
+      }
+      
+      var_data <- var_data[!is.na(var_data)]
+      successes <- sum(var_data)
+      n <- length(var_data)
+      prop_test <- prop.test(successes, n, p = input$prop1_p)
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'One-Sample Proportion Test Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# One-Sample Proportion Test\n",
+        "Variable: ", input$prop1_var, "\n",
+        "Hypothesized proportion: ", input$prop1_p, "\n\n",
+        "**H0:** p = ", input$prop1_p, "\n",
+        "**H1:** p ≠ ", input$prop1_p, "\n\n",
+        "Sample proportion: ", round(successes/n, 4), "\n",
+        "Sample size: ", n, "\n",
+        "Successes: ", successes, "\n",
+        "Chi-squared statistic: ", round(prop_test$statistic, 4), "\n",
+        "P-value: ", round(prop_test$p.value, 4), "\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_var1_pdf <- downloadHandler(
+    filename = function() { paste0("var1_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$var1_var, input$var1_sigma, values$var1_done)
+      var_data <- sovi_data[[input$var1_var]]
+      var_data <- var_data[!is.na(var_data)]
+      
+      n <- length(var_data)
+      sample_var <- var(var_data)
+      chi_stat <- (n - 1) * sample_var / input$var1_sigma
+      p_value <- 2 * min(pchisq(chi_stat, n-1), 1 - pchisq(chi_stat, n-1))
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'One-Sample Variance Test Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# One-Sample Variance Test (Chi-square)\n",
+        "Variable: ", input$var1_var, "\n",
+        "Hypothesized variance: ", input$var1_sigma, "\n\n",
+        "**H0:** σ² = ", input$var1_sigma, "\n",
+        "**H1:** σ² ≠ ", input$var1_sigma, "\n\n",
+        "Sample variance: ", round(sample_var, 4), "\n",
+        "Sample size: ", n, "\n",
+        "Chi-square statistic: ", round(chi_stat, 4), "\n",
+        "Degrees of freedom: ", n-1, "\n",
+        "P-value: ", round(p_value, 4), "\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_anova1_pdf <- downloadHandler(
+    filename = function() { paste0("anova1_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$anova1_dep, input$anova1_indep, values$anova1_done)
+      dep_var <- sovi_data[[input$anova1_dep]]
+      indep_var <- sovi_data[[input$anova1_indep]]
+      
+      if(is.numeric(indep_var)) {
+        indep_var <- cut(indep_var, breaks = 3, labels = c("Low", "Medium", "High"))
+      }
+      
+      complete_cases <- complete.cases(dep_var, indep_var)
+      dep_var <- dep_var[complete_cases]
+      indep_var <- indep_var[complete_cases]
+      
+      anova_result <- aov(dep_var ~ indep_var)
+      anova_summary <- summary(anova_result)
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'One-Way ANOVA Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# One-Way ANOVA\n",
+        "Dependent Variable: ", input$anova1_dep, "\n",
+        "Independent Variable: ", input$anova1_indep, "\n\n",
+        "**H0:** μ1 = μ2 = μ3 = ... (all group means are equal)\n",
+        "**H1:** At least one group mean is different\n\n",
+        "F-statistic: ", round(anova_summary[[1]]$`F value`[1], 4), "\n",
+        "P-value: ", round(anova_summary[[1]]$`Pr(>F)`[1], 4), "\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_anova2_pdf <- downloadHandler(
+    filename = function() { paste0("anova2_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(input$anova2_dep, input$anova2_indep1, input$anova2_indep2, values$anova2_done)
+      dep_var <- sovi_data[[input$anova2_dep]]
+      indep_var1 <- sovi_data[[input$anova2_indep1]]
+      indep_var2 <- sovi_data[[input$anova2_indep2]]
+      
+      if(is.numeric(indep_var1)) {
+        indep_var1 <- cut(indep_var1, breaks = 2, labels = c("Low", "High"))
+      }
+      if(is.numeric(indep_var2)) {
+        indep_var2 <- cut(indep_var2, breaks = 2, labels = c("Low", "High"))
+      }
+      
+      complete_cases <- complete.cases(dep_var, indep_var1, indep_var2)
+      dep_var <- dep_var[complete_cases]
+      indep_var1 <- indep_var1[complete_cases]
+      indep_var2 <- indep_var2[complete_cases]
+      
+      anova_result <- aov(dep_var ~ indep_var1 * indep_var2)
+      anova_summary <- summary(anova_result)
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'Two-Way ANOVA Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Two-Way ANOVA\n",
+        "Dependent Variable: ", input$anova2_dep, "\n",
+        "Independent Variables: ", input$anova2_indep1, ", ", input$anova2_indep2, "\n\n",
+        "Testing main effects and interaction effect\n\n",
+        "Main effect ", input$anova2_indep1, " F-statistic: ", round(anova_summary[[1]]$`F value`[1], 4), "\n",
+        "Main effect ", input$anova2_indep1, " P-value: ", round(anova_summary[[1]]$`Pr(>F)`[1], 4), "\n\n",
+        "Main effect ", input$anova2_indep2, " F-statistic: ", round(anova_summary[[1]]$`F value`[2], 4), "\n",
+        "Main effect ", input$anova2_indep2, " P-value: ", round(anova_summary[[1]]$`Pr(>F)`[2], 4), "\n\n",
+        "Interaction effect F-statistic: ", round(anova_summary[[1]]$`F value`[3], 4), "\n",
+        "Interaction effect P-value: ", round(anova_summary[[1]]$`Pr(>F)`[3], 4), "\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_inferensia_complete <- downloadHandler(
+    filename = function() { paste0("inferensia_complete_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
     
     temp_md <- tempfile(fileext = ".Rmd")
     rmd_content <- paste(
@@ -2659,7 +3694,326 @@ server <- function(input, output, session) {
   }, contentType = "application/pdf" )
   
   # --- Regresi Linear Berganda Tab ---
-  output$download_regression_pdf <- downloadHandler( filename = function() { paste0("regression_report_", Sys.Date(), ".pdf") }, content = function(file) { if (!tinytex::is_tinytex()) { tinytex::install_tinytex() }
+  output$download_regression_summary_pdf <- downloadHandler(
+    filename = function() { paste0("regression_summary_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(values$regression_done)
+      model <- regression_model()
+      model_summary <- summary(model)
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'Regression Summary'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Multiple Linear Regression Summary\n",
+        "Dependent Variable: ", input$reg_dep, "\n",
+        "Independent Variables: ", paste(input$reg_indep, collapse = ", "), "\n\n",
+        "R-squared: ", round(model_summary$r.squared, 4), "\n",
+        "Adjusted R-squared: ", round(model_summary$adj.r.squared, 4), "\n",
+        "F-statistic: ", round(model_summary$fstatistic[1], 4), "\n",
+        "P-value: ", round(pf(model_summary$fstatistic[1], model_summary$fstatistic[2], model_summary$fstatistic[3], lower.tail = FALSE), 4), "\n",
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_regression_interpretation_pdf <- downloadHandler(
+    filename = function() { paste0("regression_interpretation_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(values$regression_done)
+      model <- regression_model()
+      model_summary <- summary(model)
+      r_squared <- model_summary$r.squared
+      adj_r_squared <- model_summary$adj.r.squared
+      p_value <- broom::glance(model)$p.value
+      significant_coeffs <- model_summary$coefficients
+      significant_vars <- names(which(significant_coeffs[, "Pr(>|t|)"] < 0.05))
+      
+      interpretation <- paste(
+        "R-squared:", round(r_squared, 4), "menunjukkan bahwa", round(r_squared * 100, 2),
+        "% variabilitas dalam", input$reg_dep, "dapat dijelaskan oleh variabel independen.",
+        "Adjusted R-squared:", round(adj_r_squared, 4), "menyesuaikan R-squared untuk jumlah prediktor.",
+        "P-value model keseluruhan:", round(p_value, 4),
+        ifelse(p_value < 0.05, " (signifikan)", " (tidak signifikan)"),
+        "pada tingkat signifikansi 5%.",
+        "Koefisien yang signifikan (p < 0.05): ",
+        paste(significant_vars, collapse = ", ")
+      )
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'Regression Interpretation'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Regression Interpretation\n",
+        interpretation,
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_vif_test_pdf <- downloadHandler(
+    filename = function() { paste0("vif_test_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(values$regression_done)
+      model <- regression_model()
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'VIF Test Results'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Variance Inflation Factor (VIF) Test\n",
+        sep = "\n"
+      )
+      
+      if(length(input$reg_indep) > 1) {
+        vif_result <- car::vif(model)
+        vif_text <- paste("VIF Values:\n", paste(names(vif_result), ":", round(vif_result, 4), collapse = "\n"), "\n")
+        rmd_content <- paste(rmd_content, vif_text, sep = "\n")
+      } else {
+        rmd_content <- paste(rmd_content, "VIF test cannot be performed with only one independent variable.", sep = "\n")
+      }
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_residual_qq_jpg <- downloadHandler(
+    filename = function() { paste0("residual_qq_", Sys.Date(), ".jpg") },
+    content = function(file) {
+      req(values$regression_done)
+      model <- regression_model()
+      plot <- ggplot(data.frame(sample = resid(model)), aes(sample = sample)) +
+        stat_qq() +
+        stat_qq_line() +
+        theme_minimal() +
+        labs(title = "Q-Q Plot of Residuals")
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
+    contentType = "image/jpeg"
+  )
+  
+  output$download_residual_fitted_jpg <- downloadHandler(
+    filename = function() { paste0("residual_fitted_", Sys.Date(), ".jpg") },
+    content = function(file) {
+      req(values$regression_done)
+      model <- regression_model()
+      plot <- ggplot(data.frame(fitted = fitted(model), residuals = resid(model)), 
+                     aes(x = fitted, y = residuals)) +
+        geom_point(alpha = 0.6) +
+        geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+        theme_minimal() +
+        labs(title = "Residuals vs Fitted Values", x = "Fitted Values", y = "Residuals")
+      ggsave(file, plot = plot, device = "jpeg", width = 8, height = 6)
+    },
+    contentType = "image/jpeg"
+  )
+  
+  output$download_assumption_interpretation_pdf <- downloadHandler(
+    filename = function() { paste0("assumption_interpretation_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
+      
+      req(values$regression_done)
+      model <- regression_model()
+      
+      vif_interpretation <- if(length(input$reg_indep) > 1) {
+        vif_result <- car::vif(model)
+        if(any(vif_result > 10)) {
+          paste("VIF menunjukkan adanya multikolinearitas signifikan (VIF > 10) untuk variabel:",
+                paste(names(vif_result[vif_result > 10]), collapse = ", "), ".")
+        } else {
+          "VIF menunjukkan tidak ada multikolinearitas signifikan (semua VIF < 10)."
+        }
+      } else {
+        "VIF test tidak dilakukan karena hanya ada satu variabel independen."
+      }
+      
+      residuals <- resid(model)
+      shapiro_test <- shapiro.test(residuals)
+      normality_interpretation <- if(shapiro_test$p.value > 0.05) {
+        paste("Uji Shapiro-Wilk untuk normalitas residual (p-value =", round(shapiro_test$p.value, 4),
+              "): Residual dianggap berdistribusi normal.")
+      } else {
+        paste("Uji Shapiro-Wilk untuk normalitas residual (p-value =", round(shapiro_test$p.value, 4),
+              "): Residual tidak berdistribusi normal.")
+      }
+      
+      bptest_result <- lmtest::bptest(model)
+      homoskedasticity_interpretation <- if(bptest_result$p.value > 0.05) {
+        paste("Uji Breusch-Pagan untuk homoskedastisitas (p-value =", round(bptest_result$p.value, 4),
+              "): Varians residual homogen.")
+      } else {
+        paste("Uji Breusch-Pagan untuk homoskedastisitas (p-value =", round(bptest_result$p.value, 4),
+              "): Varians residual tidak homogen.")
+      }
+      
+      temp_md <- tempfile(fileext = ".Rmd")
+      rmd_content <- paste(
+        "---",
+        "title: 'Regression Assumptions Interpretation'",
+        "date: '", Sys.Date(), "'",
+        "output:",
+        "  pdf_document:",
+        "    latex_engine: pdflatex",
+        "    keep_tex: true",
+        "geometry: margin=1in",
+        "header-includes:",
+        "  - \\usepackage{booktabs}",
+        "  - \\usepackage{longtable}",
+        "  - \\usepackage{caption}",
+        "  - \\usepackage[utf8]{inputenc}",
+        "  - \\usepackage{geometry}",
+        "  - \\geometry{a4paper, margin=1in}",
+        "  - \\usepackage{parskip}",
+        "  - \\setlength{\\parskip}{0.5em}",
+        "---",
+        "\n# Interpretasi Uji Asumsi Model\n",
+        vif_interpretation, "\n\n",
+        normality_interpretation, "\n\n",
+        homoskedasticity_interpretation,
+        sep = "\n"
+      )
+      
+      writeLines(rmd_content, temp_md)
+      
+      tryCatch(
+        {
+          rmarkdown::render(
+            temp_md,
+            output_file = file,
+            output_format = "pdf_document",
+            clean = TRUE,
+            envir = new.env(parent = globalenv())
+          )
+        },
+        error = function(e) {
+          stop("Failed to generate PDF: ", e$message)
+        }
+      )
+    },
+    contentType = "application/pdf"
+  )
+  
+  output$download_regresi_complete <- downloadHandler(
+    filename = function() { paste0("regresi_complete_", Sys.Date(), ".pdf") },
+    content = function(file) {
+      if (!tinytex::is_tinytex()) {
+        tinytex::install_tinytex()
+      }
     
     req(values$regression_done)
     temp_md <- tempfile(fileext = ".Rmd")
